@@ -25,5 +25,8 @@ namespace SorteSystem.com.proem.sorte.domain
         /// 重量
         /// </summary>
         public string weight { get; set; }
+
+        //金额
+        public string money { get; set; }
     }
 }

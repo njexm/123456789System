@@ -127,8 +127,8 @@ namespace SorteSystem.com.proem.sorte.dao
         public void AddtransitItem(orderSorte obj)
         {
             List<string> idStr = new List<string>();
-            string sql1 = "insert into ZC_ORDERS_SORTE (id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, ORDERSNUM, SORTENUM, WEIGHT, sorteId) values "
-                + " (:id ,:createTime, :updateTime, :ADDRESS , :GOODS_ID, :GOODS_NAME, :ORDERSNUM, :SORTENUM , :weight, :sorteId)";
+            string sql1 = "insert into ZC_ORDERS_SORTE (id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, ORDERSNUM, SORTENUM, WEIGHT, sorteId, money) values "
+                + " (:id ,:createTime, :updateTime, :ADDRESS , :GOODS_ID, :GOODS_NAME, :ORDERSNUM, :SORTENUM , :weight, :sorteId, :money)";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             OracleTransaction tran = null;
@@ -149,6 +149,7 @@ namespace SorteSystem.com.proem.sorte.dao
                 cmd.Parameters.Add(":SORTENUM", obj.sorteNum);
                 cmd.Parameters.Add(":weight", obj.weight);
                 cmd.Parameters.Add(":sorteId", ConstantUtil.sorte_id);
+                cmd.Parameters.Add(":money", obj.money);
                 cmd.ExecuteNonQuery();
                 tran.Commit();
             }

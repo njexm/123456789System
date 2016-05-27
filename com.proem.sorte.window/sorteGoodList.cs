@@ -32,6 +32,11 @@ namespace sorteSystem.com.proem.sorte.window
 
         private delegate string updateGVDelegate();
 
+        /// <summary>
+        /// 是否处于扫码datagridview
+        /// </summary>
+        private bool isResale = true;
+
         private int select_value = 0;
 
         public void setSelectValue()
@@ -43,26 +48,27 @@ namespace sorteSystem.com.proem.sorte.window
 
         private string updateGV()
         {
-            DataSet ds = getGridData();
-            goodDataGridView.DataSource = ds;
-            goodDataGridView.CurrentCell = null;
+            //if(!isResale){
+            
+            
+                DataSet ds = getGridData();
+                goodDataGridView.DataSource = ds;
+                goodDataGridView.CurrentCell = null;
 
-            if (RowsCount != goodDataGridView.Rows.Count)
-            {
-                RowsCount = goodDataGridView.Rows.Count;
-                select_value = 0;
-            }
-            if (goodDataGridView.Rows.Count > select_value)
-            {
-                goodDataGridView.Rows[select_value].Selected = true;
-                goodDataGridView.CurrentCell = goodDataGridView.Rows[select_value].Cells[0];
-            }
+                if (RowsCount != goodDataGridView.Rows.Count)
+                {
+                    RowsCount = goodDataGridView.Rows.Count;
+                    select_value = 0;
+                }
+                if (goodDataGridView.Rows.Count > select_value)
+                {
+                    goodDataGridView.Rows[select_value].Selected = true;
+                    goodDataGridView.CurrentCell = goodDataGridView.Rows[select_value].Cells[0];
+                }
 
-            //if (goodDataGridView.Rows.Count > _ScrollValue)
-            //{
-            //    goodDataGridView.FirstDisplayedScrollingRowIndex = _ScrollValue;
-            //}
-            color();
+            
+                color();
+               // }
             return "1";
         }
 
@@ -98,6 +104,7 @@ namespace sorteSystem.com.proem.sorte.window
 
         private bool isFirst = true;
 
+
         private void sorteGoodList_Load(object sender, EventArgs e)
         {
             numberTextBox.Focus();
@@ -105,16 +112,6 @@ namespace sorteSystem.com.proem.sorte.window
             times.TopLevel = false;
             this.timePanel.Controls.Add(times);
             times.Show();
-
-            //if (goodDataGridView.Focused == true)
-            //{
-            //    MessageBox.Show("true");
-            //}
-            //else
-            //{
-            //    MessageBox.Show("false");
-            //}
-            //goodDataGridView.ClearSelection();
 
             int hw = redButton.Height;
             if (hw > redButton.Width) hw = redButton.Width;
@@ -144,6 +141,12 @@ namespace sorteSystem.com.proem.sorte.window
             pTimer.AutoReset = true;//获取该定时器自动执行
             pTimer.Enabled = true;//这个一定要写，要不然定时器不会执行的
             Control.CheckForIllegalCrossThreadCalls = false;//这个不太懂，有待研究
+
+
+            ///初始化datagridview显示
+            salepanel.Show();
+            loadSaleTable();
+            goodTablePanel.Hide();
         }
 
         public DataSet getGridData()
@@ -152,24 +155,26 @@ namespace sorteSystem.com.proem.sorte.window
             string remark = dt.Rows[ConstantUtil.index][9].ToString().Trim();
             if (string.IsNullOrEmpty(remark))
             {
-                //topPanel.Height = 100;
                 messagePanel.Visible = false;
-                goodTablePanel.Location = new Point(3, 117);
-                //goodTablePanel.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+                if(isResale){
+                    salepanel.Location = new Point(3, 117);
+                }else{
+                    goodTablePanel.Location = new Point(3, 117);
+                }
+               
                 textBox2.Text = "";
-                //label1.Visible = false;
-                //textBox2.Visible = false;
-               // goodTablePanel.Height = goodTableGroupBox.Height - topPanel.Height - topPanel.Location.Y;
             }
             else
             {
-                //topPanel.Height = 165;
                 messagePanel.Visible = true;
-                goodTablePanel.Location = new Point(3, 182);
-                //goodTablePanel.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-                //goodTablePanel.Height = goodTableGroupBox.Height - topPanel.Height - topPanel.Location.Y - messagePanel.Location.Y - messagePanel.Height;
-                //label1.Visible = true;
-                //textBox2.Visible = true;
+                if(isResale)
+                {
+                    salepanel.Location = new Point(3, 182);
+                }else
+                {
+                    goodTablePanel.Location = new Point(3, 182);
+                }
+                
                 textBox2.Text = remark;
             }
             sortedao = new orderDao();
@@ -378,12 +383,7 @@ namespace sorteSystem.com.proem.sorte.window
                 ConstantUtil.index = ConstantUtil.index + 1;
                 ConstantUtil.street = dt.Rows[ConstantUtil.index][14].ToString();
                 startButton_Click(this, EventArgs.Empty);
-                //redButton.Hide();
-                //redLabel.Hide();
-                //yellowButton.Show();
-                //yellowLabel.Show();
-                //greenButton.Hide();
-                //greenLabel.Hide();
+                loadSaleTable();
             }
         }
 
@@ -865,19 +865,54 @@ namespace sorteSystem.com.proem.sorte.window
             }else if(e.KeyCode == Keys.F1)
             {
                 calculateButton_Click(this, EventArgs.Empty);
+            }else if(e.KeyCode == Keys.Space)
+            {
+                if(isResale){
+                    goodTablePanel.Show();
+                    salepanel.Hide();
+                    isResale = false;
+                }else
+                {
+                    goodTablePanel.Hide();
+                    salepanel.Show();
+                    loadSaleTable();
+                    isResale = true;
+                }
             }
             else if (e.KeyCode == Keys.Up)
             {
-                if (select_value > 0)
+                if (isResale)
                 {
-                    select_value -= 1;
+                    int index = saledatagridview.CurrentRow.Index;
+                    if(index > 0){
+                        saledatagridview.Rows[index - 1].Selected = true;
+                        saledatagridview.CurrentCell = saledatagridview.Rows[index - 1].Cells[0];
+                    }
+                }
+                else {
+                    if (select_value > 0)
+                    {
+                        select_value -= 1;
+                    }
                 }
             }
             else if (e.KeyCode == Keys.Down)
             {
-                if (select_value < goodDataGridView.Rows.Count - 1)
+                if (isResale)
                 {
-                    select_value += 1;
+                    int index = saledatagridview.CurrentRow.Index;
+                    if (index < saledatagridview.RowCount - 1)
+                    {
+                        saledatagridview.Rows[index + 1].Selected = true;
+                        saledatagridview.CurrentCell = saledatagridview.Rows[index + 1].Cells[0];
+                    }
+                }
+                else
+                {
+                    if (select_value < goodDataGridView.Rows.Count - 1)
+                    {
+                        select_value += 1;
+                    }
                 }
             }
             else if (e.KeyCode == Keys.Left)
@@ -907,10 +942,40 @@ namespace sorteSystem.com.proem.sorte.window
                 try
                 {
                     AddGoods();
+                    loadSaleTable();
                 }
                 catch (Exception ex) {
                     log.Error("语音播报发生错误", ex);
                 }
+            }
+        }
+
+        private void loadSaleTable()
+        {
+            string sql = "select b.serialNumber, a.goods_name as goodsname, a.weight,a.money from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where a.address = '" + dt.Rows[ConstantUtil.index][14]+"' and a.sorteId = '"+ConstantUtil.sorte_id+"'  order by a.createTime";
+            OracleConnection conn = null;
+            OracleCommand cmd = new OracleCommand();
+            try
+            {
+                conn = OracleUtil.OpenConn();
+                cmd.Connection = conn;
+                cmd.CommandText = sql;
+                OracleDataAdapter da = new OracleDataAdapter(cmd);
+                DataSet dataset = new DataSet();
+                da.Fill(dataset, "zc_orders_sorte");
+                saledatagridview.AutoGenerateColumns = false;
+                saledatagridview.DataSource = dataset;
+                saledatagridview.DataMember = "zc_orders_sorte";
+                saledatagridview.Rows[saledatagridview.RowCount-1].Selected = true;
+                saledatagridview.CurrentCell = saledatagridview.Rows[saledatagridview.RowCount - 1].Cells[0];
+            }
+            catch (Exception ex)
+            {
+                log.Error("加载扫码流水信息失败", ex);
+            }
+            finally
+            {
+                OracleUtil.CloseConn(conn);
             }
         }
 
@@ -920,13 +985,13 @@ namespace sorteSystem.com.proem.sorte.window
              SpeechVoiceSpeakFlags speakflag = SpeechVoiceSpeakFlags.SVSFlagsAsync;
             SpVoice voice = new SpVoice();
             string num = numberTextBox.Text;
+            numberTextBox.Text = "";
             ///18位条码和13位条码混合
-            if (string.IsNullOrEmpty(num) || (num.Length != 13 && num.Length != 18))
+            if (string.IsNullOrEmpty(num) || (!num.StartsWith("28") && !num.StartsWith("69")) || (num.Length != 18 && num.Length != 13))
             {
 
                 voice.Speak("错误", speakflag);
                 MessageBox.Show("请确认扫码的条码是否正确", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                numberTextBox.Text = "";
                 return;
             }
             ///以后的13的条码
@@ -938,29 +1003,44 @@ namespace sorteSystem.com.proem.sorte.window
             //}
             ///扫码扫出来的结果
             string serialNumber = "";
-            float weigth = 0;
-
-            if (num.StartsWith("28"))
+            string money = "";
+            string weight = "";
+            if (num.Length == 18)
             {
-                ///13位的条码
-                //serialNumber = num.Substring(2, 5);
-                //string weightString = num.Substring(7, 5);
-                //weigth = float.Parse(weightString.Insert(2, "."));
-
-                ///18位的条码和13位码都有
-                if(num.Length == 18){
-                    serialNumber = num.Substring(2, 5);
-                    string weightString = num.Substring(12, 5);
-                    weigth = float.Parse(weightString.Insert(2, "."));
-                }else{   //肉类的13位码
-                    serialNumber = num.Substring(2, 5);
-                    string weightString = num.Substring(7, 5);
-                    weigth = float.Parse(weightString.Insert(2, "."));
-                }
+                serialNumber = num.Substring(2, 5);
+            }
+            else if (num.StartsWith("28"))
+            {
+                serialNumber = num.Substring(2, 5);
             }
             else
             {
                 serialNumber = num;
+            }
+            ZcGoodsMasterDao goodsMasterDao = new ZcGoodsMasterDao();
+            ZcGoodsMaster zcGoodsMaster = goodsMasterDao.FindBySerialNumber(serialNumber);
+            if (zcGoodsMaster == null)
+            {
+                MessageBox.Show("没有此货号对应的商品信息，请检查后重新操作!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            bool isWeightGoods = goodsMasterDao.IsWeightGoods(zcGoodsMaster.Id);
+            if (isWeightGoods)
+            {
+                if (num.Length == 18)
+                {
+                    weight = float.Parse(num.Substring(12, 5).Insert(2, ".")).ToString();
+                    money = float.Parse(num.Substring(7, 5).Insert(3, ".")).ToString();
+                }
+                else
+                {
+                    weight = float.Parse(num.Substring(7, 5).Insert(2, ".")).ToString();
+                    money = (zcGoodsMaster.GoodsPrice * float.Parse(weight)).ToString("0.00");
+                }
+            }
+            else
+            {
+                money = zcGoodsMaster.GoodsPrice.ToString("0.00");
             }
 
             DataSet ds = (DataSet)this.goodDataGridView.DataSource;
@@ -979,7 +1059,6 @@ namespace sorteSystem.com.proem.sorte.window
                     {
                         voice.Speak("错误", speakflag);
                         MessageBox.Show("此商品份数为0无法进行减去操作", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        numberTextBox.Text = "";
                         calFlag = true;
                         calculateButton.Text = "加(F1)";
                         return;
@@ -996,7 +1075,8 @@ namespace sorteSystem.com.proem.sorte.window
                         //订单份数
                         orderSorte.orderNum = this.goodDataGridView.Rows[i].Cells[3].Value == null ? "" : this.goodDataGridView.Rows[i].Cells[3].Value.ToString();
 
-                        orderSorte.weight = weigth.ToString();
+                        orderSorte.weight = weight;
+                        orderSorte.money = money;
                         sorteDao sortedao = new sorteDao();
                         if (calFlag)
                         {
@@ -1005,12 +1085,11 @@ namespace sorteSystem.com.proem.sorte.window
                         }
                         else
                         {
-                            List<string> list = sortedao.FindBy(orderSorte.goods_id, weigth.ToString(), ConstantUtil.street);
+                            List<string> list = sortedao.FindBy(orderSorte.goods_id, weight, ConstantUtil.street);
                             if (list.Count == 0)
                             {
                                 voice.Speak("错误", speakflag);
                                 MessageBox.Show("没有此商品对应得分拣记录，无需进行减去操作", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                numberTextBox.Text = "";
                                 return;
                             }
                             sortedao.DeleteBy(list[0]);
@@ -1018,7 +1097,6 @@ namespace sorteSystem.com.proem.sorte.window
                             calculateButton.Text = "加(F1)";
                         }
                     }
-                    numberTextBox.Text = "";
                 }
                 else
                 {
@@ -1029,7 +1107,6 @@ namespace sorteSystem.com.proem.sorte.window
             {
                 voice.Speak("错误", speakflag);
                 MessageBox.Show("没有此商品，请确认商品或者货号是否正确", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                numberTextBox.Text = "";
                 return;
             }
         }
@@ -1091,6 +1168,16 @@ namespace sorteSystem.com.proem.sorte.window
         private void numberTextBox_Leave(object sender, EventArgs e)
         {
             numberTextBox.Focus();
+        }
+
+        private void saledatagridview_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            //行号
+            using (SolidBrush b = new SolidBrush(this.saledatagridview.RowHeadersDefaultCellStyle.ForeColor))
+            {
+                e.Graphics.DrawString(Convert.ToString(e.RowIndex + 1),
+                e.InheritedRowStyle.Font, b, e.RowBounds.Location.X + 5, e.RowBounds.Location.Y + 4);
+            }
         }
 
        

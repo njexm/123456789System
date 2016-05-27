@@ -78,10 +78,12 @@
     <Compile Include="com.proem.sorte.dao\ProcessDao.cs" />
     <Compile Include="com.proem.sorte.dao\ProcessItemDao.cs" />
     <Compile Include="com.proem.sorte.dao\sorteDao.cs" />
+    <Compile Include="com.proem.sorte.dao\ZcGoodsMasterDao.cs" />
     <Compile Include="com.proem.sorte.domain\orderSorte.cs" />
     <Compile Include="com.proem.sorte.domain\Process.cs" />
     <Compile Include="com.proem.sorte.domain\ProcessItem.cs" />
     <Compile Include="com.proem.sorte.domain\StoreHouse.cs" />
+    <Compile Include="com.proem.sorte.domain\ZcGoodsMaster.cs" />
     <Compile Include="com.proem.sorte.domain\ZcProcessOrder.cs" />
     <Compile Include="com.proem.sorte.domain\Sorte.cs" />
     <Compile Include="com.proem.sorte.domain\ZcProcessOrderItem.cs" />
