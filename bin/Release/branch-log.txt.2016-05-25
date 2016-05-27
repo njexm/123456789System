@@ -1,0 +1,16 @@
+2016-05-25 23:02:34,843 [10] ERROR Branch.OracleUtil [(null)] - 数据库连接失败ORA-12514: TNS: 监听程序当前无法识别连接描述符中请求的服务
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-12514: TNS: 监听程序当前无法识别连接描述符中请求的服务 ---> OracleInternal.Network.NetworkException (0x000030E2): ORA-12514: TNS: 监听程序当前无法识别连接描述符中请求的服务
+   在 OracleInternal.Network.OracleCommunication.DoConnect(String tnsDescriptor)
+   在 OracleInternal.Network.OracleCommunication.Connect(String tnsDescriptor, Boolean doNAHandshake, String IName)
+   在 OracleInternal.ServiceObjects.OracleConnectionImpl.Connect(ConnectionString cs, Boolean bOpenEndUserSession, String instanceName)
+   在 OracleInternal.ConnectionPool.PoolManager`3.Get(ConnectionString csWithDiffOrNewPwd, Boolean bGetForApp, String affinityInstanceName, Boolean bForceMatch)
+   在 OracleInternal.ConnectionPool.OraclePoolManager.Get(ConnectionString csWithNewPassword, Boolean bGetForApp, String affinityInstanceName, Boolean bForceMatch)
+   在 OracleInternal.ConnectionPool.OracleConnectionDispenser`3.Get(ConnectionString cs, PM conPM, ConnectionString pmCS, SecureString securedPassword, SecureString securedProxyPassword)
+   在 Oracle.ManagedDataAccess.Client.OracleConnection.Open()
+   在 Branch.OracleUtil.OpenConn() 位置 e:\c#\visualstudio_workspace\sortSystem\sorteSystem\com.proem.sorte.util\OracleUtil.cs:行号 27
+2016-05-25 23:02:37,012 [10] ERROR Branch.BranchLogin [(null)] - 获取登录信息失败必须为此操作打开连接
+System.InvalidOperationException: 必须为此操作打开连接
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ValidateStatePriorToExecution()
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader()
+   在 Branch.BranchLogin.loginButton_Click(Object sender, EventArgs e) 位置 e:\c#\visualstudio_workspace\sortSystem\sorteSystem\com.proem.sorte.window\BranchLogin.cs:行号 53

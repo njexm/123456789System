@@ -1,0 +1,31 @@
+c:\users\acer\documents\visual studio 2012\Projects\sorteSystem\sorteSystem\bin\Debug\sorteSystem.exe.config
+c:\users\acer\documents\visual studio 2012\Projects\sorteSystem\sorteSystem\bin\Debug\sorteSystem.exe
+c:\users\acer\documents\visual studio 2012\Projects\sorteSystem\sorteSystem\bin\Debug\sorteSystem.pdb
+c:\users\acer\documents\visual studio 2012\Projects\sorteSystem\sorteSystem\obj\Debug\sorteSystem.csprojResolveAssemblyReference.cache
+c:\users\acer\documents\visual studio 2012\Projects\sorteSystem\sorteSystem\obj\Debug\sorteSystem.Properties.Resources.resources
+c:\users\acer\documents\visual studio 2012\Projects\sorteSystem\sorteSystem\obj\Debug\sorteSystem.csproj.GenerateResource.Cache
+c:\users\acer\documents\visual studio 2012\Projects\sorteSystem\sorteSystem\obj\Debug\sorteSystem.exe
+c:\users\acer\documents\visual studio 2012\Projects\sorteSystem\sorteSystem\obj\Debug\sorteSystem.pdb
+C:\Users\acer\Documents\Visual Studio 2012\Projects\sorteSystem\sorteSystem\obj\Debug\Branch.BranchLogin.resources
+C:\Users\acer\Documents\Visual Studio 2012\Projects\sorteSystem\sorteSystem\bin\Debug\Oracle.ManagedDataAccess.dll
+C:\Users\acer\Documents\Visual Studio 2012\Projects\sorteSystem\sorteSystem\obj\Debug\sorteSystem.com.proem.sorte.window.sorteList.resources
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\bin\Debug\sorteSystem.exe.config
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\bin\Debug\sorteSystem.exe
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\bin\Debug\sorteSystem.pdb
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\Branch.BranchLogin.resources
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\sorteSystem.com.proem.sorte.window.sorteGoodList.resources
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\sorteSystem.com.proem.sorte.window.sorteList.resources
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\sorteSystem.com.proem.sorte.window.util.Times.resources
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\sorteSystem.Properties.Resources.resources
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\sorteSystem.csproj.GenerateResource.Cache
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\sorteSystem.exe
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\sorteSystem.pdb
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\bin\Debug\Oracle.ManagedDataAccess.dll
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\Interop.SpeechLib.dll
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\sorteSystem.csproj.ResolveComReference.cache
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\sorteSystem.com.proem.sorte.window.IPSet.resources
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\sorteSystem.com.proem.sorte.window.Main.resources
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\sorteSystem.com.proem.sorte.window.Process.resources
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\sorteSystem.com.proem.sorte.window.processList.resources
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\sorteSystem.com.proem.sorte.window.ScanCode.resources
+E:\c#\visualstudio_workspace\sortSystem\sorteSystem\obj\Debug\sorteSystem.com.proem.sorte.window.SorteForm.resources

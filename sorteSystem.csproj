@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{83D69226-9EEA-45C1-8785-E12C27A8FF53}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>sorteSystem</RootNamespace>
+    <AssemblyName>sorteSystem</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <PublishUrl>发布\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>sorteSystem.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>G:\众彩订单系统\C#开发电子书\library\log4net-1.2.15-bin-newkey\log4net-1.2.15\bin\net\4.5\release\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>G:\C#开发电子书\ODP.NET_Managed_ODAC12cR4\odp.net\managed\common\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="com.proem.sorte.dao\orderDao.cs" />
+    <Compile Include="com.proem.sorte.dao\ProcessDao.cs" />
+    <Compile Include="com.proem.sorte.dao\ProcessItemDao.cs" />
+    <Compile Include="com.proem.sorte.dao\sorteDao.cs" />
+    <Compile Include="com.proem.sorte.domain\orderSorte.cs" />
+    <Compile Include="com.proem.sorte.domain\Process.cs" />
+    <Compile Include="com.proem.sorte.domain\ProcessItem.cs" />
+    <Compile Include="com.proem.sorte.domain\StoreHouse.cs" />
+    <Compile Include="com.proem.sorte.domain\ZcProcessOrder.cs" />
+    <Compile Include="com.proem.sorte.domain\Sorte.cs" />
+    <Compile Include="com.proem.sorte.domain\ZcProcessOrderItem.cs" />
+    <Compile Include="com.proem.sorte.util\ConstantUtil.cs" />
+    <Compile Include="com.proem.sorte.util\MD5Util.cs" />
+    <Compile Include="com.proem.sorte.util\OracleUtil.cs" />
+    <Compile Include="com.proem.sorte.util\SocketUtil.cs" />
+    <Compile Include="com.proem.sorte.window\BranchLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\BranchLogin.designer.cs">
+      <DependentUpon>BranchLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\IPSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\IPSet.Designer.cs">
+      <DependentUpon>IPSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\Process.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\Process.Designer.cs">
+      <DependentUpon>Process.cs</DependentUpon>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\processList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\processList.Designer.cs">
+      <DependentUpon>processList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\ScanCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\ScanCode.Designer.cs">
+      <DependentUpon>ScanCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\sorteGoodList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\sorteGoodList.Designer.cs">
+      <DependentUpon>sorteGoodList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\sorteList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\sorteList.Designer.cs">
+      <DependentUpon>sorteList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\util\Times.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\util\Times.Designer.cs">
+      <DependentUpon>Times.cs</DependentUpon>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\SorteForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\SorteForm.Designer.cs">
+      <DependentUpon>SorteForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="com.proem.sorte.window\BranchLogin.resx">
+      <DependentUpon>BranchLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="com.proem.sorte.window\IPSet.resx">
+      <DependentUpon>IPSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="com.proem.sorte.window\Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="com.proem.sorte.window\Process.resx">
+      <DependentUpon>Process.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="com.proem.sorte.window\processList.resx">
+      <DependentUpon>processList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="com.proem.sorte.window\ScanCode.resx">
+      <DependentUpon>ScanCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="com.proem.sorte.window\sorteGoodList.resx">
+      <DependentUpon>sorteGoodList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="com.proem.sorte.window\sorteList.resx">
+      <DependentUpon>sorteList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="com.proem.sorte.window\util\Times.resx">
+      <DependentUpon>Times.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="com.proem.sorte.window\SorteForm.resx">
+      <DependentUpon>SorteForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\login_bg_0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\login_bg_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\login_bg_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\login_bg_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\login_bg_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\login_bg_4_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fj.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\未标题-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\fj1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\jg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\login-error-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="SpeechLib">
+      <Guid>{C866CA3A-32F7-11D2-9602-00C04F8EE628}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>4</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
