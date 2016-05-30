@@ -185,7 +185,9 @@ namespace sorteSystem.com.proem.sorte.window
                 {
                     ConstantUtil.main.Show();
                     ConstantUtil.index = e.RowIndex;
+                    ConstantUtil.street = sorteListTableDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex + 2].Value.ToString();
                     ConstantUtil.main.setSelectValue();
+                    ConstantUtil.main.reLoadSaleTable();
                     this.Hide();
                 }
                 isFirst = false;
@@ -312,7 +314,11 @@ namespace sorteSystem.com.proem.sorte.window
             if(e.KeyCode == Keys.Escape)
             {
                 leaveButton_Click(this, EventArgs.Empty);
-            }else if(e.KeyCode == Keys.F1)
+            }else if(e.KeyCode == Keys.A)
+            {
+                button1_Click(this, EventArgs.Empty);
+            }
+            else if(e.KeyCode == Keys.F1)
             {
                 if("1".Equals(isExist))
                 {
@@ -332,6 +338,10 @@ namespace sorteSystem.com.proem.sorte.window
                 }
             }else if(e.KeyCode == Keys.Enter){
                 int index = sorteListTableDataGridView.CurrentCell.RowIndex;
+                ConstantUtil.sortelist = this;
+                ConstantUtil.Branchds = ds;
+                ConstantUtil.index = index;
+                ConstantUtil.street = sorteListTableDataGridView.Rows[index].Cells[0].Value.ToString();
                 if (isFirst)
                 {
                     sorteGoodList goodsList = new sorteGoodList(this);
@@ -340,11 +350,8 @@ namespace sorteSystem.com.proem.sorte.window
                 else
                 {
                     ConstantUtil.main.setSelectValue();
+                    ConstantUtil.main.reLoadSaleTable();
                 }
-                ConstantUtil.sortelist = this;
-                ConstantUtil.Branchds = ds;
-                ConstantUtil.index = index;
-                ConstantUtil.street = sorteListTableDataGridView.Rows[index].Cells[0].Value.ToString();
                 ConstantUtil.main.Show();
                 this.Hide();
                 isFirst = false;
@@ -359,6 +366,12 @@ namespace sorteSystem.com.proem.sorte.window
             sorteId = id;
             ConstantUtil.sorte_id = id;
             loadData();
+        }
+
+        public void returnToMain()
+        {
+            ConstantUtil.main.Close();
+            button1_Click(this, EventArgs.Empty);
         }
     }
 }

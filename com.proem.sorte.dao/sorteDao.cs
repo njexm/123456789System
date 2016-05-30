@@ -196,7 +196,7 @@ namespace SorteSystem.com.proem.sorte.dao
         public List<string> FindBy(string goodsId, string weight, string street)
         {
             List<string> list = new List<string>();
-            string sql = "select id from zc_orders_sorte where goods_id = :goodsId and address = :street and weight= :weight";
+            string sql = "select id from zc_orders_sorte where goods_id = :goodsId and address = :street and weight= :weight and sorteId = :sorteId";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             try
@@ -207,6 +207,7 @@ namespace SorteSystem.com.proem.sorte.dao
                 cmd.Parameters.Add(":goodsId", goodsId);
                 cmd.Parameters.Add(":street", street);
                 cmd.Parameters.Add(":weight", weight);
+                cmd.Parameters.Add(":sorteId", ConstantUtil.sorte_id);
                 OracleDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {

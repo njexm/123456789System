@@ -32,6 +32,8 @@ namespace sorteSystem.com.proem.sorte.window
 
         private delegate string updateGVDelegate();
 
+        private delegate void endSorteDelegate();
+
         /// <summary>
         /// 是否处于扫码datagridview
         /// </summary>
@@ -328,23 +330,23 @@ namespace sorteSystem.com.proem.sorte.window
         private void nextbutton_Click(object sender, EventArgs e)
         {
            
-            bool printFlag = false;
-            if (goodDataGridView.Rows.Count > 0)
-            {
-                for (int i = 0; i < goodDataGridView.Rows.Count; i++)
-                {
-                    string oldCount = goodDataGridView.Rows[i].Cells[3].Value == null ? "" : goodDataGridView.Rows[i].Cells[3].Value.ToString();
-                    string newCount = goodDataGridView.Rows[i].Cells[4].Value == null ? "" : goodDataGridView.Rows[i].Cells[4].Value.ToString();
-                    if (oldCount.Equals(newCount)) { }
-                    else
-                    {
-                        //MessageBox.Show("存在分拣份数不符合的商品，请检测", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        printFlag = true;
-                        break;
-                        //return;
-                    }
-                }
-            }
+            //bool printFlag = false;
+            //if (goodDataGridView.Rows.Count > 0)
+            //{
+            //    for (int i = 0; i < goodDataGridView.Rows.Count; i++)
+            //    {
+            //        string oldCount = goodDataGridView.Rows[i].Cells[3].Value == null ? "" : goodDataGridView.Rows[i].Cells[3].Value.ToString();
+            //        string newCount = goodDataGridView.Rows[i].Cells[4].Value == null ? "" : goodDataGridView.Rows[i].Cells[4].Value.ToString();
+            //        if (oldCount.Equals(newCount)) { }
+            //        else
+            //        {
+            //            //MessageBox.Show("存在分拣份数不符合的商品，请检测", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //            printFlag = true;
+            //            break;
+            //            //return;
+            //        }
+            //    }
+            //}
             //string messageString = "";
             //if (printFlag)
             //{
@@ -413,59 +415,70 @@ namespace sorteSystem.com.proem.sorte.window
                             }
                         }
                     }
+                    //Loading loading = new Loading();
+                    //loading.Show();
 
-                    orderDao orderdao = new orderDao();
-                    orderdao.deleteSorteStatus(ConstantUtil.ip1);
-                    orderdao.deleteSorteStatus(ConstantUtil.ip2);
-                    for (int i = 0; i < dt.Rows.Count; i++)
+                    endSorteDelegate endDelegate = endSorte;
+                    this.BeginInvoke(endDelegate);
+                    Thread objThread = new Thread(new ThreadStart(delegate
                     {
-                        object id = dt.Rows[i][0];
-                        object streetId = dt.Rows[i][14];
-                        List<ZcProcessOrder> ZcProcessOrderList = orderdao.FindAll(streetId.ToString());
-                        if (ZcProcessOrderList != null && ZcProcessOrderList.Count() > 0)
+                        orderDao orderdao = new orderDao();
+                        orderdao.deleteSorteStatus(ConstantUtil.ip1);
+                        orderdao.deleteSorteStatus(ConstantUtil.ip2);
+                        for (int i = 0; i < dt.Rows.Count; i++)
                         {
-                            for (int a = 0; a < ZcProcessOrderList.Count; a++)
+                            object id = dt.Rows[i][0];
+                            object streetId = dt.Rows[i][14];
+                            List<ZcProcessOrder> ZcProcessOrderList = orderdao.FindAll(streetId.ToString());
+                            if (ZcProcessOrderList != null && ZcProcessOrderList.Count() > 0)
                             {
-                                ZcProcessOrder zcprocessOrder = ZcProcessOrderList[a];
-                                string orderId = zcprocessOrder.id;
-                                List<ZcProcessOrderItem> ZcProcessOrderItemList = orderdao.getItemByid(orderId);
-                                if (ZcProcessOrderItemList != null && ZcProcessOrderItemList.Count() > 0)
+                                for (int a = 0; a < ZcProcessOrderList.Count; a++)
                                 {
-                                    orderdao.AddtransitItem(ZcProcessOrderItemList);
-                                    for (int b = 0; b < ZcProcessOrderItemList.Count; b++)
+                                    ZcProcessOrder zcprocessOrder = ZcProcessOrderList[a];
+                                    string orderId = zcprocessOrder.id;
+                                    List<ZcProcessOrderItem> ZcProcessOrderItemList = orderdao.getItemByid(orderId);
+                                    if (ZcProcessOrderItemList != null && ZcProcessOrderItemList.Count() > 0)
                                     {
-                                        ZcProcessOrderItem zcProcessOrderItem = ZcProcessOrderItemList[b];
-                                        string itemId = zcProcessOrderItem.id;
-                                        orderdao.deletePorcessItem(itemId);
-                                        orderdao.updateStoreHouse(zcProcessOrderItem);
+                                        orderdao.AddtransitItem(ZcProcessOrderItemList);
+                                        for (int b = 0; b < ZcProcessOrderItemList.Count; b++)
+                                        {
+                                            ZcProcessOrderItem zcProcessOrderItem = ZcProcessOrderItemList[b];
+                                            string itemId = zcProcessOrderItem.id;
+                                            orderdao.deletePorcessItem(itemId);
+                                            orderdao.updateStoreHouse(zcProcessOrderItem);
+                                        }
                                     }
-                                }
-                                if ("全部完成".Equals(zcprocessOrder.pullFlag))
-                                {
-                                    zcprocessOrder.orderStatus = "5";
-                                    orderdao.deletePorcessOrder(zcprocessOrder.id);
-                                    int count = orderdao.getTransitOrderCount(zcprocessOrder.id);
-
-                                    if (count == 0)
+                                    if ("全部完成".Equals(zcprocessOrder.pullFlag))
                                     {
-                                        orderdao.AddtransitOrder(zcprocessOrder);
+                                        zcprocessOrder.orderStatus = "5";
+                                        orderdao.deletePorcessOrder(zcprocessOrder.id);
+                                        int count = orderdao.getTransitOrderCount(zcprocessOrder.id);
+
+                                        if (count == 0)
+                                        {
+                                            orderdao.AddtransitOrder(zcprocessOrder);
+                                        }
+                                        else
+                                        {
+
+                                        }
                                     }
                                     else
                                     {
 
                                     }
                                 }
-                                else
-                                {
-
-                                }
                             }
                         }
-                    }
-                    //改变订单状态
-                    orderdao.UpdateStatus(sorteId);
-                    MessageBox.Show("分拣完毕!", "提示", MessageBoxButtons.OK ,MessageBoxIcon.Information);
-                    sortFlag = true;
+                        //改变订单状态
+                        orderdao.UpdateStatus(sorteId);
+                        loading.Close();
+                        MessageBox.Show("分拣完毕!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        sortFlag = true;
+                        backButton_Click(this, EventArgs.Empty);
+                        this.sorteListForm.returnToMain();
+                    }));
+                    objThread.Start();
                 }
                 else
                 {
@@ -862,7 +875,12 @@ namespace sorteSystem.com.proem.sorte.window
             else if(e.KeyCode == Keys.Escape)
             {
                 leaveButton_Click(this, EventArgs.Empty);
-            }else if(e.KeyCode == Keys.F1)
+            }
+            else if(e.KeyCode == Keys.Delete)
+            {
+                deleteSale();
+            }                
+            else if(e.KeyCode == Keys.F1)
             {
                 calculateButton_Click(this, EventArgs.Empty);
             }else if(e.KeyCode == Keys.Space)
@@ -952,7 +970,7 @@ namespace sorteSystem.com.proem.sorte.window
 
         private void loadSaleTable()
         {
-            string sql = "select b.serialNumber, a.goods_name as goodsname, a.weight,a.money from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where a.address = '" + dt.Rows[ConstantUtil.index][14]+"' and a.sorteId = '"+ConstantUtil.sorte_id+"'  order by a.createTime";
+            string sql = "select b.id, b.serialNumber, a.goods_name as goodsname, a.weight,a.money from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where a.address = '" + dt.Rows[ConstantUtil.index][14]+"' and a.sorteId = '"+ConstantUtil.sorte_id+"'  order by a.createTime";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             try
@@ -966,8 +984,11 @@ namespace sorteSystem.com.proem.sorte.window
                 saledatagridview.AutoGenerateColumns = false;
                 saledatagridview.DataSource = dataset;
                 saledatagridview.DataMember = "zc_orders_sorte";
-                saledatagridview.Rows[saledatagridview.RowCount-1].Selected = true;
-                saledatagridview.CurrentCell = saledatagridview.Rows[saledatagridview.RowCount - 1].Cells[0];
+                if (saledatagridview.RowCount - 1 >= 0)
+                {
+                    saledatagridview.Rows[saledatagridview.RowCount - 1].Selected = true;
+                    saledatagridview.CurrentCell = saledatagridview.Rows[saledatagridview.RowCount - 1].Cells[0];
+                }
             }
             catch (Exception ex)
             {
@@ -991,7 +1012,7 @@ namespace sorteSystem.com.proem.sorte.window
             {
 
                 voice.Speak("错误", speakflag);
-                MessageBox.Show("请确认扫码的条码是否正确", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //MessageBox.Show("请确认扫码的条码是否正确", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             ///以后的13的条码
@@ -1021,7 +1042,8 @@ namespace sorteSystem.com.proem.sorte.window
             ZcGoodsMaster zcGoodsMaster = goodsMasterDao.FindBySerialNumber(serialNumber);
             if (zcGoodsMaster == null)
             {
-                MessageBox.Show("没有此货号对应的商品信息，请检查后重新操作!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //MessageBox.Show("没有此货号对应的商品信息，请检查后重新操作!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                voice.Speak("无商品", speakflag);
                 return;
             }
             bool isWeightGoods = goodsMasterDao.IsWeightGoods(zcGoodsMaster.Id);
@@ -1058,7 +1080,7 @@ namespace sorteSystem.com.proem.sorte.window
                     if ((string.IsNullOrEmpty(nums) || "0".Equals(nums)) && !calFlag)
                     {
                         voice.Speak("错误", speakflag);
-                        MessageBox.Show("此商品份数为0无法进行减去操作", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        //MessageBox.Show("此商品份数为0无法进行减去操作", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         calFlag = true;
                         calculateButton.Text = "加(F1)";
                         return;
@@ -1089,7 +1111,7 @@ namespace sorteSystem.com.proem.sorte.window
                             if (list.Count == 0)
                             {
                                 voice.Speak("错误", speakflag);
-                                MessageBox.Show("没有此商品对应得分拣记录，无需进行减去操作", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                //MessageBox.Show("没有此商品对应得分拣记录，无需进行减去操作", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 return;
                             }
                             sortedao.DeleteBy(list[0]);
@@ -1106,7 +1128,7 @@ namespace sorteSystem.com.proem.sorte.window
             if (!flag)
             {
                 voice.Speak("错误", speakflag);
-                MessageBox.Show("没有此商品，请确认商品或者货号是否正确", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                //MessageBox.Show("没有此商品，请确认商品或者货号是否正确", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 return;
             }
         }
@@ -1180,7 +1202,39 @@ namespace sorteSystem.com.proem.sorte.window
             }
         }
 
-       
+        public void reLoadSaleTable()
+        {
+            loadSaleTable();
+        }
 
+        Loading loading;
+
+        private void endSorte()
+        {
+             loading = new Loading();
+            loading.Show();
+        }
+
+        private void deleteSale()
+        {
+            string name = saledatagridview.CurrentRow.Cells[1].Value == null ? "" : saledatagridview.CurrentRow.Cells[1].Value.ToString();
+            DialogResult dr = MessageBox.Show("确定删除"+name+"?", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            if(dr == DialogResult.OK){
+                sorteDao sortedao = new sorteDao();
+                string goods_id = saledatagridview.CurrentRow.Cells[4].Value == null ? "" : saledatagridview.CurrentRow.Cells[4].Value.ToString();
+                string weight = saledatagridview.CurrentRow.Cells[2].Value == null ? "" : saledatagridview.CurrentRow.Cells[2].Value.ToString();
+                List<string> list = sortedao.FindBy(goods_id, weight, ConstantUtil.street);
+                if (list != null && list.Count != 0)
+                {
+                    sortedao.DeleteBy(list[0]);
+                    loadSaleTable();
+                }
+                else 
+                {
+                    log.Error("删除扫码商品失败", new Exception());
+                }
+            }
+                     
+        }
     }
 }

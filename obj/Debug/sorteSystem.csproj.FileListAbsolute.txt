@@ -53,3 +53,4 @@ E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Debug\sorteSystem.co
 E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Debug\sorteSystem.com.proem.sorte.window.SorteForm.resources
 E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Debug\sorteSystem.Properties.Resources.resources
 E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Debug\sorteSystem.csproj.GenerateResource.Cache
+E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Debug\sorteSystem.Loading.resources

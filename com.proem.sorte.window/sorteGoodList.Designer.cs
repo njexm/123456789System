@@ -85,6 +85,7 @@
             this.goods_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.goods_weight = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.goods_money = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sorteGoodListPanel.SuspendLayout();
             this.logoPanel.SuspendLayout();
             this.goodTableGroupBox.SuspendLayout();
@@ -254,7 +255,8 @@
             this.serial_number,
             this.goods_name,
             this.goods_weight,
-            this.goods_money});
+            this.goods_money,
+            this.id});
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle7.Font = new System.Drawing.Font("宋体", 19F);
@@ -687,6 +689,14 @@
             this.goods_money.Name = "goods_money";
             this.goods_money.ReadOnly = true;
             // 
+            // id
+            // 
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "id";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Visible = false;
+            // 
             // sorteGoodList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -764,5 +774,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn goods_name;
         private System.Windows.Forms.DataGridViewTextBoxColumn goods_weight;
         private System.Windows.Forms.DataGridViewTextBoxColumn goods_money;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id;
     }
 }
