@@ -242,7 +242,7 @@ namespace sorteSystem.com.proem.sorte.window
             sorteListTableDataGridView.AutoGenerateColumns = false;
             sorteListTableDataGridView.DataMember = "Zc_sorte_item";
 
-            sorteListTableDataGridView.CurrentCell = null;//不默认选中
+            //sorteListTableDataGridView.CurrentCell = null;//不默认选中
             //OracleCommand command = new OracleCommand(sql);
             //command.Connection = connection;
 

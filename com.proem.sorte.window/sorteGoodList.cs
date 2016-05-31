@@ -749,7 +749,7 @@ namespace sorteSystem.com.proem.sorte.window
             //}
             float totalSum = 0;
             float totalAmount = 0;
-            string sql = "select a.goods_id, a.goods_name, a.SORTENUM, a.WEIGHT, b.GOODS_PRICE, b.GOODS_UNIT  from ZC_ORDERS_SORTE a left join ZC_GOODS_MASTER b "
+            string sql = "select a.goods_id, a.goods_name, a.SORTENUM, a.WEIGHT, b.GOODS_PRICE, b.GOODS_UNIT,a.money from ZC_ORDERS_SORTE a left join ZC_GOODS_MASTER b "
                 +" on a.GOODS_ID = b.SERIALNUMBER where a.ADDRESS = :street and a.SORTEID = :sorteId order by b.serialnumber ";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
@@ -769,11 +769,13 @@ namespace sorteSystem.com.proem.sorte.window
                     string weightString = reader.IsDBNull(3) ? "0" : reader.GetString(3);
                     string goodsPrice = reader.IsDBNull(4) ? "0" : reader.GetFloat(4).ToString("0.00");
                     string unit = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
+                    string goodsMoney = reader.IsDBNull(6) ? "0" : reader.GetString(6);
                     float weight = float.Parse(weightString);
                     float price = float.Parse(goodsPrice);
                     float nums = float.Parse(sorteNum);
+                    float money = float.Parse(goodsMoney);
                     totalSum += nums;
-                    totalAmount += price * nums;
+                    totalAmount += money;
                     if (name.Length < 4)
                     {
                         name += "\t\t";
@@ -788,11 +790,11 @@ namespace sorteSystem.com.proem.sorte.window
                     }
                     if (serialNumber.Length == 5)
                     {
-                        sb.Append(name + price.ToString("0.00") + "\t" + weight.ToString("0.000") + "\t" + (price * weight).ToString("0.00") + "\n");
+                        sb.Append(name + price.ToString("0.00") + "\t" + weight.ToString("0.000") + "\t" + money.ToString("0.00") + "\n");
                     }
                     else
                     {
-                        sb.Append(name + price.ToString("0.00") + "\t" + sorteNum + unit + "\t" + (price * nums).ToString("0.00") + "\n");
+                        sb.Append(name + price.ToString("0.00") + "\t" + sorteNum + unit + "\t" + money.ToString("0.00") + "\n");
                     }
                 }
             }
@@ -815,7 +817,7 @@ namespace sorteSystem.com.proem.sorte.window
 
 
             sb.Append("             谢谢惠顾欢迎下次光临                ");
-            //log.Error(sb.ToString()+"--------->");
+            Console.WriteLine(sb.ToString());
             return sb.ToString().Split('\n');
 
         }
@@ -1033,6 +1035,7 @@ namespace sorteSystem.com.proem.sorte.window
             else if (num.StartsWith("28"))
             {
                 serialNumber = num.Substring(2, 5);
+
             }
             else
             {
@@ -1046,19 +1049,16 @@ namespace sorteSystem.com.proem.sorte.window
                 voice.Speak("无商品", speakflag);
                 return;
             }
-            bool isWeightGoods = goodsMasterDao.IsWeightGoods(zcGoodsMaster.Id);
-            if (isWeightGoods)
+            if (num.Length == 18)
             {
-                if (num.Length == 18)
-                {
-                    weight = float.Parse(num.Substring(12, 5).Insert(2, ".")).ToString();
-                    money = float.Parse(num.Substring(7, 5).Insert(3, ".")).ToString();
-                }
-                else
-                {
-                    weight = float.Parse(num.Substring(7, 5).Insert(2, ".")).ToString();
-                    money = (zcGoodsMaster.GoodsPrice * float.Parse(weight)).ToString("0.00");
-                }
+                weight = float.Parse(num.Substring(12, 5).Insert(2, ".")).ToString();
+                money = float.Parse(num.Substring(7, 5).Insert(3, ".")).ToString();
+            }
+            else if (num.StartsWith("28"))
+            {
+
+                weight = float.Parse(num.Substring(7, 5).Insert(2, ".")).ToString();
+                money = (zcGoodsMaster.GoodsPrice * float.Parse(weight)).ToString("0.00");
             }
             else
             {
