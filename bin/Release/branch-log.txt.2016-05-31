@@ -1,0 +1,16 @@
+2016-05-31 14:12:06,517 [9] ERROR sorteSystem.com.proem.sorte.window.sorteGoodList [(null)] - 打印出错，检查打印机是否连通
+System.ComponentModel.Win32Exception (0x80004005): 已删除等候打印的文件。
+   在 System.Drawing.Printing.StandardPrintController.OnEndPage(PrintDocument document, PrintPageEventArgs e)
+   在 System.Windows.Forms.PrintControllerWithStatusDialog.OnEndPage(PrintDocument document, PrintPageEventArgs e)
+   在 System.Drawing.Printing.PrintController.PrintLoop(PrintDocument document)
+   在 System.Drawing.Printing.PrintController.Print(PrintDocument document)
+   在 System.Drawing.Printing.PrintDocument.Print()
+   在 sorteSystem.com.proem.sorte.window.sorteGoodList.printTicket() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.window\sorteGoodList.cs:行号 663
+2016-05-31 14:14:24,537 [9] ERROR sorteSystem.com.proem.sorte.window.sorteGoodList [(null)] - 打印出错，检查打印机是否连通
+System.ComponentModel.Win32Exception (0x80004005): 已删除等候打印的文件。
+   在 System.Drawing.Printing.StandardPrintController.OnEndPage(PrintDocument document, PrintPageEventArgs e)
+   在 System.Windows.Forms.PrintControllerWithStatusDialog.OnEndPage(PrintDocument document, PrintPageEventArgs e)
+   在 System.Drawing.Printing.PrintController.PrintLoop(PrintDocument document)
+   在 System.Drawing.Printing.PrintController.Print(PrintDocument document)
+   在 System.Drawing.Printing.PrintDocument.Print()
+   在 sorteSystem.com.proem.sorte.window.sorteGoodList.printTicket() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.window\sorteGoodList.cs:行号 663

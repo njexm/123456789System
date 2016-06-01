@@ -874,6 +874,24 @@ namespace sorteSystem.com.proem.sorte.window
             }else if(e.KeyCode == Keys.F){
                 nextbutton_Click(this, EventArgs.Empty);
             }
+            else if(e.KeyCode == Keys.Multiply)
+            {
+                if(saledatagridview.DataSource == null || saledatagridview.RowCount == 0){
+                    return;
+                }else
+                {
+                    float weight = saledatagridview.CurrentRow.Cells[2].Value == null ? 0 : float.Parse(saledatagridview.CurrentRow.Cells[2].Value.ToString());
+                    if(weight == 0F || weight == 0.001F)
+                    {
+                        ChangeNums changeNums = new ChangeNums(saledatagridview.CurrentRow.Cells[4].Value.ToString());
+                        changeNums.Show();
+                    }else
+                    {
+                        MessageBox.Show("该商品为称重商品,无法进行手动数量修改!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                
+            }
             else if(e.KeyCode == Keys.Escape)
             {
                 leaveButton_Click(this, EventArgs.Empty);
@@ -937,6 +955,10 @@ namespace sorteSystem.com.proem.sorte.window
             }
             else if (e.KeyCode == Keys.Left)
             {
+                if (goodDataGridView.DataSource == null || goodDataGridView.RowCount == 0)
+                {
+                    return;
+                }
                 if (select_value - goodDataGridView.DisplayedRowCount(false) >= 0)
                 {
                     select_value -= goodDataGridView.DisplayedRowCount(false);
@@ -948,6 +970,10 @@ namespace sorteSystem.com.proem.sorte.window
             }
             else if (e.KeyCode == Keys.Right)
             {
+                if (goodDataGridView.DataSource == null || goodDataGridView.RowCount == 0)
+                {
+                    return;
+                }
                 if (select_value + goodDataGridView.DisplayedRowCount(false) < goodDataGridView.RowCount - 1)
                 {
                     select_value += goodDataGridView.DisplayedRowCount(false);
@@ -1005,12 +1031,12 @@ namespace sorteSystem.com.proem.sorte.window
         //扫码
         private void AddGoods()
         {
-             SpeechVoiceSpeakFlags speakflag = SpeechVoiceSpeakFlags.SVSFlagsAsync;
+            SpeechVoiceSpeakFlags speakflag = SpeechVoiceSpeakFlags.SVSFlagsAsync;
             SpVoice voice = new SpVoice();
             string num = numberTextBox.Text;
             numberTextBox.Text = "";
             ///18位条码和13位条码混合
-            if (string.IsNullOrEmpty(num) || (!num.StartsWith("28") && !num.StartsWith("69")) || (num.Length != 18 && num.Length != 13))
+            if (string.IsNullOrEmpty(num) || (num.Length != 18 && num.Length != 13 && num.Length != 5))
             {
 
                 voice.Speak("错误", speakflag);
@@ -1032,10 +1058,9 @@ namespace sorteSystem.com.proem.sorte.window
             {
                 serialNumber = num.Substring(2, 5);
             }
-            else if (num.StartsWith("28"))
+            else if (num.Length == 13 && num.StartsWith("28"))
             {
                 serialNumber = num.Substring(2, 5);
-
             }
             else
             {
@@ -1054,7 +1079,7 @@ namespace sorteSystem.com.proem.sorte.window
                 weight = float.Parse(num.Substring(12, 5).Insert(2, ".")).ToString();
                 money = float.Parse(num.Substring(7, 5).Insert(3, ".")).ToString();
             }
-            else if (num.StartsWith("28"))
+            else if (num.Length == 13 && num.StartsWith("28"))
             {
 
                 weight = float.Parse(num.Substring(7, 5).Insert(2, ".")).ToString();
@@ -1236,5 +1261,6 @@ namespace sorteSystem.com.proem.sorte.window
             }
                      
         }
+
     }
 }

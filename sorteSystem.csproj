@@ -97,6 +97,12 @@
     <Compile Include="com.proem.sorte.window\BranchLogin.designer.cs">
       <DependentUpon>BranchLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="com.proem.sorte.window\ChangeNums.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\ChangeNums.Designer.cs">
+      <DependentUpon>ChangeNums.cs</DependentUpon>
+    </Compile>
     <Compile Include="com.proem.sorte.window\IPSet.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,6 +167,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="com.proem.sorte.window\BranchLogin.resx">
       <DependentUpon>BranchLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="com.proem.sorte.window\ChangeNums.resx">
+      <DependentUpon>ChangeNums.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="com.proem.sorte.window\IPSet.resx">
       <DependentUpon>IPSet.cs</DependentUpon>

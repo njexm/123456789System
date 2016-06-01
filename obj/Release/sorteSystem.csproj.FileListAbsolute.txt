@@ -47,3 +47,4 @@ E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.
 E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.com.proem.sorte.window.SorteForm.resources
 E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.Properties.Resources.resources
 E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.csproj.GenerateResource.Cache
+E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.com.proem.sorte.window.ChangeNums.resources

@@ -7,11 +7,16 @@ using Oracle.ManagedDataAccess.Client;
 using Branch;
 using sorteSystem.com.proem.sorte.util;
 using SorteSystem.com.proem.sorte.domain;
+using log4net;
 
 namespace SorteSystem.com.proem.sorte.dao
 {
     class sorteDao
     {
+        /// <summary>
+        /// 日志
+        /// </summary>
+        private readonly ILog log = LogManager.GetLogger(typeof(sorteDao));
 
         //添加分拣记录
         public List<string> AddtransitItem(List<orderSorte> list)
@@ -250,6 +255,32 @@ namespace SorteSystem.com.proem.sorte.dao
                 Console.WriteLine("根据ip查询sorteId失败" + e.Message);
             }
             return sorteId;
+        }
+
+        public void updateNums(int nums, string goodsFileId)
+        {
+            string sql = "update ZC_ORDERS_SORTE set sorteNum = '"+nums+"' where goods_id= '"+goodsFileId+"' and sorteId = '"+ConstantUtil.sorte_id+"' and address = '" + ConstantUtil.street +"' ";
+            OracleConnection conn = null;
+            OracleTransaction tran = null;
+            OracleCommand cmd = new OracleCommand();
+            try
+            {
+                conn = OracleUtil.OpenConn();
+                tran = conn.BeginTransaction();
+                cmd.Connection = conn;
+                cmd.CommandText = sql;
+                cmd.ExecuteNonQuery();
+                tran.Commit();
+            }
+            catch (Exception ex)
+            {
+                tran.Rollback();
+                log.Error("更新分拣数量失败", ex);
+            }
+            finally
+            {
+                OracleUtil.CloseConn(conn);
+            }
         }
     }
 }
