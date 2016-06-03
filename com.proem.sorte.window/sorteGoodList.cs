@@ -171,10 +171,10 @@ namespace sorteSystem.com.proem.sorte.window
                 messagePanel.Visible = true;
                 if(isResale)
                 {
-                    salepanel.Location = new Point(3, 182);
+                    salepanel.Location = new Point(3, 185);
                 }else
                 {
-                    goodTablePanel.Location = new Point(3, 182);
+                    goodTablePanel.Location = new Point(3, 185);
                 }
                 
                 textBox2.Text = remark;
@@ -378,7 +378,10 @@ namespace sorteSystem.com.proem.sorte.window
 
             if (ConstantUtil.index + 1 >= dt.Rows.Count)
             {
-                MessageBox.Show("已经到最后一个！");
+                DialogResult dr = MessageBox.Show("已分拣完最后一个亭点，是否结束分拣?", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                if(dr == DialogResult.OK){
+                    endButton_Click(this, EventArgs.Empty);
+                }
             }
             else
             {
@@ -469,6 +472,7 @@ namespace sorteSystem.com.proem.sorte.window
                                     }
                                 }
                             }
+                            orderdao.deleteAllSorteStatus();
                         }
                         //改变订单状态
                         orderdao.UpdateStatus(sorteId);
@@ -880,7 +884,7 @@ namespace sorteSystem.com.proem.sorte.window
                     return;
                 }else
                 {
-                    float weight = saledatagridview.CurrentRow.Cells[2].Value == null ? 0 : float.Parse(saledatagridview.CurrentRow.Cells[2].Value.ToString());
+                    float weight = (saledatagridview.CurrentRow.Cells[2].Value == null || string.IsNullOrEmpty(saledatagridview.CurrentRow.Cells[2].Value.ToString())) ? 0F : float.Parse(saledatagridview.CurrentRow.Cells[2].Value.ToString());
                     if(weight == 0F || weight == 0.001F)
                     {
                         ChangeNums changeNums = new ChangeNums(saledatagridview.CurrentRow.Cells[4].Value.ToString());

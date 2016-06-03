@@ -1,4 +1,5 @@
 ﻿using Branch;
+using log4net;
 using Oracle.ManagedDataAccess.Client;
 using sorteSystem.com.proem.sorte.domain;
 using sorteSystem.com.proem.sorte.util;
@@ -12,6 +13,11 @@ namespace sorteSystem.com.proem.sorte.dao
 {
     class orderDao
     {
+        /// <summary>
+        /// 日志
+        /// </summary>
+        private readonly ILog log = LogManager.GetLogger(typeof(orderDao));
+
         /// <summary>
         /// 从线上服务器获取所有的用户
         /// </summary>
@@ -499,6 +505,32 @@ namespace sorteSystem.com.proem.sorte.dao
                     OracleUtil.CloseConn(conn);
                 }
                 return obj;
+            }
+
+            public void deleteAllSorteStatus()
+            {
+                string sql = "delete from zc_sorte_status where 1=1";
+                OracleConnection conn = null;
+                OracleTransaction tran = null;
+                OracleCommand cmd = new OracleCommand();
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    tran = conn.BeginTransaction();
+                    cmd.Connection = conn;
+                    cmd.CommandText = sql;
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    log.Error("删除分拣工位信息表", ex);
+                }
+                finally
+                {
+                    OracleUtil.CloseConn(conn);
+                }
             }
     }
 
