@@ -201,7 +201,15 @@ namespace SorteSystem.com.proem.sorte.dao
         public List<string> FindBy(string goodsId, string weight, string street)
         {
             List<string> list = new List<string>();
-            string sql = "select id from zc_orders_sorte where goods_id = :goodsId and address = :street and weight= :weight and sorteId = :sorteId";
+            string sql = "";
+            if(string.IsNullOrEmpty(weight)){
+                sql = "select id from zc_orders_sorte where goods_id = '" + goodsId + "' and address = '" + street + "' and weight is null and sorteId = '" + ConstantUtil.sorte_id + "'";
+            }
+            else
+            {
+                sql = "select id from zc_orders_sorte where goods_id = '" + goodsId + "' and address = '" + street + "' and weight= '" + weight + "' and sorteId = '" + ConstantUtil.sorte_id + "'";
+            }
+            
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             try
@@ -209,10 +217,6 @@ namespace SorteSystem.com.proem.sorte.dao
                 conn = OracleUtil.OpenConn();
                 cmd.Connection = conn;
                 cmd.CommandText = sql;
-                cmd.Parameters.Add(":goodsId", goodsId);
-                cmd.Parameters.Add(":street", street);
-                cmd.Parameters.Add(":weight", weight);
-                cmd.Parameters.Add(":sorteId", ConstantUtil.sorte_id);
                 OracleDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -257,9 +261,9 @@ namespace SorteSystem.com.proem.sorte.dao
             return sorteId;
         }
 
-        public void updateNums(int nums, string goodsFileId)
+        public void updateNums(int nums, string goodsFileId, float money)
         {
-            string sql = "update ZC_ORDERS_SORTE set sorteNum = '"+nums+"' where goods_id= '"+goodsFileId+"' and sorteId = '"+ConstantUtil.sorte_id+"' and address = '" + ConstantUtil.street +"' ";
+            string sql = "update ZC_ORDERS_SORTE set sorteNum = '"+nums+"', money = '"+money+"' where goods_id= '"+goodsFileId+"' and sorteId = '"+ConstantUtil.sorte_id+"' and address = '" + ConstantUtil.street +"' ";
             OracleConnection conn = null;
             OracleTransaction tran = null;
             OracleCommand cmd = new OracleCommand();

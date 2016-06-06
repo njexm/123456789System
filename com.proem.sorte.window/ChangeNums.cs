@@ -1,4 +1,6 @@
-﻿using SorteSystem.com.proem.sorte.dao;
+﻿using sorteSystem.com.proem.sorte.dao;
+using sorteSystem.com.proem.sorte.domain;
+using SorteSystem.com.proem.sorte.dao;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,15 +16,21 @@ namespace sorteSystem.com.proem.sorte.window
     {
         private string goodsFileId;
 
+        private float money;
+
+        private sorteGoodList sorteGoodList;
+
         public ChangeNums()
         {
             InitializeComponent();
         }
 
-        public ChangeNums(string goodsFileId)
+        public ChangeNums(string goodsFileId, float money, sorteGoodList obj)
         {
             InitializeComponent();
             this.goodsFileId = goodsFileId;
+            this.money = money;
+            this.sorteGoodList = obj;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -35,7 +43,10 @@ namespace sorteSystem.com.proem.sorte.window
             {
                 int nums = Int32.Parse(textBox1.Text);
                 sorteDao dao = new sorteDao();
-                dao.updateNums(nums, goodsFileId);
+                ZcGoodsMasterDao goodsMasterDao = new ZcGoodsMasterDao();
+                ZcGoodsMaster master = goodsMasterDao.FindById(goodsFileId);
+                dao.updateNums(nums, goodsFileId, nums*master.GoodsPrice);
+                this.sorteGoodList.reLoadSaleTable();
             }
             this.Close();
         }

@@ -887,7 +887,8 @@ namespace sorteSystem.com.proem.sorte.window
                     float weight = (saledatagridview.CurrentRow.Cells[2].Value == null || string.IsNullOrEmpty(saledatagridview.CurrentRow.Cells[2].Value.ToString())) ? 0F : float.Parse(saledatagridview.CurrentRow.Cells[2].Value.ToString());
                     if(weight == 0F || weight == 0.001F)
                     {
-                        ChangeNums changeNums = new ChangeNums(saledatagridview.CurrentRow.Cells[4].Value.ToString());
+                        float money = (saledatagridview.CurrentRow.Cells[3].Value == null || string.IsNullOrEmpty(saledatagridview.CurrentRow.Cells[3].Value.ToString())) ? 0F : float.Parse(saledatagridview.CurrentRow.Cells[3].Value.ToString());
+                        ChangeNums changeNums = new ChangeNums(saledatagridview.CurrentRow.Cells[4].Value.ToString(), money, this);
                         changeNums.Show();
                     }else
                     {
