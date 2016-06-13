@@ -926,6 +926,10 @@ namespace sorteSystem.com.proem.sorte.window
             {
                 if (isResale)
                 {
+                    if (saledatagridview.DataSource == null || saledatagridview.RowCount == 0)
+                    {
+                        return;
+                    }
                     int index = saledatagridview.CurrentRow.Index;
                     if(index > 0){
                         saledatagridview.Rows[index - 1].Selected = true;
@@ -943,6 +947,10 @@ namespace sorteSystem.com.proem.sorte.window
             {
                 if (isResale)
                 {
+                    if (saledatagridview.DataSource == null || saledatagridview.RowCount == 0)
+                    {
+                        return;
+                    }
                     int index = saledatagridview.CurrentRow.Index;
                     if (index < saledatagridview.RowCount - 1)
                     {
@@ -952,6 +960,10 @@ namespace sorteSystem.com.proem.sorte.window
                 }
                 else
                 {
+                    if (goodDataGridView.DataSource == null || goodDataGridView.RowCount == 0)
+                    {
+                        return;
+                    }
                     if (select_value < goodDataGridView.Rows.Count - 1)
                     {
                         select_value += 1;
@@ -1021,6 +1033,50 @@ namespace sorteSystem.com.proem.sorte.window
                 {
                     saledatagridview.Rows[saledatagridview.RowCount - 1].Selected = true;
                     saledatagridview.CurrentCell = saledatagridview.Rows[saledatagridview.RowCount - 1].Cells[0];
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("加载扫码流水信息失败", ex);
+            }
+            finally
+            {
+                OracleUtil.CloseConn(conn);
+            }
+        }
+
+        private void loadTableAfterDelete(int  index)
+        {
+            string sql = "select b.id, b.serialNumber, a.goods_name as goodsname, a.weight,a.money from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where a.address = '" + dt.Rows[ConstantUtil.index][14] + "' and a.sorteId = '" + ConstantUtil.sorte_id + "'  order by a.createTime";
+            OracleConnection conn = null;
+            OracleCommand cmd = new OracleCommand();
+            try
+            {
+                conn = OracleUtil.OpenConn();
+                cmd.Connection = conn;
+                cmd.CommandText = sql;
+                OracleDataAdapter da = new OracleDataAdapter(cmd);
+                DataSet dataset = new DataSet();
+                da.Fill(dataset, "zc_orders_sorte");
+                saledatagridview.AutoGenerateColumns = false;
+                saledatagridview.DataSource = dataset;
+                saledatagridview.DataMember = "zc_orders_sorte";
+                if (saledatagridview.DataSource == null || saledatagridview.RowCount == 0)
+                {
+
+                }
+                else
+                {
+                    if (saledatagridview.RowCount - 1 >= index)
+                    {
+                        saledatagridview.Rows[index].Selected = true;
+                        saledatagridview.CurrentCell = saledatagridview.Rows[index].Cells[0];
+                    }
+                    else
+                    {
+                        saledatagridview.Rows[saledatagridview.RowCount - 1].Selected = true;
+                        saledatagridview.CurrentCell = saledatagridview.Rows[saledatagridview.RowCount - 1].Cells[0];
+                    }
                 }
             }
             catch (Exception ex)
@@ -1247,7 +1303,12 @@ namespace sorteSystem.com.proem.sorte.window
 
         private void deleteSale()
         {
+            if (saledatagridview.DataSource == null || saledatagridview.RowCount == 0)
+            {
+                return;
+            }
             string name = saledatagridview.CurrentRow.Cells[1].Value == null ? "" : saledatagridview.CurrentRow.Cells[1].Value.ToString();
+            int index = saledatagridview.CurrentRow.Index;
             DialogResult dr = MessageBox.Show("确定删除"+name+"?", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if(dr == DialogResult.OK){
                 sorteDao sortedao = new sorteDao();
@@ -1257,7 +1318,7 @@ namespace sorteSystem.com.proem.sorte.window
                 if (list != null && list.Count != 0)
                 {
                     sortedao.DeleteBy(list[0]);
-                    loadSaleTable();
+                    loadTableAfterDelete(index);
                 }
                 else 
                 {

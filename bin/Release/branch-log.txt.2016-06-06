@@ -1,0 +1,6 @@
+2016-06-06 15:55:12,221 [8] ERROR sorteSystem.com.proem.sorte.window.sorteGoodList [(null)] - 删除扫码商品失败
+System.Exception: 引发类型为“System.Exception”的异常。
+2016-06-06 15:55:22,166 [8] ERROR sorteSystem.com.proem.sorte.window.sorteGoodList [(null)] - 删除扫码商品失败
+System.Exception: 引发类型为“System.Exception”的异常。
+2016-06-06 16:00:03,595 [8] ERROR sorteSystem.com.proem.sorte.window.sorteGoodList [(null)] - 删除扫码商品失败
+System.Exception: 引发类型为“System.Exception”的异常。

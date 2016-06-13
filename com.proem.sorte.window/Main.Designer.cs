@@ -185,7 +185,6 @@
             this.MinimizeBox = false;
             this.Name = "Main";
             this.Text = "main";
-            this.TopMost = true;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Main_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Main_KeyDown);
