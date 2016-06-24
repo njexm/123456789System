@@ -107,7 +107,7 @@ namespace sorteSystem.com.proem.sorte.dao
             }
             finally
             {
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
             return obj;
         }
@@ -141,7 +141,7 @@ namespace sorteSystem.com.proem.sorte.dao
             }
             finally
             {
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
             return isWeightGoods;
         }
@@ -232,7 +232,7 @@ namespace sorteSystem.com.proem.sorte.dao
             }
             finally
             {
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
             return obj;
         }

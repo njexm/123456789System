@@ -64,7 +64,7 @@ namespace sorteSystem.com.proem.sorte.dao
             }
             finally
             {
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
             return list;
         }
@@ -115,7 +115,7 @@ namespace sorteSystem.com.proem.sorte.dao
             }
             finally
             {
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
             return list;
         }
@@ -147,7 +147,7 @@ namespace sorteSystem.com.proem.sorte.dao
             {
                 cmd.Dispose();
                 tran.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
 
@@ -201,8 +201,7 @@ namespace sorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
 
@@ -230,7 +229,7 @@ namespace sorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
 
@@ -258,8 +257,7 @@ namespace sorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
 
@@ -294,8 +292,7 @@ namespace sorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
             return count;
         }
@@ -345,8 +342,7 @@ namespace sorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
         public string getBranchName(string street)
@@ -371,7 +367,7 @@ namespace sorteSystem.com.proem.sorte.dao
             }
             finally
             {
-                OracleUtil.CloseConn(connection);
+                //OracleUtil.CloseConn(connection);
             }
             return null;
         }
@@ -397,8 +393,7 @@ namespace sorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
 
@@ -433,8 +428,7 @@ namespace sorteSystem.com.proem.sorte.dao
                 finally
                 {
                     cmd.Dispose();
-                    cmd.Dispose();
-                    OracleUtil.CloseConn(conn);
+                    //OracleUtil.CloseConn(conn);
                 }
             }
 
@@ -469,7 +463,7 @@ namespace sorteSystem.com.proem.sorte.dao
                 }
                 finally
                 {
-                    OracleUtil.CloseConn(conn);
+                    //OracleUtil.CloseConn(conn);
                 }
             }
 
@@ -502,7 +496,7 @@ namespace sorteSystem.com.proem.sorte.dao
                 finally
                 {
                     cmd.Dispose();
-                    OracleUtil.CloseConn(conn);
+                    //OracleUtil.CloseConn(conn);
                 }
                 return obj;
             }
@@ -529,7 +523,7 @@ namespace sorteSystem.com.proem.sorte.dao
                 }
                 finally
                 {
-                    OracleUtil.CloseConn(conn);
+                    //OracleUtil.CloseConn(conn);
                 }
             }
     }

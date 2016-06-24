@@ -57,7 +57,7 @@ namespace sorteSystem.com.proem.sorte.window
             finally
             {
                 cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
 

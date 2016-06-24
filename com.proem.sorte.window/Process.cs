@@ -108,6 +108,7 @@ namespace sorteSystem.com.proem.sorte.window
             DialogResult dr = MessageBox.Show("确定退出系统?", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if(dr == DialogResult.OK)
             {
+                OracleUtil.CloseConn();
                 System.Environment.Exit(System.Environment.ExitCode);
                 this.Dispose();
             }
@@ -222,7 +223,7 @@ namespace sorteSystem.com.proem.sorte.window
                     finally
                     {
                         cmd.Dispose();
-                        OracleUtil.CloseConn(conn);
+                        //OracleUtil.CloseConn(conn);
                     }
                     item.Id = Guid.NewGuid().ToString();
                     item.CreateTime = DateTime.Now;
@@ -338,7 +339,7 @@ namespace sorteSystem.com.proem.sorte.window
             finally
             {
                 cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
 

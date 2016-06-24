@@ -50,7 +50,7 @@ namespace sorteSystem.com.proem.sorte.dao
             finally 
             {
                 cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
             return obj;
         }
@@ -79,7 +79,7 @@ namespace sorteSystem.com.proem.sorte.dao
             finally 
             {
                 cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
 
@@ -119,7 +119,7 @@ namespace sorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
 
@@ -147,7 +147,7 @@ namespace sorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
     }

@@ -79,7 +79,7 @@ namespace Branch
                 }
                 finally
                 {
-                    OracleUtil.CloseConn(connection);
+                    //OracleUtil.CloseConn(connection);
                 }
             }
         }
@@ -111,13 +111,13 @@ namespace Branch
             finally
             {
                 cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
 
         private void leaveButton_Click(object sender, EventArgs e)
         {
-            //this.Close();
+            OracleUtil.CloseConn();
             System.Environment.Exit(0);
         }
 

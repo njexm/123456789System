@@ -69,8 +69,7 @@ namespace SorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
             return null;
         }
@@ -97,7 +96,7 @@ namespace SorteSystem.com.proem.sorte.dao
             }
             finally
             {
-                OracleUtil.CloseConn(connection);
+                //OracleUtil.CloseConn(connection);
             }
             return null;
         }
@@ -124,8 +123,7 @@ namespace SorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
 
@@ -166,7 +164,7 @@ namespace SorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
 
@@ -194,7 +192,7 @@ namespace SorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
 
@@ -231,7 +229,7 @@ namespace SorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
             return list;
         }
@@ -283,7 +281,7 @@ namespace SorteSystem.com.proem.sorte.dao
             }
             finally
             {
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
     }

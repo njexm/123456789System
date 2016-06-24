@@ -90,7 +90,7 @@ namespace sorteSystem.com.proem.sorte.window
             }
             finally
             {
-                OracleUtil.CloseConn(connection);
+                //OracleUtil.CloseConn(connection);
             }
             if (list != null && list.Count == 1)
             {
@@ -138,7 +138,7 @@ namespace sorteSystem.com.proem.sorte.window
             finally
             {
                 cmd.Dispose();
-                OracleUtil.CloseConn(conn);
+                //OracleUtil.CloseConn(conn);
             }
         }
 
@@ -147,6 +147,7 @@ namespace sorteSystem.com.proem.sorte.window
             DialogResult dr = MessageBox.Show("确定退出系统?", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (dr == DialogResult.OK)
             {
+                OracleUtil.CloseConn();
                 System.Environment.Exit(System.Environment.ExitCode);
                 this.Dispose();
             }

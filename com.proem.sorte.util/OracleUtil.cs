@@ -14,17 +14,21 @@ namespace Branch
         /// </summary>
         private static readonly ILog log = LogManager.GetLogger(typeof(OracleUtil));
 
+        public static OracleConnection conn = null;
+
         /// <summary>
         /// open 一个 conn
         /// </summary>
         /// <returns></returns>
         public static OracleConnection OpenConn()
         {
-            OracleConnection conn = null;
             try
             {
-                conn = new OracleConnection(ConfigurationManager.ConnectionStrings["OracleDB"].ConnectionString);
-                conn.Open();
+                if (conn == null || conn.State == ConnectionState.Closed)
+                {
+                    conn = new OracleConnection(ConfigurationManager.ConnectionStrings["OracleDB"].ConnectionString);
+                    conn.Open();
+                }
             }
             catch (Exception ex) {
                 log.Error("数据库连接失败" + ex.Message, ex);
@@ -38,7 +42,7 @@ namespace Branch
         /// </summary>
         /// 
         /// <param name="conn"></param>
-        public static void CloseConn(OracleConnection conn)
+        public static void CloseConn()
          {
              if (conn == null) { return; }
              try
