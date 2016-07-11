@@ -3,6 +3,7 @@ using log4net;
 using Oracle.ManagedDataAccess.Client;
 using sorteSystem.com.proem.sorte.domain;
 using sorteSystem.com.proem.sorte.util;
+using SorteSystem.com.proem.sorte.domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,13 +27,15 @@ namespace sorteSystem.com.proem.sorte.dao
         {
             List<ZcProcessOrder> list = new List<ZcProcessOrder>();
             OracleConnection conn = null;
+            OracleDataReader reader = null;
+            OracleCommand command = new OracleCommand();
             try
             {
                 conn = OracleUtil.OpenConn();
                 string sql = "select * from zc_order_process where branchid='" + branchId + "'";
-                OracleCommand command = new OracleCommand(sql);
+                command.CommandText = sql;
                 command.Connection = conn;
-                var reader = command.ExecuteReader();
+                reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     ZcProcessOrder user = new ZcProcessOrder();
@@ -60,11 +63,17 @@ namespace sorteSystem.com.proem.sorte.dao
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                log.Error("获取待分拣商品信息失败", ex);
             }
             finally
             {
-                //OracleUtil.CloseConn(conn);
+                if(reader != null){
+                    reader.Close();
+                }
+                command.Dispose();
+                if(conn != null){
+                    conn.Close();
+                }
             }
             return list;
         }
@@ -74,13 +83,15 @@ namespace sorteSystem.com.proem.sorte.dao
         {
             List<ZcProcessOrderItem> list = new List<ZcProcessOrderItem>();
             OracleConnection conn = null;
+            OracleDataReader reader = null;
+            OracleCommand command = new OracleCommand();
             try
             {
                 conn = OracleUtil.OpenConn();
                 string sql = "select * from zc_order_process_item where order_id='" + orderId + "'";
-                OracleCommand command = new OracleCommand(sql);
+                command.CommandText = sql;
                 command.Connection = conn;
-                var reader = command.ExecuteReader();
+                reader = command.ExecuteReader();
                 while (reader.Read())
                 {
                     ZcProcessOrderItem user = new ZcProcessOrderItem();
@@ -111,11 +122,17 @@ namespace sorteSystem.com.proem.sorte.dao
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                log.Error("根据订单号获取详细信息"+ex.Message, ex);
             }
             finally
             {
-                //OracleUtil.CloseConn(conn);
+                if(reader!= null){
+                    reader.Close();
+                }
+                command.Dispose();
+                if(conn!= null){
+                    conn.Close();
+                }
             }
             return list;
         }
@@ -133,21 +150,23 @@ namespace sorteSystem.com.proem.sorte.dao
                 tran = conn.BeginTransaction();
                 cmd.CommandText = sql;
                 cmd.Connection = conn;
-                    //cmd.Parameters.Add(":status", obj.OrderStatus);
-                    //cmd.Parameters.Add(":id", obj.Id);
-                    cmd.ExecuteNonQuery();
-                    cmd.Parameters.Clear();
+                cmd.ExecuteNonQuery();
                 tran.Commit();
             }
             catch (Exception ex)
             {
+                log.Error("跟新分拣单状态失败", ex);
                 tran.Rollback();
             }
             finally
             {
                 cmd.Dispose();
-                tran.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(tran != null){
+                    tran.Dispose();
+                }
+                if(conn!= null){
+                    conn.Close();
+                }
             }
         }
 
@@ -201,7 +220,12 @@ namespace sorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(tran != null){
+                    tran.Dispose();
+                }
+                if(conn != null){
+                    conn.Close();
+                }
             }
         }
 
@@ -219,17 +243,22 @@ namespace sorteSystem.com.proem.sorte.dao
                 cmd.CommandText = sql;
                 cmd.Connection = conn;
                 cmd.ExecuteNonQuery();
-                 cmd.Parameters.Clear();
                 tran.Commit();
             }
             catch (Exception ex)
             {
+                log.Error("删除分拣商品信息失败", ex);
                 tran.Rollback();
             }
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(tran != null){
+                    tran.Dispose();
+                }
+                if(conn!= null){
+                    conn.Close();
+                }
             }
         }
 
@@ -257,7 +286,9 @@ namespace sorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn != null){
+                    conn.Close();
+                }
             }
         }
 
@@ -266,19 +297,15 @@ namespace sorteSystem.com.proem.sorte.dao
             string sql = "select count(id) from zc_order_transit where id='"+id+"'";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
-            OracleTransaction tran = null;
+            OracleDataReader reader = null;
             int count = -1;
             try
             {
 
                 conn = OracleUtil.OpenConn();
-                tran = conn.BeginTransaction();
                 cmd.CommandText = sql;
                 cmd.Connection = conn;
-                 //cmd.ExecuteNonQuery();
-                //cmd.Parameters.Clear();
-                //tran.Commit();
-                var reader = cmd.ExecuteReader();
+                reader = cmd.ExecuteReader();
                 if(reader.Read())
                 {
                     count = reader.IsDBNull(0) ? default(int) : reader.GetInt32(0);
@@ -287,12 +314,17 @@ namespace sorteSystem.com.proem.sorte.dao
             }
             catch (Exception ex)
             {
-                tran.Rollback();
+                log.Error("获取订单数据失败", ex);
             }
             finally
             {
+                if(reader != null){
+                    reader.Close();
+                }
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn != null){
+                    conn.Close();
+                }
             }
             return count;
         }
@@ -342,7 +374,12 @@ namespace sorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(tran != null){
+                    tran.Dispose();
+                }
+                if(conn != null){
+                    conn.Close();
+                }
             }
         }
         public string getBranchName(string street)
@@ -352,9 +389,10 @@ namespace sorteSystem.com.proem.sorte.dao
             string queryString = "select a.branch_name from zc_branch_total a left join zc_zoning b on b.id = a.zoning_id where b.street= '" + street + "'";
             OracleCommand command = new OracleCommand(queryString);
             command.Connection = connection;
+            OracleDataReader reader = null;
             try
             {
-                var reader = command.ExecuteReader();
+                reader = command.ExecuteReader();
                 if (reader.Read())
                 {
                     string confirmPassword = string.Format("{0}", reader["branch_name"]);
@@ -367,7 +405,13 @@ namespace sorteSystem.com.proem.sorte.dao
             }
             finally
             {
-                //OracleUtil.CloseConn(connection);
+                command.Dispose();
+                if(reader != null){
+                    reader.Close();
+                }
+                if(connection != null){
+                    connection.Close();
+                }
             }
             return null;
         }
@@ -383,7 +427,6 @@ namespace sorteSystem.com.proem.sorte.dao
                 cmd.CommandText = sql1;
                 cmd.Connection = conn;
                 cmd.ExecuteNonQuery();
-                cmd.Parameters.Clear();
                 tran.Commit();
             }
             catch (Exception ex)
@@ -393,7 +436,9 @@ namespace sorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn != null){
+                    conn.Close();
+                }
             }
         }
 
@@ -428,51 +473,108 @@ namespace sorteSystem.com.proem.sorte.dao
                 finally
                 {
                     cmd.Dispose();
-                    //OracleUtil.CloseConn(conn);
+                    if(tran != null ){
+                        tran.Dispose();
+                    }
+                    if(conn!= null){
+                        conn.Close();
+                    }
                 }
             }
 
-            public void updateStoreHouse(ZcProcessOrderItem zcProcessOrderItem)
+            public void updateStoreHouse(orderSorte obj)
             {
-                string sql = "update zc_storehouse set store = :store, storemoney = :money where id = :id";
+                string sql = "update zc_storehouse set updateTime=:updateTime,store = :store, storemoney = :money, weight=:weight where id = :id";
                 OracleConnection conn = null;
                 OracleTransaction tran = null;
                 OracleCommand cmd = new OracleCommand();
+                StoreHouse storeHouse = FindByGoodsFileId(obj.goods_id);
+                if (storeHouse == null)
+                {
+                    AddStoreHouse(obj);
+                    storeHouse = FindByGoodsFileId(obj.goods_id);
+                }
+                float old = float.Parse(storeHouse.Store);
+                storeHouse.Store = (old - float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)).ToString();
+                storeHouse.StoreMoney = ((old - float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.StoreMoney) ? "0" : storeHouse.StoreMoney) / old)).ToString();
+                float oldWeight = string.IsNullOrEmpty(storeHouse.Weight) ? 0F : float.Parse(storeHouse.Weight);
+                float newWeight = oldWeight - float.Parse(string.IsNullOrEmpty(obj.weight) ? "0" : obj.weight);
                 try
                 {
-                    StoreHouse storeHouse = FindByGoodsFileId(zcProcessOrderItem.goodsFile);
-                    float old = float.Parse(storeHouse.Store);
-                    storeHouse.Store = (old - float.Parse(zcProcessOrderItem.nums)).ToString();
-                    storeHouse.StoreMoney = ((old - float.Parse(zcProcessOrderItem.nums)) * (float.Parse(storeHouse.StoreMoney) / old)).ToString();
                     conn = OracleUtil.OpenConn();
                     tran = conn.BeginTransaction();
                     cmd.Connection = conn;
                     cmd.CommandText = sql;
+                    cmd.Parameters.Add(":updateTime", DateTime.Now.ToString());
                     cmd.Parameters.Add(":store", storeHouse.Store);
                     cmd.Parameters.Add(":money", storeHouse.StoreMoney);
+                    cmd.Parameters.Add(":weight", newWeight);
                     cmd.Parameters.Add(":id", storeHouse.Id);
                     cmd.ExecuteNonQuery();
                     tran.Commit();
                 }
                 catch (Exception ex)
                 {
-                    if(tran!= null){
-                        tran.Rollback();
-                    }
-                    Console.WriteLine(ex.Message);
+                    tran.Rollback();
+                    log.Error("更新库存信息失败", ex);
                 }
                 finally
                 {
-                    //OracleUtil.CloseConn(conn);
+                    cmd.Dispose();
+                    if(tran != null){
+                        tran.Dispose();
+                    }
+                    if(conn != null){
+                        conn.Close();
+                    }
+                }
+            }
+
+            private void AddStoreHouse(orderSorte obj)
+            {
+                String sql = "insert into zc_storehouse (id,createTime,updateTime,status,store,storemoney,weight,branch_id, goodsfile_id) "
+                    + " values (:id, :createTime, :updateTime, :status, :store, :storeMoney, :weight, :branch_id, :goodsfile_id)";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleTransaction tran = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    tran = conn.BeginTransaction();
+                    cmd.CommandText = sql;
+                    cmd.Connection = conn;
+                    cmd.Parameters.Add(":id", Guid.NewGuid().ToString());
+                    cmd.Parameters.Add(":createTime", DateTime.Now);
+                    cmd.Parameters.Add(":updateTime", DateTime.Now);
+                    cmd.Parameters.Add(":status", "1");
+                    cmd.Parameters.Add(":store", "0");
+                    cmd.Parameters.Add(":storeMoney", "0");
+                    cmd.Parameters.Add(":weight", "0");
+                    cmd.Parameters.Add(":branch_id", ConstantUtil.BranchId);
+                    cmd.Parameters.Add(":goodsfile_id", obj.goods_id);
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    log.Error("新增" + obj.goods_id + "的库存信息", ex);
+                }
+                finally {
+                    cmd.Dispose();
+                    if(conn != null){
+                        conn.Close();
+                    }
                 }
             }
 
             public StoreHouse FindByGoodsFileId(string goodsFileId) 
             {
-                StoreHouse obj = new StoreHouse();
-                string sql = "select id,store, storemoney from zc_storehouse where branch_id = :branchId and goodsfile_id = :goodsFileId ";
+                StoreHouse obj = null;
+                string sql = "select id,store, storemoney, weight  from zc_storehouse where branch_id = :branchId and goodsfile_id = :goodsFileId ";
                 OracleConnection conn = null;
                 OracleCommand cmd = new OracleCommand();
+                OracleDataReader reader = null;
                 try
                 {
                     conn = OracleUtil.OpenConn();
@@ -480,23 +582,30 @@ namespace sorteSystem.com.proem.sorte.dao
                     cmd.CommandText = sql;
                     cmd.Parameters.Add(":branchId", ConstantUtil.BranchId);
                     cmd.Parameters.Add(":goodsFileId", goodsFileId);
-                    OracleDataReader reader = cmd.ExecuteReader();
+                    reader = cmd.ExecuteReader();
                     if (reader.Read())
                     {
+                        obj = new StoreHouse();
                         obj.Id = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
                         obj.Store = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
                         obj.StoreMoney = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
+                        obj.Weight = reader.IsDBNull(3) ? "0" : reader.GetString(3);
                         obj.GoodsFileId = goodsFileId;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    log.Error("根据商品id查询商品信息", ex);
                 }
                 finally
                 {
                     cmd.Dispose();
-                    //OracleUtil.CloseConn(conn);
+                    if(reader != null){
+                        reader.Close();
+                    }
+                    if(conn != null){
+                        conn.Close();
+                    }
                 }
                 return obj;
             }
@@ -523,7 +632,13 @@ namespace sorteSystem.com.proem.sorte.dao
                 }
                 finally
                 {
-                    //OracleUtil.CloseConn(conn);
+                    cmd.Dispose();
+                    if(tran != null){
+                        tran.Dispose();
+                    }
+                    if(conn != null){
+                        conn.Close();
+                    }
                 }
             }
     }

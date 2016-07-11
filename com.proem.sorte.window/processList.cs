@@ -1,4 +1,5 @@
 ﻿using Branch;
+using log4net;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,11 @@ namespace sorteSystem.com.proem.sorte.window
 {
     public partial class processList : Form
     {
+        /// <summary>
+        /// 日志
+        /// </summary>
+        private readonly ILog log = LogManager.GetLogger(typeof(processList));
+
         /// <summary>
         /// process
         /// </summary>
@@ -52,12 +58,14 @@ namespace sorteSystem.com.proem.sorte.window
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                log.Error("查询加工单信息错误"+ex.Message, ex);
             }
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn != null){
+                    conn.Close();
+                }
             }
         }
 

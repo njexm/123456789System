@@ -30,18 +30,10 @@ namespace sorteSystem
             login.ShowDialog();
             if (login.DialogResult == DialogResult.OK)
             {
-                //if (ConstantUtil.UserRole.Equals(ConstantUtil.AMDIN_ROLE))
-                //{
-                    Main main = new com.proem.sorte.window.Main();
-                    //窗口居中
-                    main.StartPosition = FormStartPosition.CenterScreen;
-                    Application.Run(main);
-                //}
-                //else {
-                //    ScanCode main = new ScanCode();
-                //    main.StartPosition = FormStartPosition.CenterScreen;
-                //    Application.Run(main);
-                //}
+                Main main = new com.proem.sorte.window.Main();
+                //窗口居中
+                main.StartPosition = FormStartPosition.CenterScreen;
+                Application.Run(main);
             }
         }
 

@@ -14,7 +14,11 @@ namespace Branch
         /// </summary>
         private static readonly ILog log = LogManager.GetLogger(typeof(OracleUtil));
 
-        public static OracleConnection conn = null;
+        /// <summary>
+        /// 初始化连接
+        /// 连接池的配置
+        /// </summary>
+        private static OracleConnection conn = null;
 
         /// <summary>
         /// open 一个 conn
@@ -22,45 +26,40 @@ namespace Branch
         /// <returns></returns>
         public static OracleConnection OpenConn()
         {
-            try
-            {
-                if (conn == null || conn.State == ConnectionState.Closed)
-                {
-                    conn = new OracleConnection(ConfigurationManager.ConnectionStrings["OracleDB"].ConnectionString);
-                    conn.Open();
-                }
+            OracleConnection conn = null;
+            try{
+                conn = new OracleConnection(ConfigurationManager.ConnectionStrings["OracleDB"].ConnectionString);
+                conn.Open();  
+            }catch(Exception ex){
+                log.Error("数据库连接失败"+ex.Message, ex);
             }
-            catch (Exception ex) {
-                log.Error("数据库连接失败" + ex.Message, ex);
-                MessageBox.Show("数据库连接失败,请检查网络配置" + ex.Message, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-             return conn;
-         }
+            return conn;
+        }
 
         /// <summary>
         /// 关闭conn 释放资源
         /// </summary>
         /// 
         /// <param name="conn"></param>
-        public static void CloseConn()
-         {
-             if (conn == null) { return; }
-             try
-             {
-                 if (conn.State != ConnectionState.Closed)
-                 {
-                     conn.Close();
-                 }
-             }
-             catch (Exception e)
-             {
-                 Console.WriteLine(e.Message);
-             }
-             finally
-             {
-                 conn.Dispose();
-             }
-         }
+        //public static void CloseConn()
+        // {
+        //     if (conn == null) { return; }
+        //     try
+        //     {
+        //         if (conn.State != ConnectionState.Closed)
+        //         {
+        //             conn.Close();
+        //         }
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         Console.WriteLine(e.Message);
+        //     }
+        //     finally
+        //     {
+        //         conn.Dispose();
+        //     }
+        // }
         
     }
 }

@@ -37,7 +37,9 @@ namespace sorteSystem.com.proem.sorte.dao
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn != null){
+                    conn.Close();
+                }
             }
             return num;
         }
@@ -66,7 +68,9 @@ namespace sorteSystem.com.proem.sorte.dao
             finally 
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+               if(conn != null){
+                   conn.Close();
+               }
             }
         }
     }

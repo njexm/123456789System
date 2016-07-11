@@ -18,6 +18,8 @@ namespace sorteSystem.com.proem.sorte.window
 
         private float money;
 
+        private string orderSorteId;
+
         private sorteGoodList sorteGoodList;
 
         public ChangeNums()
@@ -25,12 +27,13 @@ namespace sorteSystem.com.proem.sorte.window
             InitializeComponent();
         }
 
-        public ChangeNums(string goodsFileId, float money, sorteGoodList obj)
+        public ChangeNums(string goodsFileId, float money, string orderSorteId ,sorteGoodList obj)
         {
             InitializeComponent();
             this.goodsFileId = goodsFileId;
             this.money = money;
             this.sorteGoodList = obj;
+            this.orderSorteId = orderSorteId;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -45,7 +48,7 @@ namespace sorteSystem.com.proem.sorte.window
                 sorteDao dao = new sorteDao();
                 ZcGoodsMasterDao goodsMasterDao = new ZcGoodsMasterDao();
                 ZcGoodsMaster master = goodsMasterDao.FindById(goodsFileId);
-                dao.updateNums(nums, goodsFileId, nums*master.GoodsPrice);
+                dao.updateNums(nums, goodsFileId, nums * master.GoodsPrice, orderSorteId);
                 this.sorteGoodList.reLoadSaleTable();
             }
             this.Close();

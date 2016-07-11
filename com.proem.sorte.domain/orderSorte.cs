@@ -28,5 +28,15 @@ namespace SorteSystem.com.proem.sorte.domain
 
         //金额
         public string money { get; set; }
+
+        /// <summary>
+        /// 是否称重商品
+        /// 1是
+        /// 0 否
+        /// </summary>
+        public string isWeight { get; set; }
+
+        //条码
+        public string bar_code { get; set; }
     }
 }

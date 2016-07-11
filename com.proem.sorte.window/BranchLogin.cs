@@ -79,7 +79,7 @@ namespace Branch
                 }
                 finally
                 {
-                    //OracleUtil.CloseConn(connection);
+                    connection.Close();
                 }
             }
         }
@@ -111,13 +111,16 @@ namespace Branch
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn != null){
+                    conn.Close();
+                }
             }
         }
 
         private void leaveButton_Click(object sender, EventArgs e)
         {
-            OracleUtil.CloseConn();
+            //释放全部连接池资源
+            OracleConnection.ClearAllPools();
             System.Environment.Exit(0);
         }
 

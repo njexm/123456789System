@@ -1,0 +1,207 @@
+2016-07-11 15:04:25,240 [10] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 新增分拣数据信息
+System.ArgumentException: 值不在预期的范围内。
+   在 Oracle.ManagedDataAccess.Client.OracleParameter..ctor(String parameterName, Object obj)
+   在 Oracle.ManagedDataAccess.Client.OracleParameterCollection.Add(String name, Object val)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.AddtransitItem(orderSorte obj) 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 164
+2016-07-11 15:07:39,932 [10] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 新增分拣数据信息
+System.ArgumentException: 值不在预期的范围内。
+   在 Oracle.ManagedDataAccess.Client.OracleParameter..ctor(String parameterName, Object obj)
+   在 Oracle.ManagedDataAccess.Client.OracleParameterCollection.Add(String name, Object val)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.AddtransitItem(orderSorte obj) 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 164
+2016-07-11 15:12:21,237 [10] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 新增分拣数据信息
+System.ArgumentException: 值不在预期的范围内。
+   在 Oracle.ManagedDataAccess.Client.OracleParameter..ctor(String parameterName, Object obj)
+   在 Oracle.ManagedDataAccess.Client.OracleParameterCollection.Add(String name, Object val)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.AddtransitItem(orderSorte obj) 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 164
+2016-07-11 16:09:59,628 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:09:59,899 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:09:59,945 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:00,008 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:00,128 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:00,721 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:00,790 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:00,831 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:00,952 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:01,024 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:01,154 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:01,426 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:01,587 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:01,707 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:02,017 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:02,342 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:02,372 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:02,445 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:02,490 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:02,887 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:03,452 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:03,638 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:03,729 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:03,828 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:03,865 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:03,914 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:03,970 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:04,146 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:04,227 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:04,342 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:04,397 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:04,463 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:04,652 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:04,684 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:04,779 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:05,283 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:05,356 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:05,397 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:05,522 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:05,587 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:05,631 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:05,885 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:05,949 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:05,979 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:06,049 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:06,228 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:10:06,386 [15] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332
+2016-07-11 16:26:21,988 [17] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 获取分拣商品信息汇总指定的转换无效。
+System.InvalidCastException: 指定的转换无效。
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetString(Int32 i)
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.getSumBySorteId() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 332

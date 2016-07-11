@@ -1,4 +1,5 @@
 ﻿using Branch;
+using Oracle.ManagedDataAccess.Client;
 using sorteSystem.com.proem.sorte.window.util;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,8 @@ namespace sorteSystem.com.proem.sorte.window
             DialogResult dr = MessageBox.Show("确定退出系统?", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (dr == DialogResult.OK)
             {
-                OracleUtil.CloseConn();
+                //释放全部连接池资源
+                OracleConnection.ClearAllPools();
                 System.Environment.Exit(System.Environment.ExitCode);
                 this.Dispose();
             }     

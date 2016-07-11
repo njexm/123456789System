@@ -182,9 +182,10 @@ namespace sorteSystem.com.proem.sorte.window
             sortedao = new orderDao();
             branchName = sortedao.getBranchName(result.ToString());
             textBox1.Text = branchName;
+            OracleConnection connection = null;
             try
             {
-                OracleConnection connection = OracleUtil.OpenConn();
+                connection = OracleUtil.OpenConn();
                 if (connection == null)
                 {
                     ds = null;
@@ -209,20 +210,24 @@ namespace sorteSystem.com.proem.sorte.window
                     string sql = "select name,serialNumber,goodsfile_id,sum(nums) as nums,branchid ,sorteNum ,workname,workcode from "
                                 + "(select a.goods_state,a.name,a.nums,c.id as goodsfile_id,c.serialNumber,b.branchid,d.sortenum,e.workname,e.workcode "
                                 + " from zc_order_process_item a "
-                                + " left join zc_order_process b on b.id=a.order_id left join zc_goods_master c on c.id=a.goodsfile_id left join (select SUM(sortenum) as sortenum,goods_id ,address from ZC_ORDERS_SORTE where sorteId = '"+ConstantUtil.sorte_id+"' GROUP by goods_id, address) d on d.goods_id = c.id and b.branchid=d.address  left join zc_workstation e on e.id = c.zcuserinfo"
+                                + " left join zc_order_process b on b.id=a.order_id left join zc_goods_master c on c.id=a.goodsfile_id left join (select SUM(sortenum) as sortenum,goods_id ,address from ZC_ORDERS_SORTE where sorteId = '" + ConstantUtil.sorte_id + "' GROUP by goods_id, address) d on d.goods_id = c.id and b.branchid=d.address  left join zc_workstation e on e.id = c.zcuserinfo"
                                 + " where branchid = '" + result + "' ) "
                                 + "group by name,serialNumber,goodsfile_id,branchid,sorteNum,workname,workcode order by serialNumber";
                     OracleCommand cmd = new OracleCommand(sql, connection);
                     OracleDataAdapter da = new OracleDataAdapter(cmd);
                     da.Fill(ds, "Zc_sorte_item");
-
-                    connection.Close();
                 }
 
             }
             catch (Exception ex)
             {
                 log.Error("加载各分店商品信息失败", ex);
+            }
+            finally
+            { 
+                if(connection != null){
+                    connection.Close();
+                }
             }
             return ds;
         }
@@ -268,7 +273,8 @@ namespace sorteSystem.com.proem.sorte.window
             DialogResult dr = MessageBox.Show("确定退出系统?", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (dr == DialogResult.OK)
             {
-                OracleUtil.CloseConn();
+                //释放全部连接池资源
+                OracleConnection.ClearAllPools();
                 System.Environment.Exit(System.Environment.ExitCode);
                 this.Dispose();
             }            
@@ -395,6 +401,11 @@ namespace sorteSystem.com.proem.sorte.window
 
         private void endButton_Click(object sender, EventArgs e)
         {
+            int status = getSorteStatus();
+            if(status == 4){
+                MessageBox.Show("分拣单已完成，无法重复进行结束分拣!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (sortFlag == false)
             {
                 DataTable dt = ConstantUtil.Branchds.Tables["Zc_sorte_item"];
@@ -419,16 +430,12 @@ namespace sorteSystem.com.proem.sorte.window
                             }
                         }
                     }
-                    //Loading loading = new Loading();
-                    //loading.Show();
-
+                    
                     endSorteDelegate endDelegate = endSorte;
                     this.BeginInvoke(endDelegate);
                     Thread objThread = new Thread(new ThreadStart(delegate
                     {
                         orderDao orderdao = new orderDao();
-                        orderdao.deleteSorteStatus(ConstantUtil.ip1);
-                        orderdao.deleteSorteStatus(ConstantUtil.ip2);
                         for (int i = 0; i < dt.Rows.Count; i++)
                         {
                             object id = dt.Rows[i][0];
@@ -449,7 +456,7 @@ namespace sorteSystem.com.proem.sorte.window
                                             ZcProcessOrderItem zcProcessOrderItem = ZcProcessOrderItemList[b];
                                             string itemId = zcProcessOrderItem.id;
                                             orderdao.deletePorcessItem(itemId);
-                                            orderdao.updateStoreHouse(zcProcessOrderItem);
+                                            //orderdao.updateStoreHouse(zcProcessOrderItem);
                                         }
                                     }
                                     if ("全部完成".Equals(zcprocessOrder.pullFlag))
@@ -472,9 +479,23 @@ namespace sorteSystem.com.proem.sorte.window
 
                                     }
                                 }
+                                
                             }
                             orderdao.deleteAllSorteStatus();
                         }
+
+                        //更改库存
+                        sorteDao sorteDao = new sorteDao();
+                        List<orderSorte> list = sorteDao.getSumBySorteId();
+                        if (list != null && list.Count > 0)
+                        {
+                            for (int j = 0; j < list.Count; j++)
+                            {
+                                orderSorte obj = list[j];
+                                orderdao.updateStoreHouse(obj);
+                            }
+                        }
+
                         //改变订单状态
                         orderdao.UpdateStatus(sorteId);
                         loading.Close();
@@ -494,6 +515,41 @@ namespace sorteSystem.com.proem.sorte.window
             {
                 MessageBox.Show("订单已分拣结束，请返回或退出操作");
             }
+        }
+
+        private int getSorteStatus()
+        {
+            int flag = 0;
+            sorteDao dao = new sorteDao();
+            string sql = "select AUDITS_TATUS from zc_sorte where id = '"+ConstantUtil.sorte_id+"'";
+            OracleConnection conn = null;
+            OracleCommand cmd = new OracleCommand();
+            OracleDataReader reader = null;
+            try
+            {
+                conn = OracleUtil.OpenConn();
+                cmd.CommandText = sql;
+                cmd.Connection = conn;
+                reader = cmd.ExecuteReader();
+                if(reader.Read()){
+                    flag = reader.IsDBNull(0) ? default(int) : reader.GetInt32(0);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("获取分拣单状态"+ex.Message, ex);
+            }
+            finally
+            {
+                cmd.Dispose();
+                if(conn != null){
+                    conn.Close();
+                }
+                if(reader != null){
+                    reader.Close();
+                }
+            }
+            return flag;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -810,7 +866,9 @@ namespace sorteSystem.com.proem.sorte.window
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn != null){
+                    conn.Close();
+                }
             }
             sb.Append("-----------------------------------------------------------------\n");
 
@@ -885,11 +943,12 @@ namespace sorteSystem.com.proem.sorte.window
                     return;
                 }else
                 {
-                    float weight = (saledatagridview.CurrentRow.Cells[2].Value == null || string.IsNullOrEmpty(saledatagridview.CurrentRow.Cells[2].Value.ToString())) ? 0F : float.Parse(saledatagridview.CurrentRow.Cells[2].Value.ToString());
-                    if(weight == 0F || weight == 0.001F)
+                    bool isWeight = "1".Equals(saledatagridview.CurrentRow.Cells[6].Value.ToString()) ? true : false;
+                    if(!isWeight)
                     {
+                        string orderSorteId = saledatagridview.CurrentRow.Cells[5].Value.ToString();
                         float money = (saledatagridview.CurrentRow.Cells[3].Value == null || string.IsNullOrEmpty(saledatagridview.CurrentRow.Cells[3].Value.ToString())) ? 0F : float.Parse(saledatagridview.CurrentRow.Cells[3].Value.ToString());
-                        ChangeNums changeNums = new ChangeNums(saledatagridview.CurrentRow.Cells[4].Value.ToString(), money, this);
+                        ChangeNums changeNums = new ChangeNums(saledatagridview.CurrentRow.Cells[4].Value.ToString(), money, orderSorteId, this);
                         changeNums.Show();
                     }else
                     {
@@ -1016,7 +1075,7 @@ namespace sorteSystem.com.proem.sorte.window
 
         private void loadSaleTable()
         {
-            string sql = "select b.id, b.serialNumber, a.goods_name as goodsname, a.weight,a.money from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where a.address = '" + dt.Rows[ConstantUtil.index][14]+"' and a.sorteId = '"+ConstantUtil.sorte_id+"'  order by a.createTime";
+            string sql = "select b.id as goodsFileId, b.serialNumber, a.id, a.goods_name as goodsname, a.weight,a.money,a.isWeight from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where a.address = '" + dt.Rows[ConstantUtil.index][14]+"' and a.sorteId = '"+ConstantUtil.sorte_id+"'  order by a.createTime";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             try
@@ -1042,7 +1101,10 @@ namespace sorteSystem.com.proem.sorte.window
             }
             finally
             {
-                //OracleUtil.CloseConn(conn);
+                cmd.Dispose();
+                if(conn != null){
+                    conn.Close();
+                }
             }
         }
 
@@ -1086,7 +1148,10 @@ namespace sorteSystem.com.proem.sorte.window
             }
             finally
             {
-                //OracleUtil.CloseConn(conn);
+                cmd.Dispose();
+                if(conn != null){
+                    conn.Close();
+                }
             }
         }
 
@@ -1116,6 +1181,7 @@ namespace sorteSystem.com.proem.sorte.window
             string serialNumber = "";
             string money = "";
             string weight = "";
+            bool isWeight = false;
             if (num.Length == 18)
             {
                 serialNumber = num.Substring(2, 5);
@@ -1138,17 +1204,30 @@ namespace sorteSystem.com.proem.sorte.window
             }
             if (num.Length == 18)
             {
-                weight = float.Parse(num.Substring(12, 5).Insert(2, ".")).ToString();
+
+                if ("00001".Equals(num.Substring(12, 5)))
+                {
+                    weight = "1";
+                    isWeight = false;
+                }
+                else {
+                    weight = (float.Parse(num.Substring(7, 5).Insert(3, ".")) / zcGoodsMaster.GoodsPrice).ToString("0.0000");
+                    isWeight = true;
+                }
                 money = float.Parse(num.Substring(7, 5).Insert(3, ".")).ToString();
             }
             else if (num.Length == 13 && num.StartsWith("28"))
             {
-
-                weight = float.Parse(num.Substring(7, 5).Insert(2, ".")).ToString();
+                ///现在是肉类
+                //weight = float.Parse(num.Substring(7, 5).Insert(3, ".")).ToString("0.0000");
+                weight = (float.Parse(num.Substring(7, 5).Insert(3, ".")) / zcGoodsMaster.GoodsPrice).ToString("0.0000");
                 money = (zcGoodsMaster.GoodsPrice * float.Parse(weight)).ToString("0.00");
+                isWeight = true;
             }
             else
             {
+                weight = "1";
+                isWeight = false;
                 money = zcGoodsMaster.GoodsPrice.ToString("0.00");
             }
 
@@ -1186,6 +1265,8 @@ namespace sorteSystem.com.proem.sorte.window
 
                         orderSorte.weight = weight;
                         orderSorte.money = money;
+                        orderSorte.isWeight = isWeight ? "1" : "0";
+                        orderSorte.bar_code = num;
                         sorteDao sortedao = new sorteDao();
                         if (calFlag)
                         {
@@ -1313,21 +1394,19 @@ namespace sorteSystem.com.proem.sorte.window
             DialogResult dr = MessageBox.Show("确定删除"+name+"?", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if(dr == DialogResult.OK){
                 sorteDao sortedao = new sorteDao();
-                string goods_id = saledatagridview.CurrentRow.Cells[4].Value == null ? "" : saledatagridview.CurrentRow.Cells[4].Value.ToString();
-                string weight = saledatagridview.CurrentRow.Cells[2].Value == null ? "" : saledatagridview.CurrentRow.Cells[2].Value.ToString();
-                List<string> list = sortedao.FindBy(goods_id, weight, ConstantUtil.street);
-                if (list != null && list.Count != 0)
-                {
-                    sortedao.DeleteBy(list[0]);
-                    loadTableAfterDelete(index);
-                }
-                else 
-                {
-                    log.Error("删除扫码商品失败", new Exception());
-                }
+                String orderSorteId = saledatagridview.CurrentRow.Cells[5].Value.ToString();
+                sortedao.DeleteBy(orderSorteId);
+                loadTableAfterDelete(index);
             }
                      
         }
 
+        /// <summary>
+        /// 开始分拣
+        /// </summary>
+        public void startSorte()
+        {
+            startButton_Click(this, EventArgs.Empty);
+        }
     }
 }

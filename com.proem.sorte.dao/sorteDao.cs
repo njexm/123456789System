@@ -65,11 +65,14 @@ namespace SorteSystem.com.proem.sorte.dao
             catch (Exception ex)
             {
                 tran.Rollback();
+                log.Error("新增分拣数据失败"+ex.Message, ex);
             }
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn != null){
+                    conn.Close();
+                }
             }
             return null;
         }
@@ -92,11 +95,13 @@ namespace SorteSystem.com.proem.sorte.dao
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                log.Error("查询工位id失败"+ex.Message,ex);
             }
             finally
             {
-                //OracleUtil.CloseConn(connection);
+                if(connection != null){
+                    connection.Close();
+                }
             }
             return null;
         }
@@ -119,19 +124,22 @@ namespace SorteSystem.com.proem.sorte.dao
             catch (Exception ex)
             {
                 tran.Rollback();
+                log.Error("删除分拣各工位信息表发生错误", ex);
             }
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn != null){
+                    conn.Close();
+                }
             }
         }
 
         public void AddtransitItem(orderSorte obj)
         {
             List<string> idStr = new List<string>();
-            string sql1 = "insert into ZC_ORDERS_SORTE (id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, ORDERSNUM, SORTENUM, WEIGHT, sorteId, money) values "
-                + " (:id ,:createTime, :updateTime, :ADDRESS , :GOODS_ID, :GOODS_NAME, :ORDERSNUM, :SORTENUM , :weight, :sorteId, :money)";
+            string sql1 = "insert into ZC_ORDERS_SORTE (id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, ORDERSNUM, SORTENUM, WEIGHT, sorteId, money,isWeight, bar_code) values "
+                + " (:id ,:createTime, :updateTime, :ADDRESS , :GOODS_ID, :GOODS_NAME, :ORDERSNUM, :SORTENUM , :weight, :sorteId, :money, :isWeight, :bar_code)";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             OracleTransaction tran = null;
@@ -153,18 +161,22 @@ namespace SorteSystem.com.proem.sorte.dao
                 cmd.Parameters.Add(":weight", obj.weight);
                 cmd.Parameters.Add(":sorteId", ConstantUtil.sorte_id);
                 cmd.Parameters.Add(":money", obj.money);
+                cmd.Parameters.Add(":isWeight", obj.isWeight);
+                cmd.Parameters.Add(":bar_code", obj.bar_code);
                 cmd.ExecuteNonQuery();
                 tran.Commit();
             }
             catch (Exception ex)
             {
                 tran.Rollback();
-                Console.WriteLine(ex.Message);
+                log.Error("新增分拣数据信息", ex);
             }
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn != null){
+                    conn.Close();
+                }
             }
         }
 
@@ -187,12 +199,14 @@ namespace SorteSystem.com.proem.sorte.dao
             catch (Exception ex)
             {
                 tran.Rollback();
-                Console.WriteLine(ex.Message);
+                log.Error("删除分拣数据信息失败"+ex.Message, ex);
             }
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn != null){
+                    conn.Close();
+                }
             }
         }
 
@@ -224,12 +238,14 @@ namespace SorteSystem.com.proem.sorte.dao
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                log.Error("条件查询分拣数据信息失败", ex);
             }
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn!= null){
+                    conn.Close();
+                }
             }
             return list;
         }
@@ -247,21 +263,28 @@ namespace SorteSystem.com.proem.sorte.dao
                 cmd.CommandText = sql;
                 cmd.Parameters.Add(":abIP", ip);
                 var reader = cmd.ExecuteReader();
-                if(reader.Read())
+                if (reader.Read())
                 {
-                    sorteId = reader.IsDBNull(0) ?  string.Empty : reader.GetString(0);
+                    sorteId = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("根据ip查询sorteId失败" + e.Message);
+                log.Error("根据ip查询sorteId失败" + e.Message, e);
+            }
+            finally
+            {
+                cmd.Dispose();
+                if(conn != null){
+                    conn.Close();
+                }
             }
             return sorteId;
         }
 
-        public void updateNums(int nums, string goodsFileId, float money)
+        public void updateNums(int nums, string goodsFileId, float money, string orderSorteId)
         {
-            string sql = "update ZC_ORDERS_SORTE set sorteNum = '"+nums+"', money = '"+money+"' where goods_id= '"+goodsFileId+"' and sorteId = '"+ConstantUtil.sorte_id+"' and address = '" + ConstantUtil.street +"' ";
+            string sql = "update ZC_ORDERS_SORTE set sorteNum = '" + nums + "' ,weight='" + nums + "', money = '" + money + "' where id='" + orderSorteId + "' ";
             OracleConnection conn = null;
             OracleTransaction tran = null;
             OracleCommand cmd = new OracleCommand();
@@ -281,8 +304,52 @@ namespace SorteSystem.com.proem.sorte.dao
             }
             finally
             {
-                //OracleUtil.CloseConn(conn);
+                cmd.Dispose();
+                if(conn != null){
+                    conn.Close();
+                }
             }
+        }
+
+        public List<orderSorte> getSumBySorteId()
+        {
+            List<orderSorte> list = new List<orderSorte>();
+            string sql = "select GOODS_ID,sum(sorteNum) as nums, sum(money) as money, sum(weight) as weight "
+                +" from ZC_ORDERS_SORTE where SORTEID = '"+ConstantUtil.sorte_id+"' group by GOODS_ID, goods_name";
+            OracleCommand cmd = new OracleCommand();
+            OracleConnection conn = null;
+            OracleDataReader reader = null;
+            try
+            {
+                conn = OracleUtil.OpenConn();
+                cmd.CommandText = sql;
+                cmd.Connection = conn;
+                reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    orderSorte obj = new orderSorte();
+                    obj.goods_id = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
+                    obj.sorteNum = reader.IsDBNull(1) ? string.Empty : reader.GetValue(1).ToString();
+                    obj.money = reader.IsDBNull(2) ? string.Empty : reader.GetValue(2).ToString();
+                    obj.weight = reader.IsDBNull(3) ? string.Empty : reader.GetValue(3).ToString();
+                    list.Add(obj);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("获取分拣商品信息汇总"+ex.Message, ex);
+            }
+            finally
+            {
+                cmd.Dispose();
+                if(conn != null){
+                    conn.Close();
+                }
+                if(reader != null){
+                    reader.Close();
+                }
+            }
+            return list;
         }
     }
 }

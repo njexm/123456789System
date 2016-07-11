@@ -14,5 +14,7 @@ namespace sorteSystem.com.proem.sorte.domain
         public string GoodsFileId { get; set; }
 
         public string StoreMoney { get; set; }
+
+        public string Weight { get; set; }
     }
 }

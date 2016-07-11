@@ -107,7 +107,10 @@ namespace sorteSystem.com.proem.sorte.dao
             }
             finally
             {
-                //OracleUtil.CloseConn(conn);
+                cmd.Dispose();
+                if(conn != null){
+                    conn.Close();
+                }
             }
             return obj;
         }
@@ -141,7 +144,10 @@ namespace sorteSystem.com.proem.sorte.dao
             }
             finally
             {
-                //OracleUtil.CloseConn(conn);
+                cmd.Dispose();
+                if(conn != null){
+                    conn.Close();
+                }
             }
             return isWeightGoods;
         }
@@ -232,7 +238,10 @@ namespace sorteSystem.com.proem.sorte.dao
             }
             finally
             {
-                //OracleUtil.CloseConn(conn);
+                cmd.Dispose();
+                if(conn != null){
+                    conn.Close();
+                }   
             }
             return obj;
         }

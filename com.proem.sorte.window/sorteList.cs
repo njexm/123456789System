@@ -90,7 +90,9 @@ namespace sorteSystem.com.proem.sorte.window
             }
             finally
             {
-                //OracleUtil.CloseConn(connection);
+                if(connection != null){
+                    connection.Close();
+                }
             }
             if (list != null && list.Count == 1)
             {
@@ -138,7 +140,9 @@ namespace sorteSystem.com.proem.sorte.window
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn != null){
+                    conn.Close();
+                }
             }
         }
 
@@ -147,7 +151,8 @@ namespace sorteSystem.com.proem.sorte.window
             DialogResult dr = MessageBox.Show("确定退出系统?", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (dr == DialogResult.OK)
             {
-                OracleUtil.CloseConn();
+                //释放全部连接池资源
+                OracleConnection.ClearAllPools();
                 System.Environment.Exit(System.Environment.ExitCode);
                 this.Dispose();
             }
@@ -191,6 +196,7 @@ namespace sorteSystem.com.proem.sorte.window
                     ConstantUtil.main.reLoadSaleTable();
                     this.Hide();
                 }
+                ConstantUtil.main.startSorte();
                 isFirst = false;
             }
         }
@@ -243,6 +249,10 @@ namespace sorteSystem.com.proem.sorte.window
             sorteListTableDataGridView.AutoGenerateColumns = false;
             sorteListTableDataGridView.DataMember = "Zc_sorte_item";
 
+            if (connection!= null)
+            {
+                connection.Close();
+            }
             //sorteListTableDataGridView.CurrentCell = null;//不默认选中
             //OracleCommand command = new OracleCommand(sql);
             //command.Connection = connection;
@@ -354,6 +364,7 @@ namespace sorteSystem.com.proem.sorte.window
                     ConstantUtil.main.reLoadSaleTable();
                 }
                 ConstantUtil.main.Show();
+                ConstantUtil.main.startSorte();
                 this.Hide();
                 isFirst = false;
             }

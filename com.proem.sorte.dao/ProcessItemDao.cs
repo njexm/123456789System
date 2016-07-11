@@ -1,4 +1,5 @@
 ﻿using Branch;
+using log4net;
 using Oracle.ManagedDataAccess.Client;
 using sorteSystem.com.proem.sorte.domain;
 using System;
@@ -10,6 +11,10 @@ namespace sorteSystem.com.proem.sorte.dao
 {
     public class ProcessItemDao
     {
+        /// <summary>
+        /// 日志
+        /// </summary>
+        private readonly ILog log = LogManager.GetLogger(typeof(ProcessItemDao));
 
         public ProcessItem FindById(string id)
         {
@@ -45,12 +50,14 @@ namespace sorteSystem.com.proem.sorte.dao
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                log.Error("查询加工完的商品信息失败" + ex.Message, ex);
             }
             finally 
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn != null){
+                    conn.Close();
+                }
             }
             return obj;
         }
@@ -74,12 +81,14 @@ namespace sorteSystem.com.proem.sorte.dao
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                log.Error("更新zc_processgoods_items发生错误"+ex.Message, ex);
             }
             finally 
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn != null){
+                    conn.Close();
+                }
             }
         }
 
@@ -114,12 +123,14 @@ namespace sorteSystem.com.proem.sorte.dao
             catch (Exception ex)
             {
                 tran.Rollback();
-                Console.WriteLine(ex.Message);
+                log.Error("向加工明细表添加数据失败"+ex.Message, ex);
             }
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+               if(conn != null){
+                   conn.Close();
+               }
             }
         }
 
@@ -142,12 +153,14 @@ namespace sorteSystem.com.proem.sorte.dao
             catch (Exception ex)
             {
                 tran.Rollback();
-                Console.WriteLine(ex.Message);
+                log.Error("根据id删除加工商品明细表发生错误"+ex.Message, ex);
             }
             finally
             {
                 cmd.Dispose();
-                //OracleUtil.CloseConn(conn);
+                if(conn != null){
+                    conn.Close();
+                }
             }
         }
     }
