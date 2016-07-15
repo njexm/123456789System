@@ -288,6 +288,7 @@
             this.saledatagridview.Size = new System.Drawing.Size(794, 360);
             this.saledatagridview.TabIndex = 0;
             this.saledatagridview.TabStop = false;
+            this.saledatagridview.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.saledatagridview_CellFormatting);
             this.saledatagridview.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.saledatagridview_RowPostPaint);
             // 
             // topPanel
@@ -682,6 +683,8 @@
             this.goods_weight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.goods_weight.DataPropertyName = "weight";
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.Format = "N4";
+            dataGridViewCellStyle5.NullValue = "0.0000";
             this.goods_weight.DefaultCellStyle = dataGridViewCellStyle5;
             this.goods_weight.FillWeight = 0.25F;
             this.goods_weight.HeaderText = "重量";
@@ -692,7 +695,7 @@
             // 
             this.goods_money.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.goods_money.DataPropertyName = "money";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.goods_money.DefaultCellStyle = dataGridViewCellStyle6;
             this.goods_money.FillWeight = 0.25F;
             this.goods_money.HeaderText = "金额";

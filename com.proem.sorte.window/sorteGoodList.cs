@@ -20,6 +20,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using log4net;
+using System.Globalization;
 
 namespace sorteSystem.com.proem.sorte.window
 {
@@ -1110,7 +1111,7 @@ namespace sorteSystem.com.proem.sorte.window
 
         private void loadTableAfterDelete(int  index)
         {
-            string sql = "select b.id, b.serialNumber, a.goods_name as goodsname, a.weight,a.money from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where a.address = '" + dt.Rows[ConstantUtil.index][14] + "' and a.sorteId = '" + ConstantUtil.sorte_id + "'  order by a.createTime";
+            string sql = "select b.id as goodsFileId, b.serialNumber, a.id, a.goods_name as goodsname, a.weight,a.money,a.isWeight from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where a.address = '" + dt.Rows[ConstantUtil.index][14] + "' and a.sorteId = '" + ConstantUtil.sorte_id + "'  order by a.createTime";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             try
@@ -1407,6 +1408,15 @@ namespace sorteSystem.com.proem.sorte.window
         public void startSorte()
         {
             startButton_Click(this, EventArgs.Empty);
+        }
+
+        private void saledatagridview_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if(e.ColumnIndex == 2){
+                e.Value = Convert.ToDecimal(e.Value).ToString("#0.0000");
+            }else if(e.ColumnIndex == 3){
+                e.Value = Convert.ToDecimal(e.Value).ToString("#0.00");
+            }
         }
     }
 }
