@@ -38,5 +38,15 @@ namespace SorteSystem.com.proem.sorte.domain
 
         //条码
         public string bar_code { get; set; }
+
+        /// <summary>
+        /// 是否退货
+        /// 1是
+        /// 0否
+        /// </summary>
+        public string isReturn { get; set; }
+
+        //分拣单id
+        public string sorteId { get; set; }
     }
 }

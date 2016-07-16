@@ -91,6 +91,12 @@
     <Compile Include="com.proem.sorte.util\MD5Util.cs" />
     <Compile Include="com.proem.sorte.util\OracleUtil.cs" />
     <Compile Include="com.proem.sorte.util\SocketUtil.cs" />
+    <Compile Include="com.proem.sorte.window\BranchChoose.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\BranchChoose.Designer.cs">
+      <DependentUpon>BranchChoose.cs</DependentUpon>
+    </Compile>
     <Compile Include="com.proem.sorte.window\BranchLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,6 +132,12 @@
     </Compile>
     <Compile Include="com.proem.sorte.window\processList.Designer.cs">
       <DependentUpon>processList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\ReturnGoods.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\ReturnGoods.Designer.cs">
+      <DependentUpon>ReturnGoods.cs</DependentUpon>
     </Compile>
     <Compile Include="com.proem.sorte.window\ScanCode.cs">
       <SubType>Form</SubType>
@@ -165,6 +177,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="com.proem.sorte.window\BranchChoose.resx">
+      <DependentUpon>BranchChoose.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="com.proem.sorte.window\BranchLogin.resx">
       <DependentUpon>BranchLogin.cs</DependentUpon>
     </EmbeddedResource>
@@ -182,6 +197,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="com.proem.sorte.window\processList.resx">
       <DependentUpon>processList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="com.proem.sorte.window\ReturnGoods.resx">
+      <DependentUpon>ReturnGoods.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="com.proem.sorte.window\ScanCode.resx">
       <DependentUpon>ScanCode.cs</DependentUpon>
@@ -276,6 +294,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\login-error-3.png" />
+    <None Include="Resources\mk_02.png" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="SpeechLib">

@@ -63,10 +63,26 @@ namespace sorteSystem.com.proem.sorte.window
             {
                 button3_Click(this, EventArgs.Empty);
             }
+            if(e.KeyCode == Keys.F3)
+            {
+                button4_Click(this, EventArgs.Empty);
+            }
             if(e.KeyCode == Keys.Escape)
             {
                 button1_Click(this, EventArgs.Empty);
             }
+        }
+
+        /// <summary>
+        /// 点击进入退货
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ReturnGoods obj = new ReturnGoods(this);
+            obj.Show();
+            this.Hide();
         }
     }
 }

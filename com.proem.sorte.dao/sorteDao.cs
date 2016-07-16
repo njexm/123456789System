@@ -282,7 +282,7 @@ namespace SorteSystem.com.proem.sorte.dao
             return sorteId;
         }
 
-        public void updateNums(int nums, string goodsFileId, float money, string orderSorteId)
+        public void updateNums(float nums, string goodsFileId, float money, string orderSorteId)
         {
             string sql = "update ZC_ORDERS_SORTE set sorteNum = '" + nums + "' ,weight='" + nums + "', money = '" + money + "' where id='" + orderSorteId + "' ";
             OracleConnection conn = null;
@@ -350,6 +350,52 @@ namespace SorteSystem.com.proem.sorte.dao
                 }
             }
             return list;
+        }
+
+        /// <summary>
+        /// 新增退货信息
+        /// </summary>
+        /// <param name="obj"></param>
+        public void addReturnGoods(orderSorte obj)
+        {
+            string sql = "insert into ZC_ORDERS_SORTE (id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, SORTENUM, WEIGHT, money,isWeight, bar_code, isReturn) values "
+               + " (:id ,:createTime, :updateTime, :ADDRESS , :GOODS_ID, :GOODS_NAME, :SORTENUM , :weight, :money, :isWeight, :bar_code, :isReturn)";
+            OracleConnection conn = null;
+            OracleTransaction tran = null;
+            OracleCommand cmd = new OracleCommand();
+            try
+            {
+                conn = OracleUtil.OpenConn();
+                tran = conn.BeginTransaction();
+                cmd.CommandText = sql;
+                cmd.Connection = conn;
+                cmd.Parameters.Add(":id", obj.id);
+                cmd.Parameters.Add(":createTime", obj.createTime);
+                cmd.Parameters.Add(":updateTime", obj.updateTime);
+                cmd.Parameters.Add(":ADDRESS", obj.address);
+                cmd.Parameters.Add(":GOODS_ID", obj.goods_id);
+                cmd.Parameters.Add(":GOODS_NAME", obj.goods_name);
+                cmd.Parameters.Add(":SORTENUM", obj.sorteNum);
+                cmd.Parameters.Add(":weight", obj.weight);
+                cmd.Parameters.Add(":money", obj.money);
+                cmd.Parameters.Add(":isWeight", obj.isWeight);
+                cmd.Parameters.Add(":bar_code", obj.bar_code);
+                cmd.Parameters.Add(":isReturn", obj.isReturn);
+                cmd.ExecuteNonQuery();
+                tran.Commit();
+            }
+            catch (Exception ex)
+            {
+                tran.Rollback();
+                log.Error("新增退货信息失败", ex);
+            }
+            finally
+            {
+                cmd.Dispose();
+                if(conn != null){
+                    conn.Close();
+                }
+            }
         }
     }
 }

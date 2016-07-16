@@ -482,6 +482,10 @@ namespace sorteSystem.com.proem.sorte.dao
                 }
             }
 
+        /// <summary>
+        /// 库存减少
+        /// </summary>
+        /// <param name="obj"></param>
             public void updateStoreHouse(orderSorte obj)
             {
                 string sql = "update zc_storehouse set updateTime=:updateTime,store = :store, storemoney = :money, weight=:weight where id = :id";
@@ -505,7 +509,7 @@ namespace sorteSystem.com.proem.sorte.dao
                     tran = conn.BeginTransaction();
                     cmd.Connection = conn;
                     cmd.CommandText = sql;
-                    cmd.Parameters.Add(":updateTime", DateTime.Now.ToString());
+                    cmd.Parameters.Add(":updateTime", DateTime.Now);
                     cmd.Parameters.Add(":store", storeHouse.Store);
                     cmd.Parameters.Add(":money", storeHouse.StoreMoney);
                     cmd.Parameters.Add(":weight", newWeight);
@@ -525,6 +529,60 @@ namespace sorteSystem.com.proem.sorte.dao
                         tran.Dispose();
                     }
                     if(conn != null){
+                        conn.Close();
+                    }
+                }
+            }
+
+        /// <summary>
+        /// 库存增加
+        /// </summary>
+        /// <param name="obj"></param>
+            public void updateStoreHouseAdd(orderSorte obj)
+            {
+                string sql = "update zc_storehouse set updateTime=:updateTime,store = :store, storemoney = :money, weight=:weight where id = :id";
+                OracleConnection conn = null;
+                OracleTransaction tran = null;
+                OracleCommand cmd = new OracleCommand();
+                StoreHouse storeHouse = FindByGoodsFileId(obj.goods_id);
+                if (storeHouse == null)
+                {
+                    AddStoreHouse(obj);
+                    storeHouse = FindByGoodsFileId(obj.goods_id);
+                }
+                float old = float.Parse(storeHouse.Store);
+                storeHouse.Store = (old + float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)).ToString();
+                storeHouse.StoreMoney = ((old + float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.StoreMoney) ? "0" : storeHouse.StoreMoney) / old)).ToString();
+                float oldWeight = string.IsNullOrEmpty(storeHouse.Weight) ? 0F : float.Parse(storeHouse.Weight);
+                float newWeight = oldWeight + float.Parse(string.IsNullOrEmpty(obj.weight) ? "0" : obj.weight);
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    tran = conn.BeginTransaction();
+                    cmd.Connection = conn;
+                    cmd.CommandText = sql;
+                    cmd.Parameters.Add(":updateTime", DateTime.Now);
+                    cmd.Parameters.Add(":store", storeHouse.Store);
+                    cmd.Parameters.Add(":money", storeHouse.StoreMoney);
+                    cmd.Parameters.Add(":weight", newWeight);
+                    cmd.Parameters.Add(":id", storeHouse.Id);
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    log.Error("更新库存信息失败", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if (tran != null)
+                    {
+                        tran.Dispose();
+                    }
+                    if (conn != null)
+                    {
                         conn.Close();
                     }
                 }
@@ -640,6 +698,50 @@ namespace sorteSystem.com.proem.sorte.dao
                         conn.Close();
                     }
                 }
+            }
+
+            public orderSorte FindOrderSorteBy(string orderSorteId)
+            {
+                orderSorte obj = new orderSorte();
+                string sql = "select id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, ORDERSNUM, SORTENUM,sorteId, WEIGHT, isWeight, bar_code, isReturn from zc_orders_sorte where id ='"+orderSorteId+"'";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleDataReader reader = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    cmd.CommandText = sql;
+                    cmd.Connection = conn;
+                    reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        obj.id = orderSorteId;
+                        obj.createTime = reader.IsDBNull(1) ? default(DateTime) : reader.GetDateTime(1);
+                        obj.updateTime = reader.IsDBNull(2) ? default(DateTime) : reader.GetDateTime(2);
+                        obj.address = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
+                        obj.goods_id = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
+                        obj.goods_name = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
+                        obj.orderNum = reader.IsDBNull(6) ? string.Empty : reader.GetString(6);
+                        obj.sorteNum = reader.IsDBNull(7) ? string.Empty : reader.GetString(7);
+                        obj.sorteId = reader.IsDBNull(8) ? string.Empty : reader.GetString(8);
+                        obj.weight = reader.IsDBNull(9) ? string.Empty : reader.GetString(9);
+                        obj.isWeight = reader.IsDBNull(10) ? string.Empty : reader.GetString(10);
+                        obj.bar_code = reader.IsDBNull(11) ? string.Empty : reader.GetString(11);
+                        obj.isReturn = reader.IsDBNull(12) ? string.Empty : reader.GetString(12);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Error("获取收银信息失败", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if(conn != null){
+                        conn.Close();
+                    }
+                }
+                return obj;
             }
     }
 

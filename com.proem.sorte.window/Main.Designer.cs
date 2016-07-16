@@ -30,6 +30,8 @@
         {
             this.mainPanel = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.button4 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -41,6 +43,7 @@
             this.timePanel = new System.Windows.Forms.Panel();
             this.mainPanel.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.logoPanel.SuspendLayout();
@@ -63,17 +66,38 @@
             this.panel3.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
             this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel3.Controls.Add(this.panel5);
             this.panel3.Controls.Add(this.panel2);
             this.panel3.Controls.Add(this.panel1);
-            this.panel3.Location = new System.Drawing.Point(138, 135);
+            this.panel3.Location = new System.Drawing.Point(38, 135);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(514, 290);
+            this.panel3.Size = new System.Drawing.Size(700, 290);
             this.panel3.TabIndex = 32;
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.button4);
+            this.panel5.Location = new System.Drawing.Point(490, 68);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(180, 141);
+            this.panel5.TabIndex = 32;
+            // 
+            // button4
+            // 
+            this.button4.BackgroundImage = global::sorteSystem.Properties.Resources.mk_02;
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Location = new System.Drawing.Point(0, 0);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(180, 141);
+            this.button4.TabIndex = 0;
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.button3);
-            this.panel2.Location = new System.Drawing.Point(300, 68);
+            this.panel2.Location = new System.Drawing.Point(260, 68);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(180, 141);
             this.panel2.TabIndex = 31;
@@ -190,6 +214,7 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Main_KeyDown);
             this.mainPanel.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.logoPanel.ResumeLayout(false);
@@ -211,5 +236,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Button button4;
     }
 }

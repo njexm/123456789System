@@ -1,6 +1,7 @@
 ﻿using sorteSystem.com.proem.sorte.dao;
 using sorteSystem.com.proem.sorte.domain;
 using SorteSystem.com.proem.sorte.dao;
+using SorteSystem.com.proem.sorte.domain;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +23,8 @@ namespace sorteSystem.com.proem.sorte.window
 
         private sorteGoodList sorteGoodList;
 
+        private ReturnGoods returnGoods;
+
         public ChangeNums()
         {
             InitializeComponent();
@@ -36,6 +39,15 @@ namespace sorteSystem.com.proem.sorte.window
             this.orderSorteId = orderSorteId;
         }
 
+        public ChangeNums(string goodsFileId, float money, string orderSorteId, ReturnGoods obj)
+        {
+            InitializeComponent();
+            this.goodsFileId = goodsFileId;
+            this.money = money;
+            this.returnGoods = obj;
+            this.orderSorteId = orderSorteId;
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBox1.Text.Trim()))
@@ -44,12 +56,25 @@ namespace sorteSystem.com.proem.sorte.window
             }
             else
             {
-                int nums = Int32.Parse(textBox1.Text);
+                float nums = Int32.Parse(textBox1.Text);
                 sorteDao dao = new sorteDao();
                 ZcGoodsMasterDao goodsMasterDao = new ZcGoodsMasterDao();
                 ZcGoodsMaster master = goodsMasterDao.FindById(goodsFileId);
+                float oldnums = money / master.GoodsPrice;
                 dao.updateNums(nums, goodsFileId, nums * master.GoodsPrice, orderSorteId);
-                this.sorteGoodList.reLoadSaleTable();
+                if (sorteGoodList != null && returnGoods == null)
+                {
+                    this.sorteGoodList.reLoadSaleTable();
+                }
+                else {
+                    this.returnGoods.reloadReturn();
+                    orderDao orderDao = new orderDao();
+                    orderSorte orderSorte = new orderSorte();
+                    orderSorte.goods_id = master.Id;
+                    orderSorte.sorteNum = (oldnums - nums).ToString();
+                    orderSorte.weight = orderSorte.sorteNum;
+                    orderDao.updateStoreHouse(orderSorte);
+                }
             }
             this.Close();
         }
