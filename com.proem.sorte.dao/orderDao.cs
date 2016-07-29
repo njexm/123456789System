@@ -498,9 +498,10 @@ namespace sorteSystem.com.proem.sorte.dao
                     AddStoreHouse(obj);
                     storeHouse = FindByGoodsFileId(obj.goods_id);
                 }
-                float old = float.Parse(storeHouse.Store);
+                string oldNums = storeHouse.Store;
+                float old = string.IsNullOrEmpty(oldNums) ? 0F : float.Parse(storeHouse.Store);
                 storeHouse.Store = (old - float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)).ToString();
-                storeHouse.StoreMoney = ((old - float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.StoreMoney) ? "0" : storeHouse.StoreMoney) / old)).ToString();
+                storeHouse.StoreMoney = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old - float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.StoreMoney) ? "0" : storeHouse.StoreMoney) / old)).ToString() : "0";
                 float oldWeight = string.IsNullOrEmpty(storeHouse.Weight) ? 0F : float.Parse(storeHouse.Weight);
                 float newWeight = oldWeight - float.Parse(string.IsNullOrEmpty(obj.weight) ? "0" : obj.weight);
                 try
@@ -550,9 +551,10 @@ namespace sorteSystem.com.proem.sorte.dao
                     AddStoreHouse(obj);
                     storeHouse = FindByGoodsFileId(obj.goods_id);
                 }
-                float old = float.Parse(storeHouse.Store);
+                string oldNums = storeHouse.Store;
+                float old = string.IsNullOrEmpty(oldNums) ? 0F : float.Parse(storeHouse.Store);
                 storeHouse.Store = (old + float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)).ToString();
-                storeHouse.StoreMoney = ((old + float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.StoreMoney) ? "0" : storeHouse.StoreMoney) / old)).ToString();
+                storeHouse.StoreMoney = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old + float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.StoreMoney) ? "0" : storeHouse.StoreMoney) / old)).ToString() : "0";
                 float oldWeight = string.IsNullOrEmpty(storeHouse.Weight) ? 0F : float.Parse(storeHouse.Weight);
                 float newWeight = oldWeight + float.Parse(string.IsNullOrEmpty(obj.weight) ? "0" : obj.weight);
                 try

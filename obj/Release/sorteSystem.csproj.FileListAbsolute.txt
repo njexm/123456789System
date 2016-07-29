@@ -50,3 +50,5 @@ E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.
 E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.com.proem.sorte.window.ChangeNums.resources
 E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.com.proem.sorte.window.ReturnGoods.resources
 E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.com.proem.sorte.window.BranchChoose.resources
+E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.com.proem.sorte.window.OrderChoose.resources
+E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.com.proem.sorte.window.ReturnByOrder.resources

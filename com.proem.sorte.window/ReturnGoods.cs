@@ -84,6 +84,7 @@ namespace sorteSystem.com.proem.sorte.window
             if(textBox2.Focused && e.KeyCode == Keys.Enter){
                 if(string.IsNullOrEmpty(returnStreet)){
                     MessageBox.Show("请先选择退货亭点,再进行扫码换货!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    textBox2.Text = "";
                     return;
                 }
                 try
@@ -133,7 +134,7 @@ namespace sorteSystem.com.proem.sorte.window
                 }
                 else
                 {
-                    bool isWeight = "1".Equals(itemDataGird.CurrentRow.Cells[6].Value.ToString()) ? true : false;
+                    bool isWeight = "1".Equals(itemDataGird.CurrentRow.Cells[5].Value.ToString()) ? true : false;
                     if (!isWeight)
                     {
                         string orderSorteId = itemDataGird.CurrentRow.Cells[6].Value.ToString();
@@ -176,7 +177,7 @@ namespace sorteSystem.com.proem.sorte.window
         {
             String first = DateTime.Now.ToString("yyyy-MM-dd 00:00:01");
             String last = DateTime.Now.ToString("yyyy-MM-dd 23:59:59");
-            string sql = "select b.serialNumber, a.goods_name as goodsName, a.weight, a.money, b.id as goodsFileId, a.isWeight, a.id from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where 1=1 and isReturn ='1' and a.address='" + returnStreet + "' and a.createTime >= to_date('" + first + "', 'yyyy-MM-dd hh24:mi:ss') and a.createTime <=to_date('" + last + "', 'yyyy-MM-dd hh24:mi:ss')  order by a.createTime";
+            string sql = "select b.serialNumber, a.goods_name as goodsName, a.weight, a.money, b.id as goodsFileId, a.isWeight, a.id from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where 1=1 and a.isReturn ='1' and a.address='" + returnStreet + "' and a.createTime >= to_date('" + first + "', 'yyyy-MM-dd hh24:mi:ss') and a.createTime <=to_date('" + last + "', 'yyyy-MM-dd hh24:mi:ss')  order by a.createTime";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             try
@@ -371,7 +372,7 @@ namespace sorteSystem.com.proem.sorte.window
         private void loadReturnGoods() {
             String first = DateTime.Now.ToString("yyyy-MM-dd 00:00:01");
             String last = DateTime.Now.ToString("yyyy-MM-dd 23:59:59");
-            string sql = "select b.serialNumber, a.goods_name as goodsName, a.weight, a.money, b.id as goodsFileId,a.isWeight, a.id from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where 1=1 and isReturn ='1' and a.address='" + returnStreet + "' and a.createTime >= to_date('" + first + "', 'yyyy-MM-dd hh24:mi:ss') and a.createTime <=to_date('" + last + "', 'yyyy-MM-dd hh24:mi:ss')  order by a.createTime";
+            string sql = "select b.serialNumber, a.goods_name as goodsName, a.weight, a.money, b.id as goodsFileId,a.isWeight, a.id from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where 1=1 and a.isReturn ='1' and a.address='" + returnStreet + "' and a.createTime >= to_date('" + first + "', 'yyyy-MM-dd hh24:mi:ss') and a.createTime <=to_date('" + last + "', 'yyyy-MM-dd hh24:mi:ss')  order by a.createTime";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             OracleDataAdapter da = null ;
