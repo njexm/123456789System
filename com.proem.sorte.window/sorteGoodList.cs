@@ -431,7 +431,9 @@ namespace sorteSystem.com.proem.sorte.window
                             }
                         }
                     }
-                    
+                     sorteDao sorteDao = new sorteDao();
+                     ZcGoodsMasterDao zcGoodsMasterDao = new ZcGoodsMasterDao();
+                     DispatchingDao dispatchDao = new DispatchingDao();
                     endSorteDelegate endDelegate = endSorte;
                     this.BeginInvoke(endDelegate);
                     Thread objThread = new Thread(new ThreadStart(delegate
@@ -483,10 +485,56 @@ namespace sorteSystem.com.proem.sorte.window
                                 
                             }
                             orderdao.deleteAllSorteStatus();
+                            DispatchingWarehouse dispatchingWarehouse = new DispatchingWarehouse();
+                            dispatchingWarehouse.id = Guid.NewGuid().ToString();
+                            dispatchingWarehouse.createTime = DateTime.Now;
+                            dispatchingWarehouse.updateTime = DateTime.Now;
+                            dispatchingWarehouse.street = streetId.ToString();
+                            dispatchingWarehouse.dispatcher_date = DateTime.Now;
+                            dispatchingWarehouse.dispatcherOdd = "PSCKD"+DateTime.Now.ToString("yyyyMMddHHmmss");
+                            dispatchingWarehouse.type = "2"; 
+                            dispatchingWarehouse.statue = 2;
+                            dispatchingWarehouse.branch_id = ConstantUtil.BranchId;
+                            dispatchingWarehouse.branch_total_id = dt.Rows[i][6].ToString();
+
+                            float nums = 0;
+                            float money = 0;
+                            float weight = 0;
+                            List<orderSorte> sorteList = sortedao.getByStreet(streetId.ToString());
+                            List<DispatchingWarehouseItem> itemList = new List<DispatchingWarehouseItem>();
+                            for (int j = 0; j < sorteList.Count; j++ )
+                            {
+                                orderSorte obj = sorteList[j];
+                                DispatchingWarehouseItem item = new DispatchingWarehouseItem();
+                                item.id = Guid.NewGuid().ToString();
+                                item.createTime = DateTime.Now;
+                                item.updateTime = DateTime.Now;
+                                item.cash_date = DateTime.Now;
+                                item.dispatchingWarehouseId = dispatchingWarehouse.id;
+                                ZcGoodsMaster goodsFile = zcGoodsMasterDao.FindById(obj.goods_id);
+                                item.goods_name = goodsFile.GoodsName;
+                                item.goodsPrice = goodsFile.GoodsPrice.ToString();
+                                item.goods_specifications = goodsFile.GoodsSpecifications;
+                                item.nums = obj.sorteNum;
+                                item.serialNumber = goodsFile.SerialNumber;
+                                item.money = obj.money;
+                                item.weight = obj.weight;
+                                item.branch_total_id = dt.Rows[i][6].ToString();
+                                item.goodsFile_id = obj.goods_id;
+                                itemList.Add(item);
+                                nums += string.IsNullOrEmpty(item.nums) ? 0 : float.Parse(item.nums);
+                                money += string.IsNullOrEmpty(item.money) ? 0 : float.Parse(item.money);
+                                weight += string.IsNullOrEmpty(item.weight) ? 0 : float.Parse(item.weight);
+                            }
+                            dispatchingWarehouse.nums = nums.ToString();
+                            dispatchingWarehouse.money = money.ToString();
+                            dispatchingWarehouse.weight = weight.ToString();
+                            dispatchDao.addObj(dispatchingWarehouse);
+                            dispatchDao.addList(itemList);
                         }
 
                         //更改库存
-                        sorteDao sorteDao = new sorteDao();
+                       
                         List<orderSorte> list = sorteDao.getSumBySorteId();
                         if (list != null && list.Count > 0)
                         {

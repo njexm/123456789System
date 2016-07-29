@@ -745,7 +745,58 @@ namespace sorteSystem.com.proem.sorte.dao
                 }
                 return obj;
             }
+
+            /// <summary>
+            /// 根据street获取分拣信息
+            /// </summary>
+            /// <param name="street"></param>
+            /// <returns></returns>
+            public List<orderSorte> getByStreet(string street)
+            {
+                string startTime = DateTime.Now.ToString("yyyy-MM-dd 00:00:01");
+                string endTime = DateTime.Now.ToString("yyyy-MM-dd 23:59:59");
+                List<orderSorte> list = new List<orderSorte>();
+                string sql = "select id, createTime, address, goods_id, sorteNum, weight, money from zc_orders_sorte where 1=1 and address = '"+street+"' and isReturn is null "
+                    + " and createTime >=to_date('"+startTime+"', 'yyyy-MM-dd HH24:mi:ss')  and  createTime <= to_date('"+endTime+"', 'yyyy-MM-dd HH24:mi:ss')";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleDataReader reader = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    cmd.Connection = conn;
+                    cmd.CommandText = sql;
+                    reader = cmd.ExecuteReader();
+                    while(reader.Read()){
+                        orderSorte obj = new orderSorte();
+                        obj.id = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
+                        obj.createTime = reader.IsDBNull(1) ? default(DateTime) : reader.GetDateTime(1);
+                        obj.address = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
+                        obj.goods_id = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
+                        obj.sorteNum = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
+                        obj.weight = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
+                        obj.money = reader.IsDBNull(6) ? string.Empty : reader.GetString(6);
+                        list.Add(obj);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Error("查询分拣信息失败", ex);
+                }
+                finally 
+                {
+                    if(reader != null){
+                        reader.Close();
+                    }
+                    if(conn != null){
+                        conn.Close();
+                    }
+                    cmd.Dispose();
+                }
+                return list;
+            }
     }
 
     
 }
+
