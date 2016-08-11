@@ -16,5 +16,7 @@ namespace sorteSystem.com.proem.sorte.domain
         public string StoreMoney { get; set; }
 
         public string Weight { get; set; }
+
+        public string include_tax_money { get; set; }
     }
 }

@@ -491,7 +491,7 @@ namespace sorteSystem.com.proem.sorte.window
                             dispatchingWarehouse.updateTime = DateTime.Now;
                             dispatchingWarehouse.street = streetId.ToString();
                             dispatchingWarehouse.dispatcher_date = DateTime.Now;
-                            dispatchingWarehouse.dispatcherOdd = "PSCKD"+DateTime.Now.ToString("yyyyMMddHHmmss");
+                            dispatchingWarehouse.dispatcherOdd = "PSCKD"+DateTime.Now.ToString("yyyyMMddHHmmssSSS");
                             dispatchingWarehouse.type = "2"; 
                             dispatchingWarehouse.statue = 2;
                             dispatchingWarehouse.branch_id = ConstantUtil.BranchId;

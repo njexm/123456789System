@@ -488,7 +488,7 @@ namespace sorteSystem.com.proem.sorte.dao
         /// <param name="obj"></param>
             public void updateStoreHouse(orderSorte obj)
             {
-                string sql = "update zc_storehouse set updateTime=:updateTime,store = :store, storemoney = :money, weight=:weight where id = :id";
+                string sql = "update zc_storehouse set updateTime=:updateTime,store = :store, storemoney = :money, include_tax_money = :include_tax_money ,weight=:weight where id = :id";
                 OracleConnection conn = null;
                 OracleTransaction tran = null;
                 OracleCommand cmd = new OracleCommand();
@@ -501,7 +501,18 @@ namespace sorteSystem.com.proem.sorte.dao
                 string oldNums = storeHouse.Store;
                 float old = string.IsNullOrEmpty(oldNums) ? 0F : float.Parse(storeHouse.Store);
                 storeHouse.Store = (old - float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)).ToString();
-                storeHouse.StoreMoney = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old - float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.StoreMoney) ? "0" : storeHouse.StoreMoney) / old)).ToString() : "0";
+                ///成本计算改变
+                if (float.Parse(storeHouse.Store) == 0)
+                {
+                    storeHouse.StoreMoney = "0";
+                    storeHouse.include_tax_money = "0";
+                }
+                else
+                {
+                    storeHouse.StoreMoney = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old - float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.StoreMoney) ? "0" : storeHouse.StoreMoney) / old)).ToString() : "0";
+                    storeHouse.include_tax_money = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old - float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.include_tax_money) ? "0" : storeHouse.include_tax_money) / old)).ToString() : "0";
+                }
+                
                 float oldWeight = string.IsNullOrEmpty(storeHouse.Weight) ? 0F : float.Parse(storeHouse.Weight);
                 float newWeight = oldWeight - float.Parse(string.IsNullOrEmpty(obj.weight) ? "0" : obj.weight);
                 try
@@ -513,6 +524,7 @@ namespace sorteSystem.com.proem.sorte.dao
                     cmd.Parameters.Add(":updateTime", DateTime.Now);
                     cmd.Parameters.Add(":store", storeHouse.Store);
                     cmd.Parameters.Add(":money", storeHouse.StoreMoney);
+                    cmd.Parameters.Add(":include_tax_money", storeHouse.include_tax_money);
                     cmd.Parameters.Add(":weight", newWeight);
                     cmd.Parameters.Add(":id", storeHouse.Id);
                     cmd.ExecuteNonQuery();
@@ -541,7 +553,7 @@ namespace sorteSystem.com.proem.sorte.dao
         /// <param name="obj"></param>
             public void updateStoreHouseAdd(orderSorte obj)
             {
-                string sql = "update zc_storehouse set updateTime=:updateTime,store = :store, storemoney = :money, weight=:weight where id = :id";
+                string sql = "update zc_storehouse set updateTime=:updateTime,store = :store, storemoney = :money, include_tax_money = :include_tax_money ,weight=:weight where id = :id";
                 OracleConnection conn = null;
                 OracleTransaction tran = null;
                 OracleCommand cmd = new OracleCommand();
@@ -554,7 +566,17 @@ namespace sorteSystem.com.proem.sorte.dao
                 string oldNums = storeHouse.Store;
                 float old = string.IsNullOrEmpty(oldNums) ? 0F : float.Parse(storeHouse.Store);
                 storeHouse.Store = (old + float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)).ToString();
-                storeHouse.StoreMoney = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old + float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.StoreMoney) ? "0" : storeHouse.StoreMoney) / old)).ToString() : "0";
+                if (float.Parse(storeHouse.Store) == 0)
+                {
+                    storeHouse.StoreMoney = "0";
+                    storeHouse.include_tax_money = "0";
+                }
+                else 
+                {
+                    storeHouse.StoreMoney = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old + float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.StoreMoney) ? "0" : storeHouse.StoreMoney) / old)).ToString() : "0";
+                    storeHouse.include_tax_money = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old + float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.include_tax_money) ? "0" : storeHouse.include_tax_money) / old)).ToString() : "0";
+                }
+                
                 float oldWeight = string.IsNullOrEmpty(storeHouse.Weight) ? 0F : float.Parse(storeHouse.Weight);
                 float newWeight = oldWeight + float.Parse(string.IsNullOrEmpty(obj.weight) ? "0" : obj.weight);
                 try
@@ -566,6 +588,7 @@ namespace sorteSystem.com.proem.sorte.dao
                     cmd.Parameters.Add(":updateTime", DateTime.Now);
                     cmd.Parameters.Add(":store", storeHouse.Store);
                     cmd.Parameters.Add(":money", storeHouse.StoreMoney);
+                    cmd.Parameters.Add(":include_tax_money", storeHouse.include_tax_money);
                     cmd.Parameters.Add(":weight", newWeight);
                     cmd.Parameters.Add(":id", storeHouse.Id);
                     cmd.ExecuteNonQuery();
@@ -631,7 +654,7 @@ namespace sorteSystem.com.proem.sorte.dao
             public StoreHouse FindByGoodsFileId(string goodsFileId) 
             {
                 StoreHouse obj = null;
-                string sql = "select id,store, storemoney, weight  from zc_storehouse where branch_id = :branchId and goodsfile_id = :goodsFileId ";
+                string sql = "select id,store, storemoney,weight,include_tax_money  from zc_storehouse where branch_id = :branchId and goodsfile_id = :goodsFileId ";
                 OracleConnection conn = null;
                 OracleCommand cmd = new OracleCommand();
                 OracleDataReader reader = null;
@@ -650,6 +673,7 @@ namespace sorteSystem.com.proem.sorte.dao
                         obj.Store = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
                         obj.StoreMoney = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
                         obj.Weight = reader.IsDBNull(3) ? "0" : reader.GetString(3);
+                        obj.include_tax_money = reader.IsDBNull(4) ? "0" : reader.GetString(4);
                         obj.GoodsFileId = goodsFileId;
                     }
                 }
