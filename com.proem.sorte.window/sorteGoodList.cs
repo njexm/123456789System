@@ -434,6 +434,7 @@ namespace sorteSystem.com.proem.sorte.window
                      sorteDao sorteDao = new sorteDao();
                      ZcGoodsMasterDao zcGoodsMasterDao = new ZcGoodsMasterDao();
                      DispatchingDao dispatchDao = new DispatchingDao();
+                     BranchInDao branchInDao = new BranchInDao();
                     endSorteDelegate endDelegate = endSorte;
                     this.BeginInvoke(endDelegate);
                     Thread objThread = new Thread(new ThreadStart(delegate
@@ -497,40 +498,84 @@ namespace sorteSystem.com.proem.sorte.window
                             dispatchingWarehouse.branch_id = ConstantUtil.BranchId;
                             dispatchingWarehouse.branch_total_id = dt.Rows[i][6].ToString();
 
-                            float nums = 0;
-                            float money = 0;
-                            float weight = 0;
-                            List<orderSorte> sorteList = sortedao.getByStreet(streetId.ToString());
-                            List<DispatchingWarehouseItem> itemList = new List<DispatchingWarehouseItem>();
-                            for (int j = 0; j < sorteList.Count; j++ )
-                            {
-                                orderSorte obj = sorteList[j];
-                                DispatchingWarehouseItem item = new DispatchingWarehouseItem();
-                                item.id = Guid.NewGuid().ToString();
-                                item.createTime = DateTime.Now;
-                                item.updateTime = DateTime.Now;
-                                item.cash_date = DateTime.Now;
-                                item.dispatchingWarehouseId = dispatchingWarehouse.id;
-                                ZcGoodsMaster goodsFile = zcGoodsMasterDao.FindById(obj.goods_id);
-                                item.goods_name = goodsFile.GoodsName;
-                                item.goodsPrice = goodsFile.GoodsPrice.ToString();
-                                item.goods_specifications = goodsFile.GoodsSpecifications;
-                                item.nums = obj.sorteNum;
-                                item.serialNumber = goodsFile.SerialNumber;
-                                item.money = obj.money;
-                                item.weight = obj.weight;
-                                item.branch_total_id = dt.Rows[i][6].ToString();
-                                item.goodsFile_id = obj.goods_id;
-                                itemList.Add(item);
-                                nums += string.IsNullOrEmpty(item.nums) ? 0 : float.Parse(item.nums);
-                                money += string.IsNullOrEmpty(item.money) ? 0 : float.Parse(item.money);
-                                weight += string.IsNullOrEmpty(item.weight) ? 0 : float.Parse(item.weight);
+                            string cashier = sortedao.getCashierByBranchId(dispatchingWarehouse.branch_total_id);
+                            if(!"1".Equals(cashier)){
+                                ///无收银机
+                                BranchIn branchIn = new BranchIn();
+                                branchIn.id = Guid.NewGuid().ToString().Replace("-", "");
+                                branchIn.createTime = DateTime.Now;
+                                branchIn.updateTime = DateTime.Now;
+                                branchIn.InOdd = "TDRKD" + DateTime.Now.ToString("yyyyMMddHHmmssSSS");
+                                branchIn.dispatching_id = dispatchingWarehouse.id;
+                                branchIn.branch_id = dispatchingWarehouse.branch_total_id;
+
+                                float nums = 0;
+                                float money = 0;
+                                float weight = 0;
+                                List<orderSorte> sorteList = sortedao.getByStreet(streetId.ToString());
+                                List<DispatchingWarehouseItem> itemList = new List<DispatchingWarehouseItem>();
+                                List<BranchInItem> inItemList = new List<BranchInItem>();
+                                for (int j = 0; j < sorteList.Count; j++)
+                                {
+                                    orderSorte obj = sorteList[j];
+                                    DispatchingWarehouseItem item = new DispatchingWarehouseItem();
+                                    BranchInItem inItem = new BranchInItem();
+                                    item.id = Guid.NewGuid().ToString();
+                                    item.createTime = DateTime.Now;
+                                    item.updateTime = DateTime.Now;
+                                    item.cash_date = DateTime.Now;
+                                    item.dispatchingWarehouseId = dispatchingWarehouse.id;
+                                    ZcGoodsMaster goodsFile = zcGoodsMasterDao.FindById(obj.goods_id);
+                                    item.goods_name = goodsFile.GoodsName;
+                                    item.goodsPrice = goodsFile.GoodsPrice.ToString();
+                                    item.goods_specifications = goodsFile.GoodsSpecifications;
+                                    item.nums = obj.sorteNum;
+                                    item.serialNumber = goodsFile.SerialNumber;
+                                    item.money = obj.money;
+                                    item.weight = obj.weight;
+                                    item.branch_total_id = dt.Rows[i][6].ToString();
+                                    item.goodsFile_id = obj.goods_id;
+                                    itemList.Add(item);
+                                    ///亭点入库单明细
+                                    inItem.id = Guid.NewGuid().ToString().Replace("-", "");
+                                    inItem.createTime = DateTime.Now;
+                                    inItem.updateTime = DateTime.Now;
+                                    inItem.branchIn_id = branchIn.id;
+                                    inItem.nums = obj.sorteNum;
+                                    inItem.weight = obj.weight;
+                                    inItem.money = obj.money;
+                                    inItem.goodsFile_id = goodsFile.Id;
+                                    inItem.price = goodsFile.GoodsPrice.ToString();
+                                    inItemList.Add(inItem);
+
+                                    nums += string.IsNullOrEmpty(item.nums) ? 0 : float.Parse(item.nums);
+                                    money += string.IsNullOrEmpty(item.money) ? 0 : float.Parse(item.money);
+                                    weight += string.IsNullOrEmpty(item.weight) ? 0 : float.Parse(item.weight);
+                                }
+
+                                dispatchingWarehouse.nums = nums.ToString();
+                                dispatchingWarehouse.money = money.ToString();
+                                dispatchingWarehouse.weight = weight.ToString();
+                                
+                                dispatchDao.addList(itemList);
+                                if(itemList.Count != 0){
+                                    dispatchDao.addObj(dispatchingWarehouse);
+                                }
+                                
+
+
+                                branchIn.nums = nums.ToString();
+                                branchIn.weight = weight.ToString();
+                                branchIn.money = money.ToString();
+
+                                branchInDao.addList(inItemList);
+
+                                if(inItemList.Count != 0){
+                                    branchInDao.addObj(branchIn);
+                                }
+                               
                             }
-                            dispatchingWarehouse.nums = nums.ToString();
-                            dispatchingWarehouse.money = money.ToString();
-                            dispatchingWarehouse.weight = weight.ToString();
-                            dispatchDao.addObj(dispatchingWarehouse);
-                            dispatchDao.addList(itemList);
+                           
                         }
 
                         //更改库存

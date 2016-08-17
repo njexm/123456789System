@@ -502,7 +502,7 @@ namespace sorteSystem.com.proem.sorte.dao
                 float old = string.IsNullOrEmpty(oldNums) ? 0F : float.Parse(storeHouse.Store);
                 storeHouse.Store = (old - float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)).ToString();
                 ///成本计算改变
-                if (float.Parse(storeHouse.Store) == 0)
+                if (float.Parse(storeHouse.Store) <= 0)
                 {
                     storeHouse.StoreMoney = "0";
                     storeHouse.include_tax_money = "0";
@@ -566,7 +566,7 @@ namespace sorteSystem.com.proem.sorte.dao
                 string oldNums = storeHouse.Store;
                 float old = string.IsNullOrEmpty(oldNums) ? 0F : float.Parse(storeHouse.Store);
                 storeHouse.Store = (old + float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)).ToString();
-                if (float.Parse(storeHouse.Store) == 0)
+                if (float.Parse(storeHouse.Store) <= 0)
                 {
                     storeHouse.StoreMoney = "0";
                     storeHouse.include_tax_money = "0";
@@ -818,6 +818,40 @@ namespace sorteSystem.com.proem.sorte.dao
                     cmd.Dispose();
                 }
                 return list;
+            }
+
+            public string getCashierByBranchId(string branchId)
+            {
+                string str = "";
+                String sql = "select CASH_REGISTER from zc_branch_total where id='"+branchId+"'";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleDataReader reader = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    cmd.Connection = conn;
+                    cmd.CommandText = sql;
+                    reader = cmd.ExecuteReader();
+                    if(reader.Read()){
+                        str = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Error("根据id或者分店收银机标识", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if(reader != null){
+                        reader.Close();
+                    }
+                    if(conn != null){
+                        conn.Close();
+                    }
+                }
+                return str;
             }
     }
 

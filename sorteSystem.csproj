@@ -74,12 +74,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="com.proem.sorte.dao\BranchInDao.cs" />
     <Compile Include="com.proem.sorte.dao\DispatchingDao.cs" />
     <Compile Include="com.proem.sorte.dao\orderDao.cs" />
     <Compile Include="com.proem.sorte.dao\ProcessDao.cs" />
     <Compile Include="com.proem.sorte.dao\ProcessItemDao.cs" />
     <Compile Include="com.proem.sorte.dao\sorteDao.cs" />
     <Compile Include="com.proem.sorte.dao\ZcGoodsMasterDao.cs" />
+    <Compile Include="com.proem.sorte.domain\BranchIn.cs" />
+    <Compile Include="com.proem.sorte.domain\BranchInItem.cs" />
     <Compile Include="com.proem.sorte.domain\DispatchingWarehouse.cs" />
     <Compile Include="com.proem.sorte.domain\DispatchingWarehouseItem.cs" />
     <Compile Include="com.proem.sorte.domain\orderSorte.cs" />
