@@ -1389,9 +1389,31 @@ namespace sorteSystem.com.proem.sorte.window
             }
             if (!flag)
             {
-                voice.Speak("错误", speakflag);
-                //MessageBox.Show("没有此商品，请确认商品或者货号是否正确", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                return;
+                if ("10000".Equals(serialNumber))
+                {
+                    orderSorte orderSorte = new orderSorte();
+                    orderSorte.createTime = DateTime.Now;
+                    orderSorte.updateTime = DateTime.Now;
+                    orderSorte.address = ConstantUtil.street;
+                    orderSorte.goods_id = zcGoodsMaster.Id;
+                    orderSorte.id = Guid.NewGuid().ToString();
+                    orderSorte.goods_name = zcGoodsMaster.GoodsName;
+                    //订单份数
+                    //orderSorte.orderNum = this.goodDataGridView.Rows[i].Cells[3].Value == null ? "" : this.goodDataGridView.Rows[i].Cells[3].Value.ToString();
+
+                    orderSorte.weight = weight;
+                    orderSorte.money = money;
+                    orderSorte.isWeight = isWeight ? "1" : "0";
+                    orderSorte.bar_code = num;
+                    sorteDao sortedao = new sorteDao();
+                    orderSorte.sorteNum = "1";
+                    sortedao.AddtransitItem(orderSorte);
+                }
+                else {
+                    voice.Speak("错误", speakflag);
+                    //MessageBox.Show("没有此商品，请确认商品或者货号是否正确", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    return;
+                }
             }
         }
 
