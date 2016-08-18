@@ -311,6 +311,36 @@ namespace SorteSystem.com.proem.sorte.dao
             }
         }
 
+        public void updateNums(string weight, string goodsFileId, float money, string orderSorteId)
+        {
+            string sql = "update ZC_ORDERS_SORTE set weight='" + weight + "', money = '" + money + "' where id='" + orderSorteId + "' ";
+            OracleConnection conn = null;
+            OracleTransaction tran = null;
+            OracleCommand cmd = new OracleCommand();
+            try
+            {
+                conn = OracleUtil.OpenConn();
+                tran = conn.BeginTransaction();
+                cmd.Connection = conn;
+                cmd.CommandText = sql;
+                cmd.ExecuteNonQuery();
+                tran.Commit();
+            }
+            catch (Exception ex)
+            {
+                tran.Rollback();
+                log.Error("更新分拣重量失败", ex);
+            }
+            finally
+            {
+                cmd.Dispose();
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
         public List<orderSorte> getSumBySorteId()
         {
             List<orderSorte> list = new List<orderSorte>();

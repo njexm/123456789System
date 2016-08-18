@@ -56,24 +56,59 @@ namespace sorteSystem.com.proem.sorte.window
             }
             else
             {
-                float nums = Int32.Parse(textBox1.Text);
-                sorteDao dao = new sorteDao();
-                ZcGoodsMasterDao goodsMasterDao = new ZcGoodsMasterDao();
-                ZcGoodsMaster master = goodsMasterDao.FindById(goodsFileId);
-                float oldnums = money / master.GoodsPrice;
-                dao.updateNums(nums, goodsFileId, nums * master.GoodsPrice, orderSorteId);
-                if (sorteGoodList != null && returnGoods == null)
+                if (textBox1.Text.Contains("."))
                 {
-                    this.sorteGoodList.reLoadSaleTable();
+                    if (textBox1.Text.IndexOf(".") == 0 || textBox1.Text.IndexOf(".") == textBox1.Text.Length - 1)
+                    {
+                        MessageBox.Show("请输入正确的重量!");
+                        return;
+                    }
+                    else 
+                    {
+                        float weight = float.Parse(textBox1.Text);
+                        sorteDao dao = new sorteDao();
+                        ZcGoodsMasterDao goodsMasterDao = new ZcGoodsMasterDao();
+                        ZcGoodsMaster master = goodsMasterDao.FindById(goodsFileId);
+                        float oldnums = money / master.GoodsPrice;
+                        dao.updateNums(weight.ToString("0.0000"), goodsFileId, weight * master.GoodsPrice, orderSorteId);
+                        if (sorteGoodList != null && returnGoods == null)
+                        {
+                            this.sorteGoodList.reLoadSaleTable();
+                        }
+                        else
+                        {
+                            this.returnGoods.reloadReturn();
+                            orderDao orderDao = new orderDao();
+                            orderSorte orderSorte = new orderSorte();
+                            orderSorte.goods_id = master.Id;
+                            orderSorte.sorteNum = "1";
+                            orderSorte.weight = weight.ToString("0.0000");
+                            orderDao.updateStoreHouse(orderSorte);
+                        }
+                    }
                 }
-                else {
-                    this.returnGoods.reloadReturn();
-                    orderDao orderDao = new orderDao();
-                    orderSorte orderSorte = new orderSorte();
-                    orderSorte.goods_id = master.Id;
-                    orderSorte.sorteNum = (oldnums - nums).ToString();
-                    orderSorte.weight = orderSorte.sorteNum;
-                    orderDao.updateStoreHouse(orderSorte);
+                else
+                {
+                    float nums = float.Parse(textBox1.Text);
+                    sorteDao dao = new sorteDao();
+                    ZcGoodsMasterDao goodsMasterDao = new ZcGoodsMasterDao();
+                    ZcGoodsMaster master = goodsMasterDao.FindById(goodsFileId);
+                    float oldnums = money / master.GoodsPrice;
+                    dao.updateNums(nums, goodsFileId, nums * master.GoodsPrice, orderSorteId);
+                    if (sorteGoodList != null && returnGoods == null)
+                    {
+                        this.sorteGoodList.reLoadSaleTable();
+                    }
+                    else
+                    {
+                        this.returnGoods.reloadReturn();
+                        orderDao orderDao = new orderDao();
+                        orderSorte orderSorte = new orderSorte();
+                        orderSorte.goods_id = master.Id;
+                        orderSorte.sorteNum = (oldnums - nums).ToString();
+                        orderSorte.weight = orderSorte.sorteNum;
+                        orderDao.updateStoreHouse(orderSorte);
+                    }
                 }
             }
             this.Close();
@@ -86,7 +121,7 @@ namespace sorteSystem.com.proem.sorte.window
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsNumber(e.KeyChar) && e.KeyChar != '\b' && e.KeyChar != 13)
+            if (!char.IsNumber(e.KeyChar) && e.KeyChar != '\b' && e.KeyChar != 13 && e.KeyChar != 46)
             {
                 e.Handled = true;
             }

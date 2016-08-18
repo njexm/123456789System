@@ -108,7 +108,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(200, 30);
             this.label1.TabIndex = 0;
-            this.label1.Text = "请输入数量?";
+            this.label1.Text = "请输入数/重量?";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ChangeNums

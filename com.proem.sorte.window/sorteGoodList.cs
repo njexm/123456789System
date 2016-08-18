@@ -1046,7 +1046,7 @@ namespace sorteSystem.com.proem.sorte.window
                         changeNums.Show();
                     }else
                     {
-                        MessageBox.Show("该商品为称重商品,无法进行手动数量修改!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("该商品为扫码称重商品,无法进行手动数量或者重量修改!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
                 
