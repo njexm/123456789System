@@ -284,7 +284,7 @@ namespace SorteSystem.com.proem.sorte.dao
 
         public void updateNums(float nums, string goodsFileId, float money, string orderSorteId)
         {
-            string sql = "update ZC_ORDERS_SORTE set sorteNum = '" + nums + "' ,weight='" + nums + "', money = '" + money + "' where id='" + orderSorteId + "' ";
+            string sql = "update ZC_ORDERS_SORTE set sorteNum = '" + nums + "' ,weight='" + nums + "', money = '" + money.ToString("0.0") + "' where id='" + orderSorteId + "' ";
             OracleConnection conn = null;
             OracleTransaction tran = null;
             OracleCommand cmd = new OracleCommand();
@@ -313,7 +313,7 @@ namespace SorteSystem.com.proem.sorte.dao
 
         public void updateNums(string weight, string goodsFileId, float money, string orderSorteId)
         {
-            string sql = "update ZC_ORDERS_SORTE set weight='" + weight + "', money = '" + money + "' where id='" + orderSorteId + "' ";
+            string sql = "update ZC_ORDERS_SORTE set weight='" + weight + "', money = '" + money.ToString("0.0") + "' where id='" + orderSorteId + "' ";
             OracleConnection conn = null;
             OracleTransaction tran = null;
             OracleCommand cmd = new OracleCommand();

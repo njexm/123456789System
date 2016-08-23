@@ -920,6 +920,7 @@ namespace sorteSystem.com.proem.sorte.window
                 { 
                     string serialNumber = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
                     string name = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+                    name = name.Trim();
                     string sorteNum = reader.IsDBNull(2) ? "0" : reader.GetString(2);
                     string weightString = reader.IsDBNull(3) ? "0" : reader.GetString(3);
                     string goodsPrice = reader.IsDBNull(4) ? "0" : reader.GetFloat(4).ToString("0.00");
@@ -931,6 +932,7 @@ namespace sorteSystem.com.proem.sorte.window
                     float money = float.Parse(goodsMoney);
                     totalSum += nums;
                     totalAmount += money;
+                    //Console.WriteLine(name + "------>"+name.Length);
                     if (name.Length < 4)
                     {
                         name += "\t\t";
@@ -1351,11 +1353,11 @@ namespace sorteSystem.com.proem.sorte.window
                         orderSorte.createTime = DateTime.Now;
                         orderSorte.updateTime = DateTime.Now;
                         orderSorte.address = ConstantUtil.street;
-                        orderSorte.goods_id = this.goodDataGridView.Rows[i].Cells[5].Value == null ? "" : this.goodDataGridView.Rows[i].Cells[5].Value.ToString();
+                        orderSorte.goods_id = zcGoodsMaster.Id;
                         orderSorte.id = Guid.NewGuid().ToString();
-                        orderSorte.goods_name = this.goodDataGridView.Rows[i].Cells[2].Value == null ? "" : this.goodDataGridView.Rows[i].Cells[2].Value.ToString();
+                        orderSorte.goods_name = zcGoodsMaster.GoodsName.Trim();
                         //订单份数
-                        orderSorte.orderNum = this.goodDataGridView.Rows[i].Cells[3].Value == null ? "" : this.goodDataGridView.Rows[i].Cells[3].Value.ToString();
+                        orderSorte.orderNum = this.goodDataGridView.Rows[i].Cells[3].Value == null ? "" : this.goodDataGridView.Rows[i].Cells[3].Value.ToString().Trim();
 
                         orderSorte.weight = weight;
                         orderSorte.money = money;
@@ -1397,7 +1399,7 @@ namespace sorteSystem.com.proem.sorte.window
                     orderSorte.address = ConstantUtil.street;
                     orderSorte.goods_id = zcGoodsMaster.Id;
                     orderSorte.id = Guid.NewGuid().ToString();
-                    orderSorte.goods_name = zcGoodsMaster.GoodsName;
+                    orderSorte.goods_name = zcGoodsMaster.GoodsName.Trim();
                     //订单份数
                     //orderSorte.orderNum = this.goodDataGridView.Rows[i].Cells[3].Value == null ? "" : this.goodDataGridView.Rows[i].Cells[3].Value.ToString();
 

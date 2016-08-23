@@ -31,8 +31,8 @@ namespace Branch
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-            string username = this.userNameTextBox.Text;
-            string pass = this.userPasswordTextBox.Text;
+            string username = this.userNameTextBox.Text.Trim();
+            string pass = this.userPasswordTextBox.Text.Trim();
             if (username.Equals("") || pass.Equals(""))
             {
                 promptPanel.Show();
