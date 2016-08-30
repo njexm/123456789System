@@ -1,0 +1,77 @@
+2016-08-30 17:15:48,437 [9] ERROR sorteSystem.com.proem.sorte.window.ReturnGoods [(null)] - ORA-01861: 文字与格式字符串不匹配
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-01861: 文字与格式字符串不匹配
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteReader(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, OracleDataReaderImpl& rdrImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[] scnForExecution, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, Int64& internalInitialLOBFS, OracleException& exceptionForArrayBindDML, Boolean isDescribeOnly, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader()
+   在 sorteSystem.com.proem.sorte.window.ReturnGoods.GetPrintStr() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.window\ReturnGoods.cs:行号 560
+2016-08-30 17:15:48,997 [9] ERROR sorteSystem.com.proem.sorte.window.ReturnGoods [(null)] - ORA-01861: 文字与格式字符串不匹配
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-01861: 文字与格式字符串不匹配
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteReader(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, OracleDataReaderImpl& rdrImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[] scnForExecution, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, Int64& internalInitialLOBFS, OracleException& exceptionForArrayBindDML, Boolean isDescribeOnly, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader()
+   在 sorteSystem.com.proem.sorte.window.ReturnGoods.GetPrintStr() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.window\ReturnGoods.cs:行号 560
+2016-08-30 17:15:49,468 [9] ERROR sorteSystem.com.proem.sorte.window.ReturnGoods [(null)] - ORA-01861: 文字与格式字符串不匹配
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-01861: 文字与格式字符串不匹配
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteReader(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, OracleDataReaderImpl& rdrImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[] scnForExecution, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, Int64& internalInitialLOBFS, OracleException& exceptionForArrayBindDML, Boolean isDescribeOnly, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader()
+   在 sorteSystem.com.proem.sorte.window.ReturnGoods.GetPrintStr() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.window\ReturnGoods.cs:行号 560
+2016-08-30 17:15:49,776 [9] ERROR sorteSystem.com.proem.sorte.window.ReturnGoods [(null)] - ORA-01861: 文字与格式字符串不匹配
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-01861: 文字与格式字符串不匹配
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteReader(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, OracleDataReaderImpl& rdrImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[] scnForExecution, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, Int64& internalInitialLOBFS, OracleException& exceptionForArrayBindDML, Boolean isDescribeOnly, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader()
+   在 sorteSystem.com.proem.sorte.window.ReturnGoods.GetPrintStr() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.window\ReturnGoods.cs:行号 560
+2016-08-30 17:15:50,208 [9] ERROR sorteSystem.com.proem.sorte.window.ReturnGoods [(null)] - ORA-01861: 文字与格式字符串不匹配
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-01861: 文字与格式字符串不匹配
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteReader(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, OracleDataReaderImpl& rdrImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[] scnForExecution, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, Int64& internalInitialLOBFS, OracleException& exceptionForArrayBindDML, Boolean isDescribeOnly, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader()
+   在 sorteSystem.com.proem.sorte.window.ReturnGoods.GetPrintStr() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.window\ReturnGoods.cs:行号 560
+2016-08-30 17:15:50,551 [9] ERROR sorteSystem.com.proem.sorte.window.ReturnGoods [(null)] - ORA-01861: 文字与格式字符串不匹配
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-01861: 文字与格式字符串不匹配
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteReader(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, OracleDataReaderImpl& rdrImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[] scnForExecution, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, Int64& internalInitialLOBFS, OracleException& exceptionForArrayBindDML, Boolean isDescribeOnly, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader()
+   在 sorteSystem.com.proem.sorte.window.ReturnGoods.GetPrintStr() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.window\ReturnGoods.cs:行号 560
+2016-08-30 17:15:50,997 [9] ERROR sorteSystem.com.proem.sorte.window.ReturnGoods [(null)] - ORA-01861: 文字与格式字符串不匹配
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-01861: 文字与格式字符串不匹配
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteReader(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, OracleDataReaderImpl& rdrImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[] scnForExecution, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, Int64& internalInitialLOBFS, OracleException& exceptionForArrayBindDML, Boolean isDescribeOnly, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader()
+   在 sorteSystem.com.proem.sorte.window.ReturnGoods.GetPrintStr() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.window\ReturnGoods.cs:行号 560
+2016-08-30 17:15:51,404 [9] ERROR sorteSystem.com.proem.sorte.window.ReturnGoods [(null)] - ORA-01861: 文字与格式字符串不匹配
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-01861: 文字与格式字符串不匹配
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteReader(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, OracleDataReaderImpl& rdrImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[] scnForExecution, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, Int64& internalInitialLOBFS, OracleException& exceptionForArrayBindDML, Boolean isDescribeOnly, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader()
+   在 sorteSystem.com.proem.sorte.window.ReturnGoods.GetPrintStr() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.window\ReturnGoods.cs:行号 560
+2016-08-30 17:15:51,767 [9] ERROR sorteSystem.com.proem.sorte.window.ReturnGoods [(null)] - ORA-01861: 文字与格式字符串不匹配
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-01861: 文字与格式字符串不匹配
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteReader(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, OracleDataReaderImpl& rdrImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[] scnForExecution, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, Int64& internalInitialLOBFS, OracleException& exceptionForArrayBindDML, Boolean isDescribeOnly, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader()
+   在 sorteSystem.com.proem.sorte.window.ReturnGoods.GetPrintStr() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.window\ReturnGoods.cs:行号 560
+2016-08-30 17:15:52,236 [9] ERROR sorteSystem.com.proem.sorte.window.ReturnGoods [(null)] - ORA-01861: 文字与格式字符串不匹配
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-01861: 文字与格式字符串不匹配
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteReader(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, OracleDataReaderImpl& rdrImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[] scnForExecution, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, Int64& internalInitialLOBFS, OracleException& exceptionForArrayBindDML, Boolean isDescribeOnly, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader()
+   在 sorteSystem.com.proem.sorte.window.ReturnGoods.GetPrintStr() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.window\ReturnGoods.cs:行号 560
+2016-08-30 17:15:52,637 [9] ERROR sorteSystem.com.proem.sorte.window.ReturnGoods [(null)] - ORA-01861: 文字与格式字符串不匹配
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-01861: 文字与格式字符串不匹配
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteReader(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, OracleDataReaderImpl& rdrImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[] scnForExecution, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, Int64& internalInitialLOBFS, OracleException& exceptionForArrayBindDML, Boolean isDescribeOnly, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader(Boolean requery, Boolean fillRequest, CommandBehavior behavior)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteReader()
+   在 sorteSystem.com.proem.sorte.window.ReturnGoods.GetPrintStr() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.window\ReturnGoods.cs:行号 560

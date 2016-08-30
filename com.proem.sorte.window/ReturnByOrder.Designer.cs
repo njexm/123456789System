@@ -28,16 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.main = new System.Windows.Forms.Panel();
+            this.cancelbutton = new System.Windows.Forms.Button();
+            this.okbutton = new System.Windows.Forms.Button();
             this.search = new System.Windows.Forms.TextBox();
             this.bodyPanel = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.serial = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.goodsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nums = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.okbutton = new System.Windows.Forms.Button();
-            this.cancelbutton = new System.Windows.Forms.Button();
             this.main.SuspendLayout();
             this.bodyPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -56,6 +56,39 @@
             this.main.Name = "main";
             this.main.Size = new System.Drawing.Size(484, 361);
             this.main.TabIndex = 0;
+            // 
+            // cancelbutton
+            // 
+            this.cancelbutton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cancelbutton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(201)))), ((int)(((byte)(67)))), ((int)(((byte)(65)))));
+            this.cancelbutton.FlatAppearance.BorderSize = 0;
+            this.cancelbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cancelbutton.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cancelbutton.ForeColor = System.Drawing.Color.White;
+            this.cancelbutton.Location = new System.Drawing.Point(203, 284);
+            this.cancelbutton.Name = "cancelbutton";
+            this.cancelbutton.Size = new System.Drawing.Size(120, 40);
+            this.cancelbutton.TabIndex = 3;
+            this.cancelbutton.Text = "取消(Esc)";
+            this.cancelbutton.UseVisualStyleBackColor = false;
+            // 
+            // okbutton
+            // 
+            this.okbutton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.okbutton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(201)))), ((int)(((byte)(67)))), ((int)(((byte)(65)))));
+            this.okbutton.FlatAppearance.BorderSize = 0;
+            this.okbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.okbutton.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.okbutton.ForeColor = System.Drawing.Color.White;
+            this.okbutton.Location = new System.Drawing.Point(337, 284);
+            this.okbutton.Name = "okbutton";
+            this.okbutton.Size = new System.Drawing.Size(120, 40);
+            this.okbutton.TabIndex = 2;
+            this.okbutton.Text = "确定(Ent)";
+            this.okbutton.UseVisualStyleBackColor = false;
+            this.okbutton.Click += new System.EventHandler(this.okbutton_Click);
             // 
             // search
             // 
@@ -86,14 +119,14 @@
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("宋体", 12F);
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 12F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.ColumnHeadersHeight = 26;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -130,38 +163,6 @@
             this.nums.Name = "nums";
             this.nums.ReadOnly = true;
             // 
-            // okbutton
-            // 
-            this.okbutton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.okbutton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(201)))), ((int)(((byte)(67)))), ((int)(((byte)(65)))));
-            this.okbutton.FlatAppearance.BorderSize = 0;
-            this.okbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.okbutton.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.okbutton.ForeColor = System.Drawing.Color.White;
-            this.okbutton.Location = new System.Drawing.Point(337, 284);
-            this.okbutton.Name = "okbutton";
-            this.okbutton.Size = new System.Drawing.Size(120, 40);
-            this.okbutton.TabIndex = 2;
-            this.okbutton.Text = "确定(Ent)";
-            this.okbutton.UseVisualStyleBackColor = false;
-            // 
-            // cancelbutton
-            // 
-            this.cancelbutton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelbutton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(201)))), ((int)(((byte)(67)))), ((int)(((byte)(65)))));
-            this.cancelbutton.FlatAppearance.BorderSize = 0;
-            this.cancelbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cancelbutton.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.cancelbutton.ForeColor = System.Drawing.Color.White;
-            this.cancelbutton.Location = new System.Drawing.Point(203, 284);
-            this.cancelbutton.Name = "cancelbutton";
-            this.cancelbutton.Size = new System.Drawing.Size(120, 40);
-            this.cancelbutton.TabIndex = 3;
-            this.cancelbutton.Text = "取消(Esc)";
-            this.cancelbutton.UseVisualStyleBackColor = false;
-            // 
             // ReturnByOrder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -169,7 +170,7 @@
             this.ClientSize = new System.Drawing.Size(484, 361);
             this.Controls.Add(this.main);
             this.Font = new System.Drawing.Font("宋体", 12F);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ReturnByOrder";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "按单退货";

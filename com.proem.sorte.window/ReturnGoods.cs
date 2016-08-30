@@ -3,6 +3,7 @@ using log4net;
 using Oracle.ManagedDataAccess.Client;
 using sorteSystem.com.proem.sorte.dao;
 using sorteSystem.com.proem.sorte.domain;
+using sorteSystem.com.proem.sorte.util;
 using sorteSystem.com.proem.sorte.window.util;
 using SorteSystem.com.proem.sorte.dao;
 using SorteSystem.com.proem.sorte.domain;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -73,6 +75,9 @@ namespace sorteSystem.com.proem.sorte.window
         {
             if(e.KeyCode == Keys.A){
                 button2_Click(this, EventArgs.Empty);
+            }
+            if(e.KeyCode == Keys.D){
+                button3_Click(this, EventArgs.Empty);
             }
             if(e.KeyCode == Keys.Escape){
                 button1_Click(this, EventArgs.Empty);
@@ -439,6 +444,211 @@ namespace sorteSystem.com.proem.sorte.window
         public void reloadReturn()
         {
             loadReturnGoods();
+        }
+
+        /// <summary>
+        /// 打印按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if(itemDataGird.DataSource == null || itemDataGird.RowCount == 0){
+                return;
+            }
+            printTicket();
+        }
+
+        public void printTicket()
+        {
+            PrintDocument pd = new PrintDocument();
+            //设置边距
+
+            Margins margin = new Margins(20, 20, 20, 20);
+
+            pd.DefaultPageSettings.Margins = margin;
+            ////纸张设置默认
+
+            //打印事件设置            
+            pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
+            try
+            {
+                // ppd.Document = pd;
+
+                //ppd.ShowDialog();
+                pd.Print();
+                ///打印完成后再进行初始化数据
+            }
+
+            catch (Exception ex)
+            {
+
+                log.Error("打印出错，检查打印机是否连通", ex);
+                MessageBox.Show("收银成功,打印出错,请检查打印机是否正确连接!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+
+            }
+        }
+
+        private int getYc(double cm)
+        {
+
+            return (int)(cm / 25.4) * 100;
+
+        }
+
+        public string[] GetPrintStr()
+        {
+            //DataTable dt = ConstantUtil.Branchds.Tables["Zc_sorte_item"];
+            //string street = dt.Rows[ConstantUtil.index][13].ToString();
+            orderDao sortedao = new orderDao();
+            String branchName = sortedao.getBranchName(returnStreet);
+
+            StringBuilder sb = new StringBuilder();
+
+            string tou = "宜鲜美配送有限公司退货单据";
+
+            string address = "南京市江宁区东麒路66号";
+
+            sb.Append("            " + tou + "     \n");
+
+            sb.Append("-----------------------------------------------------------------\n");
+
+            sb.Append("日期:" + DateTime.Now.ToShortDateString() + "  " + "分店:" + branchName + "\n");
+
+            sb.Append("-----------------------------------------------------------------\n");
+
+            sb.Append("品名" + "\t\t" + "单价" + "\t" + "重/数量" + "\t" + "小计" + "\n");
+            //for (int i = 0; i < itemDataGridView.RowCount; i++)
+            //{
+            //    int actualnums = itemDataGridView[4, i].Value == null ? 0 : Convert.ToInt32(itemDataGridView[4, i].Value);
+            //    if (actualnums != 0)
+            //    {
+            //        string name = itemDataGridView[1, i].Value == null ? "" : itemDataGridView[1, i].Value.ToString();
+            //        if (name.Length < 4)
+            //        {
+            //            name += "\t\t";
+            //        }
+            //        else if (name.Length <= 6)
+            //        {
+            //            name += "\t";
+            //        }
+            //        else
+            //        {
+            //            name = name.Substring(0, 6) + "... ";
+            //        }
+            //        string price = itemDataGridView[2, i].Value == null ? "" : itemDataGridView[2, i].Value.ToString();
+            //        price = float.Parse(price).ToString("0.00");
+            //        string amount = itemDataGridView[7, i].Value == null ? "" : itemDataGridView[7, i].Value.ToString();
+            //        amount = float.Parse(amount).ToString("0.00");
+            //        sb.Append(name + price + "\t" + actualnums + "\t" + amount + "\n");
+            //    }
+            //}
+            float totalSum = 0;
+            float totalAmount = 0;
+            string first = DateTime.Now.ToString("yyyy-MM-dd 00:00:01");
+            string last = DateTime.Now.ToString("yyyy-MM-dd 23:59:59");
+            string sql = "select a.goods_id, a.goods_name, a.SORTENUM, a.WEIGHT, b.GOODS_PRICE, b.GOODS_UNIT,a.money from ZC_ORDERS_SORTE a left join ZC_GOODS_MASTER b "
+                + " on a.GOODS_ID = b.SERIALNUMBER where a.ADDRESS = :street and a.isReturn='1' and a.createTime>=to_date('"+first+"', 'yyyy-MM-dd HH24:mi:ss') and a.createTime<=to_date('"+last+"', 'yyyy-MM-dd HH24:mi:ss') order by b.serialnumber ";
+            OracleConnection conn = null;
+            OracleCommand cmd = new OracleCommand();
+            try
+            {
+                conn = OracleUtil.OpenConn();
+                cmd.Connection = conn;
+                cmd.CommandText = sql;
+                cmd.Parameters.Add(":street", returnStreet);
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    string serialNumber = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
+                    string name = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+                    name = name.Trim();
+                    string sorteNum = reader.IsDBNull(2) ? "0" : reader.GetString(2);
+                    string weightString = reader.IsDBNull(3) ? "0" : reader.GetString(3);
+                    string goodsPrice = reader.IsDBNull(4) ? "0" : reader.GetFloat(4).ToString("0.00");
+                    string unit = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
+                    string goodsMoney = reader.IsDBNull(6) ? "0" : reader.GetString(6);
+                    float weight = float.Parse(weightString);
+                    float price = float.Parse(goodsPrice);
+                    float nums = float.Parse(sorteNum);
+                    float money = float.Parse(goodsMoney);
+                    totalSum += nums;
+                    totalAmount += money;
+                    //Console.WriteLine(name + "------>"+name.Length);
+                    if (name.Length < 4)
+                    {
+                        name += "\t\t";
+                    }
+                    else if (name.Length <= 6)
+                    {
+                        name += "\t";
+                    }
+                    else
+                    {
+                        name = name.Substring(0, 6) + "...\t";
+                    }
+                    if (serialNumber.Length == 5)
+                    {
+                        sb.Append(name + price.ToString("0.00") + "\t" + weight.ToString("0.000") + "\t" + money.ToString("0.00") + "\n");
+                    }
+                    else
+                    {
+                        sb.Append(name + price.ToString("0.00") + "\t" + sorteNum + unit + "\t" + money.ToString("0.00") + "\n");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+            }
+            finally
+            {
+                cmd.Dispose();
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+            sb.Append("-----------------------------------------------------------------\n");
+
+            sb.Append("数量: " + totalSum.ToString("0.00") + "\t\t 合计: " + totalAmount.ToString("0.00") + "\n");
+
+            sb.Append("-----------------------------------------------------------------\n");
+
+            sb.Append("地址：" + address + "\n");
+
+
+            sb.Append("             谢谢惠顾欢迎下次光临                ");
+            Console.WriteLine(sb.ToString());
+            return sb.ToString().Split('\n');
+
+        }
+
+        private int index;
+
+        private void pd_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Font InvoiceFont = new Font("Arial", 10, FontStyle.Regular);
+            SolidBrush GrayBrush = new SolidBrush(Color.Black);
+            string[] strs = GetPrintStr();
+            int y = 0;
+            while (index < strs.Length)
+            {
+                g.DrawString(GetPrintStr()[index++], InvoiceFont, GrayBrush, 5, 5 + y);
+                y += 15;
+                if (y > e.PageBounds.Height)
+                {
+                    e.HasMorePages = true;
+                    return;
+                }
+
+            }
+            index = 0;
+            e.HasMorePages = false;
         }
     }
 }

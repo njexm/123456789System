@@ -28,18 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle31 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle32 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.bodyPanel = new System.Windows.Forms.Panel();
             this.datagridPanel = new System.Windows.Forms.Panel();
             this.itemDataGird = new System.Windows.Forms.DataGridView();
+            this.serialNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.goodsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.goodsWeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.money = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.goodsFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.isWeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -51,13 +58,7 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.logoLabel = new System.Windows.Forms.Label();
             this.timePanel = new System.Windows.Forms.Panel();
-            this.serialNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.goodsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.goodsWeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.money = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.goodsFile = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.isWeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button3 = new System.Windows.Forms.Button();
             this.mainPanel.SuspendLayout();
             this.bodyPanel.SuspendLayout();
             this.datagridPanel.SuspendLayout();
@@ -108,22 +109,22 @@
             this.itemDataGird.AllowUserToDeleteRows = false;
             this.itemDataGird.AllowUserToResizeColumns = false;
             this.itemDataGird.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
-            this.itemDataGird.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle25.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle25.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.Color.Black;
+            this.itemDataGird.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle25;
             this.itemDataGird.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.itemDataGird.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.itemDataGird.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.itemDataGird.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 20F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.itemDataGird.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle26.Font = new System.Drawing.Font("宋体", 20F);
+            dataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.itemDataGird.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle26;
             this.itemDataGird.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.itemDataGird.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.serialNumber,
@@ -133,14 +134,14 @@
             this.goodsFile,
             this.isWeight,
             this.id});
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("宋体", 20F);
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.itemDataGird.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle31.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle31.Font = new System.Drawing.Font("宋体", 20F);
+            dataGridViewCellStyle31.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle31.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle31.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle31.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.itemDataGird.DefaultCellStyle = dataGridViewCellStyle31;
             this.itemDataGird.Dock = System.Windows.Forms.DockStyle.Fill;
             this.itemDataGird.EnableHeadersVisualStyles = false;
             this.itemDataGird.Location = new System.Drawing.Point(0, 0);
@@ -148,9 +149,9 @@
             this.itemDataGird.Name = "itemDataGird";
             this.itemDataGird.ReadOnly = true;
             this.itemDataGird.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Black;
-            this.itemDataGird.RowsDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle32.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle32.SelectionForeColor = System.Drawing.Color.Black;
+            this.itemDataGird.RowsDefaultCellStyle = dataGridViewCellStyle32;
             this.itemDataGird.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
             this.itemDataGird.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.DodgerBlue;
             this.itemDataGird.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
@@ -160,6 +161,78 @@
             this.itemDataGird.TabIndex = 0;
             this.itemDataGird.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.itemDataGird_CellFormatting);
             this.itemDataGird.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.itemDataGird_RowPostPaint);
+            // 
+            // serialNumber
+            // 
+            this.serialNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.serialNumber.DataPropertyName = "serialNumber";
+            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.serialNumber.DefaultCellStyle = dataGridViewCellStyle27;
+            this.serialNumber.FillWeight = 0.25F;
+            this.serialNumber.HeaderText = "货号";
+            this.serialNumber.Name = "serialNumber";
+            this.serialNumber.ReadOnly = true;
+            // 
+            // goodsName
+            // 
+            this.goodsName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.goodsName.DataPropertyName = "goodsName";
+            dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.goodsName.DefaultCellStyle = dataGridViewCellStyle28;
+            this.goodsName.FillWeight = 0.25F;
+            this.goodsName.HeaderText = "商品名";
+            this.goodsName.Name = "goodsName";
+            this.goodsName.ReadOnly = true;
+            // 
+            // goodsWeight
+            // 
+            this.goodsWeight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.goodsWeight.DataPropertyName = "Weight";
+            dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle29.Format = "N2";
+            dataGridViewCellStyle29.NullValue = "0.00";
+            this.goodsWeight.DefaultCellStyle = dataGridViewCellStyle29;
+            this.goodsWeight.FillWeight = 0.25F;
+            this.goodsWeight.HeaderText = "重量";
+            this.goodsWeight.Name = "goodsWeight";
+            this.goodsWeight.ReadOnly = true;
+            // 
+            // money
+            // 
+            this.money.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.money.DataPropertyName = "money";
+            dataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle30.Format = "N0";
+            dataGridViewCellStyle30.NullValue = "0";
+            this.money.DefaultCellStyle = dataGridViewCellStyle30;
+            this.money.FillWeight = 0.25F;
+            this.money.HeaderText = "金额";
+            this.money.Name = "money";
+            this.money.ReadOnly = true;
+            // 
+            // goodsFile
+            // 
+            this.goodsFile.DataPropertyName = "goodsFileId";
+            this.goodsFile.HeaderText = "goodsFile";
+            this.goodsFile.Name = "goodsFile";
+            this.goodsFile.ReadOnly = true;
+            this.goodsFile.Visible = false;
+            // 
+            // isWeight
+            // 
+            this.isWeight.DataPropertyName = "isWeight";
+            this.isWeight.HeaderText = "isWeight";
+            this.isWeight.Name = "isWeight";
+            this.isWeight.ReadOnly = true;
+            this.isWeight.Visible = false;
+            // 
+            // id
+            // 
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "id";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Visible = false;
             // 
             // groupBox2
             // 
@@ -229,6 +302,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.logoPanel.BackgroundImage = global::sorteSystem.Properties.Resources.login_bg_2;
             this.logoPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.logoPanel.Controls.Add(this.button3);
             this.logoPanel.Controls.Add(this.button2);
             this.logoPanel.Controls.Add(this.button1);
             this.logoPanel.Controls.Add(this.panel4);
@@ -299,82 +373,27 @@
             // 
             this.timePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.timePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.timePanel.Location = new System.Drawing.Point(420, 15);
+            this.timePanel.Location = new System.Drawing.Point(300, 15);
             this.timePanel.Name = "timePanel";
             this.timePanel.Size = new System.Drawing.Size(119, 32);
             this.timePanel.TabIndex = 25;
             // 
-            // serialNumber
+            // button3
             // 
-            this.serialNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.serialNumber.DataPropertyName = "serialNumber";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.serialNumber.DefaultCellStyle = dataGridViewCellStyle3;
-            this.serialNumber.FillWeight = 0.25F;
-            this.serialNumber.HeaderText = "货号";
-            this.serialNumber.Name = "serialNumber";
-            this.serialNumber.ReadOnly = true;
-            // 
-            // goodsName
-            // 
-            this.goodsName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.goodsName.DataPropertyName = "goodsName";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.goodsName.DefaultCellStyle = dataGridViewCellStyle4;
-            this.goodsName.FillWeight = 0.25F;
-            this.goodsName.HeaderText = "商品名";
-            this.goodsName.Name = "goodsName";
-            this.goodsName.ReadOnly = true;
-            // 
-            // goodsWeight
-            // 
-            this.goodsWeight.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.goodsWeight.DataPropertyName = "Weight";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.Format = "N2";
-            dataGridViewCellStyle5.NullValue = "0.00";
-            this.goodsWeight.DefaultCellStyle = dataGridViewCellStyle5;
-            this.goodsWeight.FillWeight = 0.25F;
-            this.goodsWeight.HeaderText = "重量";
-            this.goodsWeight.Name = "goodsWeight";
-            this.goodsWeight.ReadOnly = true;
-            // 
-            // money
-            // 
-            this.money.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.money.DataPropertyName = "money";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.Format = "N0";
-            dataGridViewCellStyle6.NullValue = "0";
-            this.money.DefaultCellStyle = dataGridViewCellStyle6;
-            this.money.FillWeight = 0.25F;
-            this.money.HeaderText = "金额";
-            this.money.Name = "money";
-            this.money.ReadOnly = true;
-            // 
-            // goodsFile
-            // 
-            this.goodsFile.DataPropertyName = "goodsFileId";
-            this.goodsFile.HeaderText = "goodsFile";
-            this.goodsFile.Name = "goodsFile";
-            this.goodsFile.ReadOnly = true;
-            this.goodsFile.Visible = false;
-            // 
-            // isWeight
-            // 
-            this.isWeight.DataPropertyName = "isWeight";
-            this.isWeight.HeaderText = "isWeight";
-            this.isWeight.Name = "isWeight";
-            this.isWeight.ReadOnly = true;
-            this.isWeight.Visible = false;
-            // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "id";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Visible = false;
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(201)))), ((int)(((byte)(67)))), ((int)(((byte)(65)))));
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button3.ForeColor = System.Drawing.Color.White;
+            this.button3.Location = new System.Drawing.Point(454, 10);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(100, 40);
+            this.button3.TabIndex = 30;
+            this.button3.Text = "打印(D)";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // ReturnGoods
             // 
@@ -428,5 +447,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn goodsFile;
         private System.Windows.Forms.DataGridViewTextBoxColumn isWeight;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
+        private System.Windows.Forms.Button button3;
     }
 }

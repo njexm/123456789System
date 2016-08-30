@@ -40,6 +40,11 @@ namespace sorteSystem.com.proem.sorte.window
             search.Focus();
         }
 
+        private void okbutton_Click(object sender, EventArgs e)
+        {
+
+        }
+
 
     }
 }
