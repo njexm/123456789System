@@ -183,6 +183,16 @@ namespace sorteSystem.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap 扫码收银 {
+            get {
+                object obj = ResourceManager.GetObject("扫码收银", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap 未标题_1 {
             get {
                 object obj = ResourceManager.GetObject("未标题-1", resourceCulture);

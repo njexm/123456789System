@@ -21,15 +21,31 @@ namespace sorteSystem.com.proem.sorte.window
 
         private ReturnGoods returnGoods;
 
+        private SorteWithoutOrder sorteWithOutOrder;
+
         public BranchChoose()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 重载
+        /// </summary>
+        /// <param name="returnGoods"></param>
         public BranchChoose(ReturnGoods returnGoods)
         {
             InitializeComponent();
             this.returnGoods = returnGoods;
+        }
+
+        /// <summary>
+        /// 重载
+        /// </summary>
+        /// <param name="sorteWithOutOrder"></param>
+        public BranchChoose(SorteWithoutOrder sorteWithOutOrder) 
+        {
+            InitializeComponent();
+            this.sorteWithOutOrder = sorteWithOutOrder;
         }
 
         private void BranchChoose_KeyDown(object sender, KeyEventArgs e)
@@ -98,7 +114,13 @@ namespace sorteSystem.com.proem.sorte.window
             }
             string street = branchDataGridView.CurrentRow.Cells[0].Value.ToString();
             string branchName = branchDataGridView.CurrentRow.Cells[1].Value.ToString();
-            returnGoods.setBranch(street, branchName);
+            if (returnGoods != null)
+            {
+                returnGoods.setBranch(street, branchName);
+            }
+            else {
+                sorteWithOutOrder.setBranch(street, branchName);
+            }
             this.Close();
         }
 

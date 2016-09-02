@@ -30,6 +30,8 @@
         {
             this.mainPanel = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.button5 = new System.Windows.Forms.Button();
             this.panel5 = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -43,6 +45,7 @@
             this.timePanel = new System.Windows.Forms.Panel();
             this.mainPanel.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -66,18 +69,39 @@
             this.panel3.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
             this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel3.Controls.Add(this.panel6);
             this.panel3.Controls.Add(this.panel5);
             this.panel3.Controls.Add(this.panel2);
             this.panel3.Controls.Add(this.panel1);
             this.panel3.Location = new System.Drawing.Point(38, 135);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(700, 290);
+            this.panel3.Size = new System.Drawing.Size(700, 380);
             this.panel3.TabIndex = 32;
+            // 
+            // panel6
+            // 
+            this.panel6.Controls.Add(this.button5);
+            this.panel6.Location = new System.Drawing.Point(399, 202);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(180, 141);
+            this.panel6.TabIndex = 33;
+            // 
+            // button5
+            // 
+            this.button5.BackgroundImage = global::sorteSystem.Properties.Resources.扫码收银;
+            this.button5.FlatAppearance.BorderSize = 0;
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button5.Location = new System.Drawing.Point(0, 0);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(180, 141);
+            this.button5.TabIndex = 0;
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // panel5
             // 
             this.panel5.Controls.Add(this.button4);
-            this.panel5.Location = new System.Drawing.Point(490, 68);
+            this.panel5.Location = new System.Drawing.Point(96, 202);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(180, 141);
             this.panel5.TabIndex = 32;
@@ -97,7 +121,7 @@
             // panel2
             // 
             this.panel2.Controls.Add(this.button3);
-            this.panel2.Location = new System.Drawing.Point(260, 68);
+            this.panel2.Location = new System.Drawing.Point(399, 25);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(180, 141);
             this.panel2.TabIndex = 31;
@@ -117,7 +141,7 @@
             // panel1
             // 
             this.panel1.Controls.Add(this.button2);
-            this.panel1.Location = new System.Drawing.Point(30, 68);
+            this.panel1.Location = new System.Drawing.Point(96, 25);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(180, 141);
             this.panel1.TabIndex = 29;
@@ -214,6 +238,7 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Main_KeyDown);
             this.mainPanel.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
@@ -238,5 +263,7 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Button button5;
     }
 }

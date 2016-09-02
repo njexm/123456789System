@@ -25,6 +25,8 @@ namespace sorteSystem.com.proem.sorte.window
 
         private ReturnGoods returnGoods;
 
+        private SorteWithoutOrder sorteWithOutOrder;
+
         public ChangeNums()
         {
             InitializeComponent();
@@ -36,6 +38,15 @@ namespace sorteSystem.com.proem.sorte.window
             this.goodsFileId = goodsFileId;
             this.money = money;
             this.sorteGoodList = obj;
+            this.orderSorteId = orderSorteId;
+        }
+
+        public ChangeNums(string goodsFileId, float money, string orderSorteId, SorteWithoutOrder obj)
+        {
+            InitializeComponent();
+            this.goodsFileId = goodsFileId;
+            this.money = money;
+            this.sorteWithOutOrder = obj;
             this.orderSorteId = orderSorteId;
         }
 
@@ -71,19 +82,29 @@ namespace sorteSystem.com.proem.sorte.window
                         ZcGoodsMaster master = goodsMasterDao.FindById(goodsFileId);
                         float oldnums = money / master.GoodsPrice;
                         dao.updateNums(weight.ToString("0.0000"), goodsFileId, weight * master.GoodsPrice, orderSorteId);
-                        if (sorteGoodList != null && returnGoods == null)
+                        if (sorteGoodList != null )
                         {
                             this.sorteGoodList.reLoadSaleTable();
                         }
-                        else
+                        else if (returnGoods != null)
                         {
                             this.returnGoods.reloadReturn();
                             orderDao orderDao = new orderDao();
                             orderSorte orderSorte = new orderSorte();
                             orderSorte.goods_id = master.Id;
-                            orderSorte.sorteNum = "1";
+                            orderSorte.sorteNum = "0";
                             orderSorte.weight = weight.ToString("0.0000");
                             orderDao.updateStoreHouse(orderSorte);
+                        }
+                        else
+                        {
+                            this.sorteWithOutOrder.reloadData();
+                            orderDao orderDao = new orderDao();
+                            orderSorte orderSorte = new orderSorte();
+                            orderSorte.goods_id = master.Id;
+                            orderSorte.sorteNum = "0";
+                            orderSorte.weight = weight.ToString("0.0000");
+                            orderDao.updateStoreHouseAdd(orderSorte);
                         }
                     }
                 }
@@ -95,11 +116,11 @@ namespace sorteSystem.com.proem.sorte.window
                     ZcGoodsMaster master = goodsMasterDao.FindById(goodsFileId);
                     float oldnums = money / master.GoodsPrice;
                     dao.updateNums(nums, goodsFileId, nums * master.GoodsPrice, orderSorteId);
-                    if (sorteGoodList != null && returnGoods == null)
+                    if (sorteGoodList != null )
                     {
                         this.sorteGoodList.reLoadSaleTable();
                     }
-                    else
+                    else if (returnGoods != null)
                     {
                         this.returnGoods.reloadReturn();
                         orderDao orderDao = new orderDao();
@@ -108,6 +129,16 @@ namespace sorteSystem.com.proem.sorte.window
                         orderSorte.sorteNum = (oldnums - nums).ToString();
                         orderSorte.weight = orderSorte.sorteNum;
                         orderDao.updateStoreHouse(orderSorte);
+                    }
+                    else
+                    {
+                        this.sorteWithOutOrder.reloadData();
+                        orderDao orderDao = new orderDao();
+                        orderSorte orderSorte = new orderSorte();
+                        orderSorte.goods_id = master.Id;
+                        orderSorte.sorteNum = (oldnums - nums).ToString();
+                        orderSorte.weight = orderSorte.sorteNum;
+                        orderDao.updateStoreHouseAdd(orderSorte);
                     }
                 }
             }

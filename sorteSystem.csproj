@@ -175,6 +175,12 @@
     <Compile Include="com.proem.sorte.window\sorteList.Designer.cs">
       <DependentUpon>sorteList.cs</DependentUpon>
     </Compile>
+    <Compile Include="com.proem.sorte.window\SorteWithoutOrder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\SorteWithoutOrder.Designer.cs">
+      <DependentUpon>SorteWithoutOrder.cs</DependentUpon>
+    </Compile>
     <Compile Include="com.proem.sorte.window\util\Loading.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -233,6 +239,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="com.proem.sorte.window\sorteList.resx">
       <DependentUpon>sorteList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="com.proem.sorte.window\SorteWithoutOrder.resx">
+      <DependentUpon>SorteWithoutOrder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="com.proem.sorte.window\util\Loading.resx">
       <DependentUpon>Loading.cs</DependentUpon>
@@ -318,6 +327,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\login-error-3.png" />
+    <None Include="Resources\扫码收银.png" />
     <None Include="Resources\mk_02.png" />
   </ItemGroup>
   <ItemGroup>

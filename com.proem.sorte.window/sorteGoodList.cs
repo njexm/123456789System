@@ -212,7 +212,7 @@ namespace sorteSystem.com.proem.sorte.window
                                 + "(select a.goods_state,a.name,a.nums,c.id as goodsfile_id,c.serialNumber,b.branchid,d.sortenum,e.workname,e.workcode "
                                 + " from zc_order_process_item a "
                                 + " left join zc_order_process b on b.id=a.order_id left join zc_goods_master c on c.id=a.goodsfile_id left join (select SUM(sortenum) as sortenum,goods_id ,address from ZC_ORDERS_SORTE where sorteId = '" + ConstantUtil.sorte_id + "' GROUP by goods_id, address) d on d.goods_id = c.id and b.branchid=d.address  left join zc_workstation e on e.id = c.zcuserinfo"
-                                + " where branchid = '" + result + "' ) "
+                                + " where a.groupflag=1 and branchid = '" + result + "' ) "
                                 + "group by name,serialNumber,goodsfile_id,branchid,sorteNum,workname,workcode order by serialNumber";
                     OracleCommand cmd = new OracleCommand(sql, connection);
                     OracleDataAdapter da = new OracleDataAdapter(cmd);

@@ -67,6 +67,9 @@ namespace sorteSystem.com.proem.sorte.window
             {
                 button4_Click(this, EventArgs.Empty);
             }
+            if(e.KeyCode == Keys.F4){
+                button5_Click(this, EventArgs.Empty);
+            }
             if(e.KeyCode == Keys.Escape)
             {
                 button1_Click(this, EventArgs.Empty);
@@ -82,6 +85,19 @@ namespace sorteSystem.com.proem.sorte.window
         {
             ReturnGoods obj = new ReturnGoods(this);
             obj.Show();
+            this.Hide();
+        }
+
+        /// <summary>
+        /// 点击进入扫码收银
+        /// 不按照订单来的收银
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button5_Click(object sender, EventArgs e)
+        {
+            SorteWithoutOrder sorteWithOutOrder = new SorteWithoutOrder(this);
+            sorteWithOutOrder.Show();
             this.Hide();
         }
     }
