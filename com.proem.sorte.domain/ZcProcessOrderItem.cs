@@ -177,5 +177,10 @@ namespace sorteSystem.com.proem.sorte.domain
            get;
            set;
        }
+
+       /// <summary>
+       /// 订单类型
+       /// </summary>
+       public int groupFlag { get; set; }
     }
 }

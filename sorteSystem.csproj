@@ -64,6 +64,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -94,6 +95,7 @@
     <Compile Include="com.proem.sorte.domain\Sorte.cs" />
     <Compile Include="com.proem.sorte.domain\ZcProcessOrderItem.cs" />
     <Compile Include="com.proem.sorte.util\ConstantUtil.cs" />
+    <Compile Include="com.proem.sorte.util\HttpUtil.cs" />
     <Compile Include="com.proem.sorte.util\MD5Util.cs" />
     <Compile Include="com.proem.sorte.util\OracleUtil.cs" />
     <Compile Include="com.proem.sorte.util\SocketUtil.cs" />

@@ -88,7 +88,8 @@ namespace sorteSystem.com.proem.sorte.dao
             try
             {
                 conn = OracleUtil.OpenConn();
-                string sql = "select * from zc_order_process_item where order_id='" + orderId + "'";
+                string sql = "select id,CREATETIME, UPDATETIME,ADDON,AMOUNT,bn,cost,G_PRICE,GOODS_STATE,ITEM_TYPE,name,NUMS, "
+                    +" obj_id,order_id,PRICE,PRODUCT_ID,score,SENDNUM, TYPE_ID, WEIGHT, GOODSFILE_ID,PROVIDER_ID,groupFlag from zc_order_process_item where order_id='" + orderId + "'";
                 command.CommandText = sql;
                 command.Connection = conn;
                 reader = command.ExecuteReader();
@@ -117,6 +118,7 @@ namespace sorteSystem.com.proem.sorte.dao
                     user.weight = reader.IsDBNull(19) ? string.Empty : reader.GetString(19);
                     user.goodsFile = reader.IsDBNull(20) ? string.Empty : reader.GetString(20);
                     user.providerInfo = reader.IsDBNull(21) ? string.Empty : reader.GetString(21);
+                    user.groupFlag = reader.IsDBNull(22) ? default(int) : reader.GetInt32(22);
                     list.Add(user);
                 }
             }
@@ -140,7 +142,7 @@ namespace sorteSystem.com.proem.sorte.dao
         //更新
         public void UpdateStatus(object id)
         {
-            string sql = "update ZC_SORTE set AUDITS_TATUS = '4' where id = '"+id+"'";
+            string sql = "update ZC_SORTE set AUDITS_TATUS = '4', updateTime=:updateTime  where id = '"+id+"'";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             OracleTransaction tran = null;
@@ -150,6 +152,7 @@ namespace sorteSystem.com.proem.sorte.dao
                 tran = conn.BeginTransaction();
                 cmd.CommandText = sql;
                 cmd.Connection = conn;
+                cmd.Parameters.Add(":updateTime", DateTime.Now);
                 cmd.ExecuteNonQuery();
                 tran.Commit();
             }
@@ -345,8 +348,8 @@ namespace sorteSystem.com.proem.sorte.dao
                 cmd.CommandText = sql;
                 cmd.Connection = conn;
                 cmd.Parameters.Add(":id", obj.id);
-                cmd.Parameters.Add(":createTime", obj.createTime);
-                cmd.Parameters.Add(":updateTime", obj.updateTime);
+                cmd.Parameters.Add(":createTime", DateTime.Now);
+                cmd.Parameters.Add(":updateTime", DateTime.Now);
                 cmd.Parameters.Add(":BRANCHID", obj.branchId);
                 cmd.Parameters.Add(":CANSIGNPHONE", obj.cansignPhone);
                 cmd.Parameters.Add(":CONSIGNEE", obj.consignee);
@@ -488,10 +491,12 @@ namespace sorteSystem.com.proem.sorte.dao
         /// <param name="obj"></param>
             public void updateStoreHouse(orderSorte obj)
             {
+                ZcGoodsMasterDao zcGoodsMasterDao = new ZcGoodsMasterDao();
                 string sql = "update zc_storehouse set updateTime=:updateTime,store = :store, storemoney = :money, include_tax_money = :include_tax_money ,weight=:weight where id = :id";
                 OracleConnection conn = null;
                 OracleTransaction tran = null;
                 OracleCommand cmd = new OracleCommand();
+                ZcGoodsMaster zcGoodsMaster = zcGoodsMasterDao.FindById(obj.goods_id);
                 StoreHouse storeHouse = FindByGoodsFileId(obj.goods_id);
                 if (storeHouse == null)
                 {
@@ -500,17 +505,35 @@ namespace sorteSystem.com.proem.sorte.dao
                 }
                 string oldNums = storeHouse.Store;
                 float old = string.IsNullOrEmpty(oldNums) ? 0F : float.Parse(storeHouse.Store);
-                storeHouse.Store = (old - float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)).ToString();
+                storeHouse.Store = (old - float.Parse(String.IsNullOrEmpty(obj.weight) ? "0" : obj.weight)).ToString();
                 ///成本计算改变
                 if (float.Parse(storeHouse.Store) <= 0)
                 {
-                    storeHouse.StoreMoney = "0";
-                    storeHouse.include_tax_money = "0";
+                    if (float.Parse(storeHouse.StoreMoney) > 0)
+                    {
+                        float a = float.Parse(obj.weight) - old;
+                        storeHouse.StoreMoney = ((0 - a * float.Parse(zcGoodsMaster.GoodsPurchasePrice))).ToString();
+                        storeHouse.include_tax_money = (0 - a * float.Parse(zcGoodsMaster.GoodsPurchasePrice)).ToString();
+                    }
+                    else
+                    { 
+                        storeHouse.StoreMoney = (float.Parse(storeHouse.StoreMoney) - float.Parse(obj.weight) * float.Parse(zcGoodsMaster.GoodsPurchasePrice)).ToString();
+                        storeHouse.include_tax_money = (float.Parse(storeHouse.StoreMoney) - float.Parse(obj.weight) * float.Parse(zcGoodsMaster.GoodsPurchasePrice)).ToString();
+                    }
                 }
                 else
                 {
-                    storeHouse.StoreMoney = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old - float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.StoreMoney) ? "0" : storeHouse.StoreMoney) / old)).ToString() : "0";
-                    storeHouse.include_tax_money = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old - float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.include_tax_money) ? "0" : storeHouse.include_tax_money) / old)).ToString() : "0";
+                    if (float.Parse(storeHouse.StoreMoney) > 0)
+                    {
+                        storeHouse.StoreMoney = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old - float.Parse(String.IsNullOrEmpty(obj.weight) ? "0" : obj.weight)) * (float.Parse(String.IsNullOrEmpty(storeHouse.StoreMoney) ? "0" : storeHouse.StoreMoney) / old)).ToString() : "0";
+                        storeHouse.include_tax_money = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old - float.Parse(String.IsNullOrEmpty(obj.weight) ? "0" : obj.weight)) * (float.Parse(String.IsNullOrEmpty(storeHouse.include_tax_money) ? "0" : storeHouse.include_tax_money) / old)).ToString() : "0";
+                    }
+                    else 
+                    {
+                        storeHouse.StoreMoney = ((float.Parse(storeHouse.StoreMoney) - float.Parse(zcGoodsMaster.GoodsPurchasePrice) * float.Parse(obj.weight))).ToString();
+                        storeHouse.include_tax_money = (float.Parse(storeHouse.StoreMoney) - float.Parse(zcGoodsMaster.GoodsPurchasePrice) * float.Parse(obj.weight)).ToString();
+                    }
+                    
                 }
                 
                 float oldWeight = string.IsNullOrEmpty(storeHouse.Weight) ? 0F : float.Parse(storeHouse.Weight);
@@ -553,11 +576,14 @@ namespace sorteSystem.com.proem.sorte.dao
         /// <param name="obj"></param>
             public void updateStoreHouseAdd(orderSorte obj)
             {
+                ZcGoodsMasterDao dao = new ZcGoodsMasterDao();
+                ZcGoodsMaster zcGoodsMaster = dao.FindById(obj.goods_id);
                 string sql = "update zc_storehouse set updateTime=:updateTime,store = :store, storemoney = :money, include_tax_money = :include_tax_money ,weight=:weight where id = :id";
                 OracleConnection conn = null;
                 OracleTransaction tran = null;
                 OracleCommand cmd = new OracleCommand();
                 StoreHouse storeHouse = FindByGoodsFileId(obj.goods_id);
+                float costPrice = getCostPriceByGoodsFileId(obj.goods_id);
                 if (storeHouse == null)
                 {
                     AddStoreHouse(obj);
@@ -565,17 +591,23 @@ namespace sorteSystem.com.proem.sorte.dao
                 }
                 string oldNums = storeHouse.Store;
                 float old = string.IsNullOrEmpty(oldNums) ? 0F : float.Parse(storeHouse.Store);
-                storeHouse.Store = (old + float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)).ToString();
-                if (float.Parse(storeHouse.Store) <= 0)
-                {
-                    storeHouse.StoreMoney = "0";
-                    storeHouse.include_tax_money = "0";
-                }
-                else 
-                {
-                    storeHouse.StoreMoney = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old + float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.StoreMoney) ? "0" : storeHouse.StoreMoney) / old)).ToString() : "0";
-                    storeHouse.include_tax_money = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old + float.Parse(String.IsNullOrEmpty(obj.sorteNum) ? "0" : obj.sorteNum)) * (float.Parse(String.IsNullOrEmpty(storeHouse.include_tax_money) ? "0" : storeHouse.include_tax_money) / old)).ToString() : "0";
-                }
+                storeHouse.Store = (old + float.Parse(String.IsNullOrEmpty(obj.weight) ? "0" : obj.weight)).ToString();
+                
+                float money = float.Parse(obj.weight) * costPrice;
+
+                storeHouse.StoreMoney = (float.Parse(storeHouse.StoreMoney) + money).ToString();
+                storeHouse.include_tax_money = (float.Parse(storeHouse.include_tax_money) + money).ToString();
+                
+                //if (float.Parse(storeHouse.Store) <= 0)
+                //{
+                //    storeHouse.StoreMoney = "0";
+                //    storeHouse.include_tax_money = "0";
+                //}
+                //else 
+                //{
+                //    storeHouse.StoreMoney = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old + float.Parse(String.IsNullOrEmpty(obj.weight) ? "0" : obj.weight)) * (float.Parse(String.IsNullOrEmpty(storeHouse.StoreMoney) ? "0" : storeHouse.StoreMoney) / old)).ToString() : "0";
+                //    storeHouse.include_tax_money = (!string.IsNullOrEmpty(oldNums) && !"0".Equals(oldNums)) ? ((old + float.Parse(String.IsNullOrEmpty(obj.weight) ? "0" : obj.weight)) * (float.Parse(String.IsNullOrEmpty(storeHouse.include_tax_money) ? "0" : storeHouse.include_tax_money) / old)).ToString() : "0";
+                //}
                 
                 float oldWeight = string.IsNullOrEmpty(storeHouse.Weight) ? 0F : float.Parse(storeHouse.Weight);
                 float newWeight = oldWeight + float.Parse(string.IsNullOrEmpty(obj.weight) ? "0" : obj.weight);
@@ -611,6 +643,57 @@ namespace sorteSystem.com.proem.sorte.dao
                         conn.Close();
                     }
                 }
+            }
+
+            
+            public float getCostPriceByGoodsFileId(string goodsId) 
+            {
+                float costPrice = 0;
+                DateTime dd = DateTime.Now.AddDays(-1);
+                string startTime = dd.ToString("yyyy-MM-dd 00:00：00");
+                string endTime = DateTime.Now.ToString("yyyy-MM-dd 23:59:59");
+                string sql = "select (a.COSTINGMONEY/a.PRODUCTWEIGHT) as costPrice from zc_zccostrecord_items a "
+                + "left join zc_goods_master b on b.id=a.productgoods "
+                + "left join zc_goods_master c on c.id=a.materialgoods where 1=1 and b.id ='" + goodsId + "' "
+                + " and a.createTime >=to_date('"+startTime+"', 'yyyy-MM-dd HH24:mi:ss') and a.createTime <= to_date('"+endTime+"', 'yyyy-MM-dd HH24:mi:ss')";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleDataReader reader = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    cmd.Connection = conn;
+                    cmd.CommandText = sql;
+                    reader = cmd.ExecuteReader();
+                    if(reader.Read()){
+                        if (reader.IsDBNull(0))
+                        {
+                            ZcGoodsMasterDao dao = new ZcGoodsMasterDao();
+                            ZcGoodsMaster zcGoodsMaster = dao.FindById(goodsId);
+                            costPrice = zcGoodsMaster.InputTax;
+                        }
+                        else 
+                        {
+                            costPrice = reader.GetFloat(0);
+                        }
+                        
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Error("根据id获取成本单价失败", ex);
+                }
+                finally
+                { 
+                    if(reader != null){
+                        reader.Close();
+                    }
+                    if(conn != null){
+                        conn.Close();
+                    }
+                    cmd.Dispose();
+                }
+                return costPrice;
             }
 
             private void AddStoreHouse(orderSorte obj)
@@ -670,8 +753,8 @@ namespace sorteSystem.com.proem.sorte.dao
                     {
                         obj = new StoreHouse();
                         obj.Id = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
-                        obj.Store = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
-                        obj.StoreMoney = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
+                        obj.Store = reader.IsDBNull(1) ? "0" : reader.GetString(1);
+                        obj.StoreMoney = reader.IsDBNull(2) ? "0" : reader.GetString(2);
                         obj.Weight = reader.IsDBNull(3) ? "0" : reader.GetString(3);
                         obj.include_tax_money = reader.IsDBNull(4) ? "0" : reader.GetString(4);
                         obj.GoodsFileId = goodsFileId;
@@ -852,6 +935,136 @@ namespace sorteSystem.com.proem.sorte.dao
                     }
                 }
                 return str;
+            }
+
+            public void AddtransitItem(ZcProcessOrderItem obj)
+            {
+                string sql = "insert into ZC_ORDER_TRANSIT_ITEM  values "
+                + " (:id ,:createTime, :updateTime, :ADDON , :AMOUNT, :BN, :COST, :G_PRICE, :GOODS_STATE, :ITEM_TYPE,:NAME, :NUMS, :OBJ_ID , :ORDER_ID, :PRICE, :PRODUCT_ID, :SCORE, :SENDNUM, :TYPE_ID, :WEIGHT, :GOODSFILE_ID, :PROVIDER_ID)";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleTransaction tran = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    tran = conn.BeginTransaction();
+                    cmd.CommandText = sql;
+                    cmd.Connection = conn;
+                    cmd.Parameters.Add(":id", obj.id);
+                    cmd.Parameters.Add(":createTime", obj.createTime);
+                    cmd.Parameters.Add(":updateTime", obj.updateTime);
+                    cmd.Parameters.Add(":ADDON", obj.addon);
+                    cmd.Parameters.Add(":AMOUNT", obj.amount);
+                    cmd.Parameters.Add(":BN", obj.bn);
+                    cmd.Parameters.Add(":COST", obj.cost);
+                    cmd.Parameters.Add(":G_PRICE", obj.g_price);
+                    cmd.Parameters.Add(":GOODS_STATE", obj.goodsState);
+                    cmd.Parameters.Add(":ITEM_TYPE", obj.item_type);
+                    cmd.Parameters.Add(":NAME", obj.name);
+                    cmd.Parameters.Add(":NUMS", obj.nums);
+                    cmd.Parameters.Add(":OBJ_ID", obj.obj_id);
+                    cmd.Parameters.Add(":ORDER_ID", obj.order_id);
+                    cmd.Parameters.Add(":PRICE", obj.price);
+                    cmd.Parameters.Add(":PRODUCT_ID", obj.product_id);
+                    cmd.Parameters.Add(":SCORE", obj.score);
+                    cmd.Parameters.Add(":SENDNUM", obj.sendNum);
+                    cmd.Parameters.Add(":TYPE_ID", obj.type_id);
+                    cmd.Parameters.Add(":WEIGHT", obj.weight);
+                    cmd.Parameters.Add(":GOODSFILE_ID", obj.goodsFile);
+                    cmd.Parameters.Add(":PROVIDER_ID", obj.providerInfo);
+                    cmd.ExecuteNonQuery();
+                    cmd.Parameters.Clear();
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if (tran != null)
+                    {
+                        tran.Dispose();
+                    }
+                    if (conn != null)
+                    {
+                        conn.Close();
+                    }
+                }
+            }
+
+            public int getDispatchingCount()
+            {
+                int count = 0;
+                string sql = "select count(1) from ZC_DISPATCHING_WAREHOUSE ";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleDataReader reader = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    cmd.CommandText = sql;
+                    cmd.Connection = conn;
+                    reader = cmd.ExecuteReader();
+                    if(reader.Read()){
+                        count = reader.IsDBNull(0) ? default(int) : reader.GetInt32(0);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Error("获取配送出库单数量失败", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if (reader != null)
+                    {
+                        reader.Close();
+                    }
+                    if (conn != null)
+                    {
+                        conn.Close();
+                    }
+                }
+                return count;
+            }
+
+            public int getBranchInCount(string streetId)
+            {
+                int count = 0;
+                string sql = "select count(1) from ZC_branch_in where inodd like 'BI"+streetId+"%'";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleDataReader reader = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    cmd.CommandText = sql;
+                    cmd.Connection = conn;
+                    reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        count = reader.IsDBNull(0) ? default(int) : reader.GetInt32(0);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Error("获取配送出库单数量失败", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if (reader != null)
+                    {
+                        reader.Close();
+                    }
+                    if (conn != null)
+                    {
+                        conn.Close();
+                    }
+                }
+                return count;
             }
     }
 

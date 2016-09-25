@@ -88,5 +88,7 @@ namespace sorteSystem.com.proem.sorte.domain
             get;
             set;
         }
+
+        public int groupFlag { get; set; }
     }
 }

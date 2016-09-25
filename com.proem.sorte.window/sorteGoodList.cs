@@ -21,6 +21,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using log4net;
 using System.Globalization;
+using System.Net;
+using System.Configuration;
 
 namespace sorteSystem.com.proem.sorte.window
 {
@@ -212,7 +214,7 @@ namespace sorteSystem.com.proem.sorte.window
                                 + "(select a.goods_state,a.name,a.nums,c.id as goodsfile_id,c.serialNumber,b.branchid,d.sortenum,e.workname,e.workcode "
                                 + " from zc_order_process_item a "
                                 + " left join zc_order_process b on b.id=a.order_id left join zc_goods_master c on c.id=a.goodsfile_id left join (select SUM(sortenum) as sortenum,goods_id ,address from ZC_ORDERS_SORTE where sorteId = '" + ConstantUtil.sorte_id + "' GROUP by goods_id, address) d on d.goods_id = c.id and b.branchid=d.address  left join zc_workstation e on e.id = c.zcuserinfo"
-                                + " where a.groupflag=1 and branchid = '" + result + "' ) "
+                                + " where a.groupflag='"+ConstantUtil.groupFlag+"' and branchid = '" + result + "' ) "
                                 + "group by name,serialNumber,goodsfile_id,branchid,sorteNum,workname,workcode order by serialNumber";
                     OracleCommand cmd = new OracleCommand(sql, connection);
                     OracleDataAdapter da = new OracleDataAdapter(cmd);
@@ -452,31 +454,40 @@ namespace sorteSystem.com.proem.sorte.window
                                     ZcProcessOrder zcprocessOrder = ZcProcessOrderList[a];
                                     string orderId = zcprocessOrder.id;
                                     List<ZcProcessOrderItem> ZcProcessOrderItemList = orderdao.getItemByid(orderId);
+                                    bool isGroup = false;
                                     if (ZcProcessOrderItemList != null && ZcProcessOrderItemList.Count() > 0)
                                     {
-                                        orderdao.AddtransitItem(ZcProcessOrderItemList);
+                                        //orderdao.AddtransitItem(ZcProcessOrderItemList);
                                         for (int b = 0; b < ZcProcessOrderItemList.Count; b++)
                                         {
                                             ZcProcessOrderItem zcProcessOrderItem = ZcProcessOrderItemList[b];
                                             string itemId = zcProcessOrderItem.id;
-                                            orderdao.deletePorcessItem(itemId);
+                                            if (zcProcessOrderItem.groupFlag == ConstantUtil.groupFlag)
+                                            {
+                                                orderdao.AddtransitItem(zcProcessOrderItem);
+                                                orderdao.deletePorcessItem(itemId);
+                                            }
+                                            else {
+                                                isGroup = true;
+                                                continue;
+                                            }
                                             //orderdao.updateStoreHouse(zcProcessOrderItem);
                                         }
                                     }
-                                    if ("全部完成".Equals(zcprocessOrder.pullFlag))
+                                    ////************删除逻辑
+                                    if ("全部完成".Equals(zcprocessOrder.pullFlag) && !isGroup)
                                     {
-                                        zcprocessOrder.orderStatus = "5";
                                         orderdao.deletePorcessOrder(zcprocessOrder.id);
-                                        int count = orderdao.getTransitOrderCount(zcprocessOrder.id);
+                                    }
+                                    else
+                                    {
 
-                                        if (count == 0)
-                                        {
-                                            orderdao.AddtransitOrder(zcprocessOrder);
-                                        }
-                                        else
-                                        {
-
-                                        }
+                                    }
+                                    zcprocessOrder.orderStatus = "5";
+                                    int count = orderdao.getTransitOrderCount(zcprocessOrder.id);
+                                    if (count == 0)
+                                    {
+                                        orderdao.AddtransitOrder(zcprocessOrder);
                                     }
                                     else
                                     {
@@ -486,13 +497,14 @@ namespace sorteSystem.com.proem.sorte.window
                                 
                             }
                             orderdao.deleteAllSorteStatus();
+                            int dispatchingCount = sortedao.getDispatchingCount();
                             DispatchingWarehouse dispatchingWarehouse = new DispatchingWarehouse();
                             dispatchingWarehouse.id = Guid.NewGuid().ToString();
                             dispatchingWarehouse.createTime = DateTime.Now;
                             dispatchingWarehouse.updateTime = DateTime.Now;
                             dispatchingWarehouse.street = streetId.ToString();
                             dispatchingWarehouse.dispatcher_date = DateTime.Now;
-                            dispatchingWarehouse.dispatcherOdd = "PSCKD"+DateTime.Now.ToString("yyyyMMddHHmmssSSS");
+                            dispatchingWarehouse.dispatcherOdd = "DO0001" + DateTime.Now.ToString("yyyyMMdd") + (dispatchingCount+1).ToString().PadLeft(4, '0');
                             dispatchingWarehouse.type = "2"; 
                             dispatchingWarehouse.statue = 2;
                             dispatchingWarehouse.branch_id = ConstantUtil.BranchId;
@@ -505,7 +517,8 @@ namespace sorteSystem.com.proem.sorte.window
                                 branchIn.id = Guid.NewGuid().ToString().Replace("-", "");
                                 branchIn.createTime = DateTime.Now;
                                 branchIn.updateTime = DateTime.Now;
-                                branchIn.InOdd = "TDRKD" + DateTime.Now.ToString("yyyyMMddHHmmssSSS");
+                                int branchInCount = sortedao.getBranchInCount(streetId.ToString());
+                                branchIn.InOdd = "BI" + streetId.ToString() + DateTime.Now.ToString("yyyyMMdd") + (branchInCount+1).ToString().PadLeft(4, '0');
                                 branchIn.dispatching_id = dispatchingWarehouse.id;
                                 branchIn.branch_id = dispatchingWarehouse.branch_total_id;
 
@@ -588,6 +601,18 @@ namespace sorteSystem.com.proem.sorte.window
                                 orderSorte obj = list[j];
                                 orderdao.updateStoreHouse(obj);
                             }
+                        }
+
+                        ///发送请求给后台生成数据
+                        string tagUrl = ConfigurationManager.ConnectionStrings["ConnectionUrl"].ConnectionString;
+                        CookieCollection cookies = new CookieCollection();
+                        try
+                        {
+                            HttpUtil.CreateGetHttpResponse(tagUrl, null, null, cookies);
+                        }
+                        catch (Exception ex) 
+                        {
+                            log.Error("发送请求至后台发送错误!", ex);
                         }
 
                         //改变订单状态

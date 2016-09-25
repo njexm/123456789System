@@ -79,6 +79,7 @@ namespace sorteSystem.com.proem.sorte.window
                     newSorte.makeMen = reader.IsDBNull(reader.GetOrdinal("createName")) ? string.Empty : reader.GetString(reader.GetOrdinal("createName"));
                     newSorte.createTime = reader.IsDBNull(reader.GetOrdinal("CREATETIME")) ? default(DateTime) : reader.GetDateTime(reader.GetOrdinal("CREATETIME"));
                     newSorte.makeTime = reader.IsDBNull(reader.GetOrdinal("make_time")) ? default(DateTime) : reader.GetDateTime(reader.GetOrdinal("make_time"));
+                    newSorte.groupFlag = reader.IsDBNull(reader.GetOrdinal("groupflag")) ? default(int) : reader.GetInt32(reader.GetOrdinal("groupflag"));
                     newSorte.Id = id;
                     newSorte.code = sorteId;
                     list.Add(newSorte);
@@ -100,6 +101,7 @@ namespace sorteSystem.com.proem.sorte.window
                 Sorte obj = list[0];
                 sorteId = obj.Id;
                 ConstantUtil.sorte_id = obj.Id;
+                ConstantUtil.groupFlag = obj.groupFlag;
                 sorteTextBox.Text = obj.code;
                 makeDateTextBox.Text = obj.makeTime.ToString();
                 makerTextBox.Text = obj.makeMen;
@@ -370,13 +372,14 @@ namespace sorteSystem.com.proem.sorte.window
             }
         }
 
-        public void setSorte(string code, string id, string name, string time)
+        public void setSorte(string code, string id, string name, string time, int flag)
         {
             sorteTextBox.Text = code;
             makerTextBox.Text = name;
             makeDateTextBox.Text = time;
             sorteId = id;
             ConstantUtil.sorte_id = id;
+            ConstantUtil.groupFlag = flag;
             loadData();
         }
 

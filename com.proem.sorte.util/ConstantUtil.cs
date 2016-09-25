@@ -41,5 +41,12 @@ namespace sorteSystem.com.proem.sorte.util
         public static string UserRole;
         
         public static string AMDIN_ROLE = "ADMIN001";
+
+        /// <summary>
+        /// 订单类型
+        /// 1普通订单
+        /// 2团购订单
+        /// </summary>
+        public static int groupFlag;
     }
 }

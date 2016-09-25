@@ -39,7 +39,7 @@ namespace sorteSystem.com.proem.sorte.window
         {
             DateTime first = DateTime.Today;
             DateTime last = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd 23:59:59"));
-            string sql = "select a.id, a.code, a.createTime,b.username, a.make_time from zc_sorte a left join zc_user_info b on b.user_id = a.make_men  where a.createTime between :first and :last order by a.createTime ";
+            string sql = "select a.id, a.code, a.createTime,b.username, a.make_time, a.groupFlag  from zc_sorte a left join zc_user_info b on b.user_id = a.make_men  where a.createTime between :first and :last order by a.createTime ";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             DataSet ds = new DataSet();
@@ -91,7 +91,9 @@ namespace sorteSystem.com.proem.sorte.window
             string id = dataGridView1.CurrentRow.Cells[0].Value.ToString();
             string make_men = dataGridView1.CurrentRow.Cells[3].Value.ToString();
             string make_time = dataGridView1.CurrentRow.Cells[4].Value.ToString();
-            sorteListForm.setSorte(code, id, make_men, make_time);
+            string groupFlag = dataGridView1.CurrentRow.Cells[5].Value.ToString();
+            int flag = Convert.ToInt32(groupFlag);
+            sorteListForm.setSorte(code, id, make_men, make_time, flag);
             this.Close();
         }
 

@@ -39,6 +39,7 @@
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.make_men = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.make_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupFlag = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.body.SuspendLayout();
             this.main.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -117,7 +118,8 @@
             this.createTime,
             this.id,
             this.make_men,
-            this.make_time});
+            this.make_time,
+            this.groupFlag});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.MultiSelect = false;
@@ -171,6 +173,14 @@
             this.make_time.ReadOnly = true;
             this.make_time.Visible = false;
             // 
+            // groupFlag
+            // 
+            this.groupFlag.DataPropertyName = "groupFlag";
+            this.groupFlag.HeaderText = "groupFlag";
+            this.groupFlag.Name = "groupFlag";
+            this.groupFlag.ReadOnly = true;
+            this.groupFlag.Visible = false;
+            // 
             // SorteForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -201,5 +211,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn make_men;
         private System.Windows.Forms.DataGridViewTextBoxColumn make_time;
+        private System.Windows.Forms.DataGridViewTextBoxColumn groupFlag;
     }
 }
