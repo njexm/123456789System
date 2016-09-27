@@ -48,5 +48,8 @@ namespace SorteSystem.com.proem.sorte.domain
 
         //分拣单id
         public string sorteId { get; set; }
+
+        //成本价
+        public string costPrice { get; set; }
     }
 }

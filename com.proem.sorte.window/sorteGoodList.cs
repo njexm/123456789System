@@ -289,7 +289,6 @@ namespace sorteSystem.com.proem.sorte.window
 
             DataTable dt = ConstantUtil.Branchds.Tables["Zc_sorte_item"];
             object result = dt.Rows[ConstantUtil.index][14];
-            //byte[] buffer = Encoding.Default.GetBytes(result.ToString());
             orderDao orderdao = new orderDao();
             if (ConstantUtil.ipList == null || ConstantUtil.ipList.Count == 0)
             {
@@ -311,25 +310,6 @@ namespace sorteSystem.com.proem.sorte.window
             yellowButton.Hide();
             yellowLabel.Hide();
             numberTextBox.Focus();
-            //if (ConstantUtil.socketList.Count > 0)
-            //{
-            //    orderDao orderdao = new orderDao();
-            //    orderdao.insertSorteStatus(result.ToString(),ConstantUtil.ip1);
-            //    orderdao.insertSorteStatus(result.ToString(), ConstantUtil.ip2);
-            //    redButton.Hide();
-            //        redLabel.Hide();
-            //        greenButton.Show();
-            //        greenLabel.Show();
-            //        yellowButton.Hide();
-            //        yellowLabel.Hide();
-            //}
-            //else
-            //{
-            //    MessageBox.Show("目前未有子设备连接主机!");
-            //}
-
-            //byte[] buffer = Encoding.Default.GetBytes(str);
-            //connSocket.Send(buffer, buffer.Length, SocketFlags.None);
         }
 
         private void topPanel_Paint(object sender, PaintEventArgs e)
@@ -339,46 +319,7 @@ namespace sorteSystem.com.proem.sorte.window
 
         private void nextbutton_Click(object sender, EventArgs e)
         {
-           
-            //bool printFlag = false;
-            //if (goodDataGridView.Rows.Count > 0)
-            //{
-            //    for (int i = 0; i < goodDataGridView.Rows.Count; i++)
-            //    {
-            //        string oldCount = goodDataGridView.Rows[i].Cells[3].Value == null ? "" : goodDataGridView.Rows[i].Cells[3].Value.ToString();
-            //        string newCount = goodDataGridView.Rows[i].Cells[4].Value == null ? "" : goodDataGridView.Rows[i].Cells[4].Value.ToString();
-            //        if (oldCount.Equals(newCount)) { }
-            //        else
-            //        {
-            //            //MessageBox.Show("存在分拣份数不符合的商品，请检测", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //            printFlag = true;
-            //            break;
-            //            //return;
-            //        }
-            //    }
-            //}
-            //string messageString = "";
-            //if (printFlag)
-            //{
-            //    messageString = "存在分拣份数不符合的商品,请检查,是否打印?";
-            //}
-            //else 
-            //{
-            //    messageString = "是否打印?";
-            //}
-
-            ////新增打印  2016-3-24 start
-            //DialogResult dr = MessageBox.Show(messageString, "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            //if (dr == DialogResult.Yes)
-            //{
-            //    //打印操作
-
-                
-            //}
-            //else { }
-
             printTicket();
-            //end
 
             //初始化
             //_ScrollValue = 0;
@@ -1288,7 +1229,7 @@ namespace sorteSystem.com.proem.sorte.window
             {
 
                 voice.Speak("错误", speakflag);
-                //MessageBox.Show("请确认扫码的条码是否正确", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("请确认扫码的条码是否正确", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             ///以后的13的条码
@@ -1388,6 +1329,7 @@ namespace sorteSystem.com.proem.sorte.window
                         orderSorte.money = money;
                         orderSorte.isWeight = isWeight ? "1" : "0";
                         orderSorte.bar_code = num;
+                        orderSorte.isReturn = "0";
                         sorteDao sortedao = new sorteDao();
                         if (calFlag)
                         {

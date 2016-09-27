@@ -80,8 +80,15 @@ namespace sorteSystem.com.proem.sorte.window
                         sorteDao dao = new sorteDao();
                         ZcGoodsMasterDao goodsMasterDao = new ZcGoodsMasterDao();
                         ZcGoodsMaster master = goodsMasterDao.FindById(goodsFileId);
-                        float oldnums = money / master.GoodsPrice;
-                        dao.updateNums(weight.ToString("0.0000"), goodsFileId, weight * master.GoodsPrice, orderSorteId);
+                        orderDao orderDao = new orderDao();
+                        orderSorte orderSorte = orderDao.FindOrderSorteBy(orderSorteId);
+                        float oldWeight = float.Parse(orderSorte.weight);
+                        if (returnGoods != null)
+                        {
+                            dao.updateNums(weight.ToString("0.0000"), goodsFileId, -weight * master.GoodsPrice, orderSorteId);
+                        }else{
+                            dao.updateNums(weight.ToString("0.0000"), goodsFileId, weight * master.GoodsPrice, orderSorteId);
+                        }
                         if (sorteGoodList != null )
                         {
                             this.sorteGoodList.reLoadSaleTable();
@@ -89,22 +96,38 @@ namespace sorteSystem.com.proem.sorte.window
                         else if (returnGoods != null)
                         {
                             this.returnGoods.reloadReturn();
-                            orderDao orderDao = new orderDao();
-                            orderSorte orderSorte = new orderSorte();
-                            orderSorte.goods_id = master.Id;
-                            orderSorte.sorteNum = "0";
-                            orderSorte.weight = weight.ToString("0.0000");
-                            orderDao.updateStoreHouse(orderSorte);
+
+                            if (weight > oldWeight)
+                            {
+                                orderSorte.weight = (weight - oldWeight).ToString("0.0000");
+                                orderDao.updateStoreHouseAdd(orderSorte);
+                            }
+                            else if (weight < oldWeight)
+                            {
+                                orderSorte.weight = (oldWeight - weight).ToString("0.0000");
+                                orderDao.updateStoreHouse(orderSorte);
+                            }
+
+                            //orderSorte.goods_id = master.Id;
+                            //orderSorte.sorteNum = "0";
+                           // orderSorte.weight = weight.ToString("0.0000");
+                           // orderDao.updateStoreHouse(orderSorte);
                         }
                         else
                         {
                             this.sorteWithOutOrder.reloadData();
-                            orderDao orderDao = new orderDao();
-                            orderSorte orderSorte = new orderSorte();
-                            orderSorte.goods_id = master.Id;
-                            orderSorte.sorteNum = "0";
-                            orderSorte.weight = weight.ToString("0.0000");
-                            orderDao.updateStoreHouseAdd(orderSorte);
+                            if (weight > oldWeight)
+                            {
+                                orderSorte.weight = (weight - oldWeight).ToString("0.0000");
+                                orderDao.updateStoreHouse(orderSorte);
+                            }
+                            else if(weight < oldWeight){
+                                orderSorte.weight = (oldWeight - weight).ToString("0.0000");
+                                orderDao.updateStoreHouseAddSorteWithOutOrder(orderSorte);
+                            }
+                            //orderSorte.weight = weight.ToString("0.0000");
+                           // orderDao.updateStoreHouseAddSorteWithOutOrder(orderSorte);
+                            //orderDao.updateStoreHouseAdd(orderSorte);
                         }
                     }
                 }
@@ -115,7 +138,13 @@ namespace sorteSystem.com.proem.sorte.window
                     ZcGoodsMasterDao goodsMasterDao = new ZcGoodsMasterDao();
                     ZcGoodsMaster master = goodsMasterDao.FindById(goodsFileId);
                     float oldnums = money / master.GoodsPrice;
-                    dao.updateNums(nums, goodsFileId, nums * master.GoodsPrice, orderSorteId);
+                    if (returnGoods != null) {
+                        dao.updateNums(nums, goodsFileId, -nums * master.GoodsPrice, orderSorteId);
+                    }
+                    else 
+                    {
+                        dao.updateNums(nums, goodsFileId, nums * master.GoodsPrice, orderSorteId);
+                    }
                     if (sorteGoodList != null )
                     {
                         this.sorteGoodList.reLoadSaleTable();
@@ -124,21 +153,40 @@ namespace sorteSystem.com.proem.sorte.window
                     {
                         this.returnGoods.reloadReturn();
                         orderDao orderDao = new orderDao();
-                        orderSorte orderSorte = new orderSorte();
-                        orderSorte.goods_id = master.Id;
-                        orderSorte.sorteNum = (oldnums - nums).ToString();
-                        orderSorte.weight = orderSorte.sorteNum;
-                        orderDao.updateStoreHouse(orderSorte);
+                        orderSorte orderSorte = orderDao.FindOrderSorteBy(orderSorteId);
+                       // orderSorte.goods_id = master.Id;
+                        if (oldnums - nums > 0)
+                        {
+                            orderSorte.weight = (oldnums - nums).ToString();
+                            orderDao.updateStoreHouse(orderSorte);
+                        }
+                        else if (oldnums - nums < 0)
+                        {
+                            orderSorte.weight = (nums - oldnums).ToString();
+                            orderDao.updateStoreHouseAdd(orderSorte);
+                        }
+
+                        //orderSorte.sorteNum = (oldnums - nums).ToString();
+                        //orderSorte.weight = orderSorte.sorteNum;
+                        //orderDao.updateStoreHouse(orderSorte);
                     }
                     else
                     {
                         this.sorteWithOutOrder.reloadData();
                         orderDao orderDao = new orderDao();
-                        orderSorte orderSorte = new orderSorte();
-                        orderSorte.goods_id = master.Id;
-                        orderSorte.sorteNum = (oldnums - nums).ToString();
-                        orderSorte.weight = orderSorte.sorteNum;
-                        orderDao.updateStoreHouseAdd(orderSorte);
+                        orderSorte orderSorte = orderDao.FindOrderSorteBy(orderSorteId);
+                        //orderSorte.goods_id = master.Id;
+                        if(oldnums - nums > 0){
+                            orderSorte.weight = (oldnums - nums).ToString();
+                            orderDao.updateStoreHouseAddSorteWithOutOrder(orderSorte);
+                        }else if(oldnums-nums < 0){
+                            orderSorte.weight = (nums - oldnums).ToString();
+                            orderDao.updateStoreHouse(orderSorte);
+                        }
+                        //orderSorte.sorteNum = (oldnums - nums).ToString();
+                        //orderSorte.weight = orderSorte.sorteNum;
+                        //orderDao.updateStoreHouseAddSorteWithOutOrder(orderSorte);
+                        //orderDao.updateStoreHouseAdd(orderSorte);
                     }
                 }
             }

@@ -189,6 +189,12 @@
     <Compile Include="com.proem.sorte.window\util\Loading.Designer.cs">
       <DependentUpon>Loading.cs</DependentUpon>
     </Compile>
+    <Compile Include="com.proem.sorte.window\util\MessageFail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="com.proem.sorte.window\util\MessageFail.Designer.cs">
+      <DependentUpon>MessageFail.cs</DependentUpon>
+    </Compile>
     <Compile Include="com.proem.sorte.window\util\Times.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -247,6 +253,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="com.proem.sorte.window\util\Loading.resx">
       <DependentUpon>Loading.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="com.proem.sorte.window\util\MessageFail.resx">
+      <DependentUpon>MessageFail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="com.proem.sorte.window\util\Times.resx">
       <DependentUpon>Times.cs</DependentUpon>

@@ -189,7 +189,7 @@ namespace sorteSystem.com.proem.sorte.dao
                     obj.GoodsOrigin = reader.IsDBNull(12) ? string.Empty : reader.GetString(12);
                     obj.GoodsPrice = reader.IsDBNull(13) ? default(float) : reader.GetFloat(13);
                     obj.GoodsProperty = reader.IsDBNull(14) ? string.Empty : reader.GetString(14);
-                    obj.GoodsPurchasePrice = reader.IsDBNull(15) ? string.Empty : reader.GetFloat(15).ToString();
+                    obj.GoodsPurchasePrice = reader.IsDBNull(15) ? "0" : reader.GetFloat(15).ToString();
                     obj.GoodsSpecifications = reader.IsDBNull(16) ? string.Empty : reader.GetString(16);
                     obj.GoodsState = reader.IsDBNull(17) ? string.Empty : reader.GetString(17);
                     obj.GoodsType = reader.IsDBNull(18) ? string.Empty : reader.GetString(18);

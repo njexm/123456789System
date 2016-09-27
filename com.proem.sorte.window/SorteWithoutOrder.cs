@@ -189,7 +189,7 @@ namespace sorteSystem.com.proem.sorte.window
                 sorteDao sortedao = new sorteDao();
 
                 //库存添加
-                orderDao.updateStoreHouseAdd(obj);
+                orderDao.updateStoreHouseAddSorteWithOutOrder(obj);
                 sortedao.DeleteBy(orderSorteId);
                 loadTableAfterDelete(index);
             }
@@ -257,8 +257,10 @@ namespace sorteSystem.com.proem.sorte.window
             ///18位条码和13位条码混合
             if (string.IsNullOrEmpty(num) || (num.Length != 18 && num.Length != 13 && num.Length != 5))
             {
-
                 voice.Speak("错误", speakflag);
+                //MessageBox.Show("请确认扫码的条码是否正确", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageFail fail = new MessageFail();
+                fail.Show();
                 return;
             }
             string serialNumber = "";
@@ -326,10 +328,12 @@ namespace sorteSystem.com.proem.sorte.window
             orderSorte.isWeight = isWeight ? "1" : "0";
             orderSorte.bar_code = num;
             orderSorte.isReturn = "0";
-            sorteDao sortedao = new sorteDao();
-            sortedao.addReturnGoods(orderSorte);
-            //库存减少
             orderDao orderDao = new orderDao();
+            orderSorte.costPrice = orderDao.getCostPrice(zcGoodsMaster.Id, false, float.Parse(weight)).ToString();
+            sorteDao sortedao = new sorteDao();
+            sortedao.addSorteWithOutGoods(orderSorte);
+            //库存减少
+            
             orderDao.updateStoreHouse(orderSorte);
         }
 

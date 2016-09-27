@@ -645,6 +645,145 @@ namespace sorteSystem.com.proem.sorte.dao
                 }
             }
 
+            /// <summary>
+            /// 扫码收银库存增加
+            /// </summary>
+            /// <param name="obj"></param>
+            public void updateStoreHouseAddSorteWithOutOrder(orderSorte obj)
+            {
+                ZcGoodsMasterDao dao = new ZcGoodsMasterDao();
+                ZcGoodsMaster zcGoodsMaster = dao.FindById(obj.goods_id);
+                string sql = "update zc_storehouse set updateTime=:updateTime,store = :store, storemoney = :money, include_tax_money = :include_tax_money ,weight=:weight where id = :id";
+                OracleConnection conn = null;
+                OracleTransaction tran = null;
+                OracleCommand cmd = new OracleCommand();
+                StoreHouse storeHouse = FindByGoodsFileId(obj.goods_id);
+                float costPrice = float.Parse(obj.costPrice);
+                if (storeHouse == null)
+                {
+                    AddStoreHouse(obj);
+                    storeHouse = FindByGoodsFileId(obj.goods_id);
+                }
+                string oldNums = storeHouse.Store;
+                float old = string.IsNullOrEmpty(oldNums) ? 0F : float.Parse(storeHouse.Store);
+                storeHouse.Store = (old + float.Parse(String.IsNullOrEmpty(obj.weight) ? "0" : obj.weight)).ToString();
+
+                float money = float.Parse(obj.weight) * costPrice;
+
+                storeHouse.StoreMoney = (float.Parse(storeHouse.StoreMoney) + money).ToString();
+                storeHouse.include_tax_money = (float.Parse(storeHouse.include_tax_money) + money).ToString();
+
+
+                float oldWeight = string.IsNullOrEmpty(storeHouse.Weight) ? 0F : float.Parse(storeHouse.Weight);
+                float newWeight = oldWeight + float.Parse(string.IsNullOrEmpty(obj.weight) ? "0" : obj.weight);
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    tran = conn.BeginTransaction();
+                    cmd.Connection = conn;
+                    cmd.CommandText = sql;
+                    cmd.Parameters.Add(":updateTime", DateTime.Now);
+                    cmd.Parameters.Add(":store", storeHouse.Store);
+                    cmd.Parameters.Add(":money", storeHouse.StoreMoney);
+                    cmd.Parameters.Add(":include_tax_money", storeHouse.include_tax_money);
+                    cmd.Parameters.Add(":weight", newWeight);
+                    cmd.Parameters.Add(":id", storeHouse.Id);
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    log.Error("更新库存信息失败", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if (tran != null)
+                    {
+                        tran.Dispose();
+                    }
+                    if (conn != null)
+                    {
+                        conn.Close();
+                    }
+                }
+            }
+
+            /// <summary>
+            /// 获取成本金额
+            /// </summary>
+            /// <param name="goodsFileId"></param>
+            /// <param name="flag">出入库标识   true入库  flase出库</param>
+            /// <param name="changeNum"></param>
+            /// <returns></returns>
+            public float getCostPrice(string goodsFileId, bool flag, float changeNum) 
+            {
+                ZcGoodsMasterDao dao = new ZcGoodsMasterDao();
+                ZcGoodsMaster zcGoodsMaster = dao.FindById(goodsFileId);
+                float costPrice = 0;
+                StoreHouse storeHouse = FindByGoodsFileId(goodsFileId);
+                if(storeHouse == null ){
+                    orderSorte obj = new orderSorte();
+                    obj.goods_id = goodsFileId;
+                    AddStoreHouse(obj);
+                    storeHouse = FindByGoodsFileId(goodsFileId);
+                }
+                float storeMoney = float.Parse(storeHouse.StoreMoney);
+                float store = float.Parse(storeHouse.Store);
+                if (flag)
+                {
+                    //入库
+                    if (store <= 0)
+                    {
+                        costPrice = float.Parse(zcGoodsMaster.GoodsPurchasePrice);
+                    }
+                    else 
+                    {
+                        costPrice = storeMoney / store;
+                    }
+                }
+                else    //出库
+                {
+                    if (store - changeNum > 0)
+                    {
+                        if (storeMoney > 0)
+                        {
+                            costPrice = storeMoney / store;
+                        }
+                        else
+                        {
+                            costPrice = float.Parse(zcGoodsMaster.GoodsPurchasePrice);
+                        }
+                    }
+                    else {
+                        if (storeMoney > 0)
+                        {
+                            if(store == 0){
+                                costPrice = float.Parse(zcGoodsMaster.GoodsPurchasePrice);
+                            }
+                            else if (changeNum == 0)
+                            {
+                                if (store > 0)
+                                {
+                                    costPrice = storeMoney / store;
+                                }
+                                else {
+                                    costPrice = float.Parse(zcGoodsMaster.GoodsPurchasePrice);
+                                }
+                            }
+                            else {
+                                costPrice = (storeMoney + (changeNum - store) * float.Parse(zcGoodsMaster.GoodsPurchasePrice)) / changeNum;
+                            }
+                        }
+                        else 
+                        {
+                            costPrice = float.Parse(zcGoodsMaster.GoodsPurchasePrice);
+                        }
+                    }
+                }
+                return costPrice;
+            }
             
             public float getCostPriceByGoodsFileId(string goodsId) 
             {
@@ -665,18 +804,25 @@ namespace sorteSystem.com.proem.sorte.dao
                     cmd.Connection = conn;
                     cmd.CommandText = sql;
                     reader = cmd.ExecuteReader();
-                    if(reader.Read()){
+                    if (reader.Read())
+                    {
                         if (reader.IsDBNull(0))
                         {
                             ZcGoodsMasterDao dao = new ZcGoodsMasterDao();
                             ZcGoodsMaster zcGoodsMaster = dao.FindById(goodsId);
-                            costPrice = zcGoodsMaster.InputTax;
+                            costPrice = float.Parse(zcGoodsMaster.GoodsPurchasePrice);
                         }
-                        else 
+                        else
                         {
                             costPrice = reader.GetFloat(0);
                         }
-                        
+
+                    }
+                    else
+                    {
+                        ZcGoodsMasterDao dao = new ZcGoodsMasterDao();
+                        ZcGoodsMaster zcGoodsMaster = dao.FindById(goodsId);
+                        costPrice = float.Parse(zcGoodsMaster.GoodsPurchasePrice);
                     }
                 }
                 catch (Exception ex)
@@ -812,7 +958,7 @@ namespace sorteSystem.com.proem.sorte.dao
             public orderSorte FindOrderSorteBy(string orderSorteId)
             {
                 orderSorte obj = new orderSorte();
-                string sql = "select id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, ORDERSNUM, SORTENUM,sorteId, WEIGHT, isWeight, bar_code, isReturn from zc_orders_sorte where id ='"+orderSorteId+"'";
+                string sql = "select id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, ORDERSNUM, SORTENUM,sorteId, WEIGHT, isWeight, bar_code, isReturn, costPrice from zc_orders_sorte where id ='"+orderSorteId+"'";
                 OracleConnection conn = null;
                 OracleCommand cmd = new OracleCommand();
                 OracleDataReader reader = null;
@@ -830,13 +976,14 @@ namespace sorteSystem.com.proem.sorte.dao
                         obj.address = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
                         obj.goods_id = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
                         obj.goods_name = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
-                        obj.orderNum = reader.IsDBNull(6) ? string.Empty : reader.GetString(6);
-                        obj.sorteNum = reader.IsDBNull(7) ? string.Empty : reader.GetString(7);
+                        obj.orderNum = reader.IsDBNull(6) ? "0" : reader.GetString(6);
+                        obj.sorteNum = reader.IsDBNull(7) ? "0" : reader.GetString(7);
                         obj.sorteId = reader.IsDBNull(8) ? string.Empty : reader.GetString(8);
-                        obj.weight = reader.IsDBNull(9) ? string.Empty : reader.GetString(9);
+                        obj.weight = reader.IsDBNull(9) ? "0" : reader.GetString(9);
                         obj.isWeight = reader.IsDBNull(10) ? string.Empty : reader.GetString(10);
                         obj.bar_code = reader.IsDBNull(11) ? string.Empty : reader.GetString(11);
                         obj.isReturn = reader.IsDBNull(12) ? string.Empty : reader.GetString(12);
+                        obj.costPrice = reader.IsDBNull(13) ? "0" : reader.GetString(13);
                     }
                 }
                 catch (Exception ex)

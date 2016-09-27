@@ -138,8 +138,8 @@ namespace SorteSystem.com.proem.sorte.dao
         public void AddtransitItem(orderSorte obj)
         {
             List<string> idStr = new List<string>();
-            string sql1 = "insert into ZC_ORDERS_SORTE (id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, ORDERSNUM, SORTENUM, WEIGHT, sorteId, money,isWeight, bar_code) values "
-                + " (:id ,:createTime, :updateTime, :ADDRESS , :GOODS_ID, :GOODS_NAME, :ORDERSNUM, :SORTENUM , :weight, :sorteId, :money, :isWeight, :bar_code)";
+            string sql1 = "insert into ZC_ORDERS_SORTE (id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, ORDERSNUM, SORTENUM, WEIGHT, sorteId, money,isWeight, bar_code, isReturn) values "
+                + " (:id ,:createTime, :updateTime, :ADDRESS , :GOODS_ID, :GOODS_NAME, :ORDERSNUM, :SORTENUM , :weight, :sorteId, :money, :isWeight, :bar_code, :isReturn)";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             OracleTransaction tran = null;
@@ -163,6 +163,7 @@ namespace SorteSystem.com.proem.sorte.dao
                 cmd.Parameters.Add(":money", obj.money);
                 cmd.Parameters.Add(":isWeight", obj.isWeight);
                 cmd.Parameters.Add(":bar_code", obj.bar_code);
+                cmd.Parameters.Add(":isReturn", obj.isReturn);
                 cmd.ExecuteNonQuery();
                 tran.Commit();
             }
@@ -428,5 +429,52 @@ namespace SorteSystem.com.proem.sorte.dao
             }
         }
 
+        /// <summary>
+        /// 扫码收银
+        /// </summary>
+        /// <param name="obj"></param>
+        public void addSorteWithOutGoods(orderSorte obj)
+        {
+            string sql = "insert into ZC_ORDERS_SORTE (id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, SORTENUM, WEIGHT, money,isWeight, bar_code, isReturn, costPrice) values "
+               + " (:id ,:createTime, :updateTime, :ADDRESS , :GOODS_ID, :GOODS_NAME, :SORTENUM , :weight, :money, :isWeight, :bar_code, :isReturn, :costPrice)";
+            OracleConnection conn = null;
+            OracleTransaction tran = null;
+            OracleCommand cmd = new OracleCommand();
+            try
+            {
+                conn = OracleUtil.OpenConn();
+                tran = conn.BeginTransaction();
+                cmd.CommandText = sql;
+                cmd.Connection = conn;
+                cmd.Parameters.Add(":id", obj.id);
+                cmd.Parameters.Add(":createTime", obj.createTime);
+                cmd.Parameters.Add(":updateTime", obj.updateTime);
+                cmd.Parameters.Add(":ADDRESS", obj.address);
+                cmd.Parameters.Add(":GOODS_ID", obj.goods_id);
+                cmd.Parameters.Add(":GOODS_NAME", obj.goods_name);
+                cmd.Parameters.Add(":SORTENUM", obj.sorteNum);
+                cmd.Parameters.Add(":weight", obj.weight);
+                cmd.Parameters.Add(":money", obj.money);
+                cmd.Parameters.Add(":isWeight", obj.isWeight);
+                cmd.Parameters.Add(":bar_code", obj.bar_code);
+                cmd.Parameters.Add(":isReturn", obj.isReturn);
+                cmd.Parameters.Add(":costPrice", obj.costPrice);
+                cmd.ExecuteNonQuery();
+                tran.Commit();
+            }
+            catch (Exception ex)
+            {
+                tran.Rollback();
+                log.Error("新增扫码收银信息失败", ex);
+            }
+            finally
+            {
+                cmd.Dispose();
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+        }
     }
 }

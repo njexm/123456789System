@@ -242,6 +242,7 @@ namespace sorteSystem.com.proem.sorte.window
             {
 
                 voice.Speak("错误", speakflag);
+                MessageBox.Show("请确认扫码的条码是否正确", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             string serialNumber = "";
@@ -305,7 +306,7 @@ namespace sorteSystem.com.proem.sorte.window
             orderSorte.goods_name = zcGoodsMaster.GoodsName;
             orderSorte.sorteNum = "1";
             orderSorte.weight = weight;
-            orderSorte.money = money;
+            orderSorte.money = "-"+money;
             orderSorte.isWeight = isWeight ? "1" : "0";
             orderSorte.bar_code = num;
             orderSorte.isReturn = "1";

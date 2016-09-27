@@ -1,0 +1,5 @@
+2016-09-26 03:00:02,005 [15] ERROR sorteSystem.com.proem.sorte.window.sorteGoodList [(null)] - 发送请求至后台发送错误!
+System.Net.WebException: 操作超时
+   在 System.Net.HttpWebRequest.GetResponse()
+   在 sorteSystem.com.proem.sorte.util.HttpUtil.CreateGetHttpResponse(String url, Nullable`1 timeout, String userAgent, CookieCollection cookies) 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.util\HttpUtil.cs:行号 44
+   在 sorteSystem.com.proem.sorte.window.sorteGoodList.<>c__DisplayClass3.<endButton_Click>b__0() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.window\sorteGoodList.cs:行号 611
