@@ -258,7 +258,6 @@ namespace sorteSystem.com.proem.sorte.window
             if (string.IsNullOrEmpty(num) || (num.Length != 18 && num.Length != 13 && num.Length != 5))
             {
                 voice.Speak("错误", speakflag);
-                //MessageBox.Show("请确认扫码的条码是否正确", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 MessageFail fail = new MessageFail();
                 fail.Show();
                 return;
@@ -284,6 +283,8 @@ namespace sorteSystem.com.proem.sorte.window
             if (zcGoodsMaster == null)
             {
                 voice.Speak("无商品", speakflag);
+                MessageFail fail = new MessageFail();
+                fail.Show();
                 return;
             }
             if (num.Length == 18)

@@ -18,7 +18,10 @@ namespace sorteSystem.com.proem.sorte.window.util
 
         private void MessageFail_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Y){
+            if(e.KeyCode == Keys.Enter){
+                button1_Click(this, EventArgs.Empty);
+            }
+            if(e.KeyCode == Keys.Escape){
                 button1_Click(this, EventArgs.Empty);
             }
         }

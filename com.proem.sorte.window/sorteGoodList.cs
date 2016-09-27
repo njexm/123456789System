@@ -1229,7 +1229,8 @@ namespace sorteSystem.com.proem.sorte.window
             {
 
                 voice.Speak("错误", speakflag);
-                MessageBox.Show("请确认扫码的条码是否正确", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageFail fail = new MessageFail();
+                fail.Show();
                 return;
             }
             ///以后的13的条码
@@ -1262,6 +1263,8 @@ namespace sorteSystem.com.proem.sorte.window
             {
                 //MessageBox.Show("没有此货号对应的商品信息，请检查后重新操作!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 voice.Speak("无商品", speakflag);
+                MessageFail fail = new MessageFail();
+                fail.Show();
                 return;
             }
             if (num.Length == 18)
@@ -1308,7 +1311,8 @@ namespace sorteSystem.com.proem.sorte.window
                     if ((string.IsNullOrEmpty(nums) || "0".Equals(nums)) && !calFlag)
                     {
                         voice.Speak("错误", speakflag);
-                        //MessageBox.Show("此商品份数为0无法进行减去操作", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageFail fail = new MessageFail();
+                        fail.Show();
                         calFlag = true;
                         calculateButton.Text = "加(F1)";
                         return;
@@ -1342,7 +1346,8 @@ namespace sorteSystem.com.proem.sorte.window
                             if (list.Count == 0)
                             {
                                 voice.Speak("错误", speakflag);
-                                //MessageBox.Show("没有此商品对应得分拣记录，无需进行减去操作", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                MessageFail fail = new MessageFail();
+                                fail.Show();
                                 return;
                             }
                             sortedao.DeleteBy(list[0]);
@@ -1380,7 +1385,8 @@ namespace sorteSystem.com.proem.sorte.window
                 }
                 else {
                     voice.Speak("错误", speakflag);
-                    //MessageBox.Show("没有此商品，请确认商品或者货号是否正确", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    MessageFail fail = new MessageFail();
+                    fail.Show();
                     return;
                 }
             }

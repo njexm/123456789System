@@ -85,7 +85,7 @@ namespace sorteSystem.com.proem.sorte.window
                         float oldWeight = float.Parse(orderSorte.weight);
                         if (returnGoods != null)
                         {
-                            dao.updateNums(weight.ToString("0.0000"), goodsFileId, -weight * master.GoodsPrice, orderSorteId);
+                            dao.updateNums("-"+weight.ToString("0.0000"), goodsFileId, -weight * master.GoodsPrice, orderSorteId);
                         }else{
                             dao.updateNums(weight.ToString("0.0000"), goodsFileId, weight * master.GoodsPrice, orderSorteId);
                         }
@@ -139,7 +139,7 @@ namespace sorteSystem.com.proem.sorte.window
                     ZcGoodsMaster master = goodsMasterDao.FindById(goodsFileId);
                     float oldnums = money / master.GoodsPrice;
                     if (returnGoods != null) {
-                        dao.updateNums(nums, goodsFileId, -nums * master.GoodsPrice, orderSorteId);
+                        dao.updateNums(-nums, goodsFileId, -nums * master.GoodsPrice, orderSorteId);
                     }
                     else 
                     {
