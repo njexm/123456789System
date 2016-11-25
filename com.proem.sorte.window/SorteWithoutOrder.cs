@@ -3,6 +3,7 @@ using log4net;
 using Oracle.ManagedDataAccess.Client;
 using sorteSystem.com.proem.sorte.dao;
 using sorteSystem.com.proem.sorte.domain;
+using sorteSystem.com.proem.sorte.util;
 using sorteSystem.com.proem.sorte.window.util;
 using SorteSystem.com.proem.sorte.dao;
 using SorteSystem.com.proem.sorte.domain;
@@ -30,6 +31,11 @@ namespace sorteSystem.com.proem.sorte.window
         /// 分店编号
         /// </summary>
         private string street;
+
+        /// <summary>
+        /// 分店id
+        /// </summary>
+        private string branchTotalId;
 
         /// <summary>
         /// 主界面
@@ -189,7 +195,7 @@ namespace sorteSystem.com.proem.sorte.window
                 sorteDao sortedao = new sorteDao();
 
                 //库存添加
-                orderDao.updateStoreHouseAddSorteWithOutOrder(obj);
+                //orderDao.updateStoreHouseAddSorteWithOutOrder(obj);
                 sortedao.DeleteBy(orderSorteId);
                 loadTableAfterDelete(index);
             }
@@ -199,7 +205,7 @@ namespace sorteSystem.com.proem.sorte.window
         {
             String first = DateTime.Now.ToString("yyyy-MM-dd 00:00:01");
             String last = DateTime.Now.ToString("yyyy-MM-dd 23:59:59");
-            string sql = "select b.serialNumber, a.goods_name as goodsName, a.weight, a.money, b.id as goodsFileId,a.isWeight, a.id from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where 1=1 and a.isReturn ='0' and a.sorteId is null and a.address='" + street + "' and a.createTime >= to_date('" + first + "', 'yyyy-MM-dd hh24:mi:ss') and a.createTime <=to_date('" + last + "', 'yyyy-MM-dd hh24:mi:ss')  order by a.createTime";
+            string sql = "select b.serialNumber, a.goods_name as goodsName, a.weight, a.money, b.id as goodsFileId,a.isWeight, a.id from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where 1=1 and a.isReturn ='0' and a.isPrint='0' and a.sorteId is null and a.address='" + street + "' and a.createTime >= to_date('" + first + "', 'yyyy-MM-dd hh24:mi:ss') and a.createTime <=to_date('" + last + "', 'yyyy-MM-dd hh24:mi:ss')  order by a.createTime";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             try
@@ -329,13 +335,14 @@ namespace sorteSystem.com.proem.sorte.window
             orderSorte.isWeight = isWeight ? "1" : "0";
             orderSorte.bar_code = num;
             orderSorte.isReturn = "0";
+            orderSorte.isPrint = "0";
+            orderSorte.goodsPrice = zcGoodsMaster.GoodsPrice.ToString();
             orderDao orderDao = new orderDao();
             orderSorte.costPrice = orderDao.getCostPrice(zcGoodsMaster.Id, false, float.Parse(weight)).ToString();
             sorteDao sortedao = new sorteDao();
             sortedao.addSorteWithOutGoods(orderSorte);
             //库存减少
-            
-            orderDao.updateStoreHouse(orderSorte);
+            //orderDao.updateStoreHouse(orderSorte);
         }
 
         /// <summary>
@@ -394,7 +401,130 @@ namespace sorteSystem.com.proem.sorte.window
             {
                 return;
             }
+            List<string> list = new List<string>();
+            for (int i = 0; i < itemDataGird.RowCount; i++ )
+            {
+                string id = itemDataGird[6, i].Value != null ? itemDataGird[6, i].Value.ToString() : "";
+                list.Add(id);
+            }
+            //打印
             printTicket();
+            
+            orderDao orderDao = new orderDao();
+            ZcGoodsMasterDao zcGoodsMasterDao = new ZcGoodsMasterDao();
+            DispatchingDao dispatchDao = new DispatchingDao();
+
+            //生成配送出库单
+            int dispatchingCount = orderDao.getDispatchingCount();
+            DispatchingWarehouse dispatchingWarehouse = new DispatchingWarehouse();
+            dispatchingWarehouse.id = Guid.NewGuid().ToString();
+            dispatchingWarehouse.createTime = DateTime.Now;
+            dispatchingWarehouse.updateTime = DateTime.Now;
+            dispatchingWarehouse.street = street;
+            dispatchingWarehouse.dispatcher_date = DateTime.Now;
+            dispatchingWarehouse.dispatcherOdd = "DO0001" + DateTime.Now.ToString("yyyyMMdd") + (dispatchingCount + 1).ToString().PadLeft(4, '0');
+            dispatchingWarehouse.type = "2";
+            dispatchingWarehouse.statue = 2;
+            dispatchingWarehouse.branch_id = ConstantUtil.BranchId;
+            dispatchingWarehouse.branch_total_id = branchTotalId;
+            List<DispatchingWarehouseItem> itemList = new List<DispatchingWarehouseItem>();
+            float nums = 0;
+            float money = 0;
+            float weight = 0;
+            for (int i = 0; i < list.Count; i++ )
+            {
+                orderSorte orderSorte = orderDao.FindOrderSorteBy(list[i]);
+                //库存减少
+                orderDao.updateStoreHouse(orderSorte);
+
+                //打印状态修改
+                orderDao.updateIsPrint(orderSorte.id);
+
+                DispatchingWarehouseItem item = new DispatchingWarehouseItem();
+                item.id = Guid.NewGuid().ToString();
+                item.createTime = DateTime.Now;
+                item.updateTime = DateTime.Now;
+                item.cash_date = DateTime.Now;
+                item.dispatchingWarehouseId = dispatchingWarehouse.id;
+                ZcGoodsMaster goodsFile = zcGoodsMasterDao.FindById(orderSorte.goods_id);
+                item.goods_name = goodsFile.GoodsName;
+                item.goodsPrice = goodsFile.GoodsPrice.ToString();
+                item.goods_specifications = goodsFile.GoodsSpecifications;
+                item.nums = orderSorte.sorteNum;
+                item.serialNumber = goodsFile.SerialNumber;
+                item.money = orderSorte.money;
+                item.weight = orderSorte.weight;
+                item.branch_total_id = branchTotalId;
+                item.goodsFile_id = orderSorte.goods_id;
+                itemList.Add(item);
+                nums += string.IsNullOrEmpty(item.nums) ? 0 : float.Parse(item.nums);
+                money += string.IsNullOrEmpty(item.money) ? 0 : float.Parse(item.money);
+                weight += string.IsNullOrEmpty(item.weight) ? 0 : float.Parse(item.weight);
+            }
+            dispatchingWarehouse.nums = nums.ToString();
+            dispatchingWarehouse.money = money.ToString();
+            dispatchingWarehouse.weight = weight.ToString();
+
+            dispatchDao.addList(itemList);
+            if (itemList.Count != 0)
+            {
+                dispatchDao.addObj(dispatchingWarehouse);
+            }
+            orderDao.insertLog("生成了一条配送出库单", "配送出库单");
+
+            BranchSettlementItem branchSettlementItem = new BranchSettlementItem();
+            branchSettlementItem.id = Guid.NewGuid().ToString();
+            branchSettlementItem.createTime = DateTime.Now;
+            branchSettlementItem.updateTime = DateTime.Now;
+            branchSettlementItem.payableMoney = dispatchingWarehouse.money;
+            branchSettlementItem.actualMoney = "0.00";
+            branchSettlementItem.discountMoney = "0.00";
+            branchSettlementItem.favorableMoney = "0.00";
+            branchSettlementItem.paidMoney = "0.00";
+            branchSettlementItem.tax = "0.00";
+            branchSettlementItem.codeType = "配送出库单";
+            branchSettlementItem.billDate = dispatchingWarehouse.createTime;
+
+            branchSettlementItem.agreedTime = DateTime.Now.AddMonths(1);
+            branchSettlementItem.unpaidMoney = branchSettlementItem.payableMoney;
+            branchSettlementItem.code = dispatchingWarehouse.dispatcherOdd;
+            branchSettlementItem.money = "0";
+            branchSettlementItem.branchCode = dispatchingWarehouse.street;
+
+            orderDao.addBranchSettlementItem(branchSettlementItem);
+
+            orderDao.insertLog("生成缴款单", "缴款单");
+
+            //生成分拣单
+            Sorte sorte = new Sorte();
+            sorte.Id = Guid.NewGuid().ToString();
+            sorte.createTime = DateTime.Now;
+            sorte.updateTime = DateTime.Now;
+            sorte.auditStatus = 4;
+            int sorteCount = orderDao.getSorteCount();
+            sorte.code = "FJ0001" + DateTime.Now.ToString("yyyyMMdd") + (sorteCount + 1).ToString().PadLeft(4, '0');
+            sorte.makeTime = DateTime.Now;
+            sorte.sortingMethod = "按分店分拣";
+            //sorte.makeMen = "";
+            sorte.groupFlag = 1;
+
+            orderDao.addSorte(sorte);
+
+            SorteItem sorteItem = new SorteItem();
+            sorteItem.id = Guid.NewGuid().ToString();
+            sorteItem.createTime = DateTime.Now;
+            sorteItem.updateTime = DateTime.Now;
+            sorteItem.areaId = street;
+            sorteItem.sortStatus = "1";
+            //sorteItem.address = ;
+            sorteItem.branch_total_id = branchTotalId;
+            //sorteItem.customer = ;
+            sorteItem.sorte_id = sorte.Id;
+
+            orderDao.addSorteItem(sorteItem);
+            orderDao.insertLog("生成并完成了一条分拣单", "分拣单");
+            //重新加载数据
+            loadSorteGoods();
         }
 
 
@@ -404,10 +534,11 @@ namespace sorteSystem.com.proem.sorte.window
         /// </summary>
         /// <param name="street"></param>
         /// <param name="branchName"></param>
-        public void setBranch(string street, string branchName)
+        public void setBranch(string street, string branchName, string branchId)
         {
             textBox1.Text = branchName;
             this.street = street;
+            this.branchTotalId = branchId;
             ///重新选择street后加载数据
             loadSorteGoods();
         }
@@ -419,7 +550,7 @@ namespace sorteSystem.com.proem.sorte.window
         {
             String first = DateTime.Now.ToString("yyyy-MM-dd 00:00:01");
             String last = DateTime.Now.ToString("yyyy-MM-dd 23:59:59");
-            string sql = "select b.serialNumber, a.goods_name as goodsName, a.weight, a.money, b.id as goodsFileId,a.isWeight, a.id from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where 1=1 and a.isReturn ='0' and a.sorteId is null and a.address='" + street + "' and a.createTime >= to_date('" + first + "', 'yyyy-MM-dd hh24:mi:ss') and a.createTime <=to_date('" + last + "', 'yyyy-MM-dd hh24:mi:ss')  order by a.createTime";
+            string sql = "select b.serialNumber, a.goods_name as goodsName, a.weight, a.money, b.id as goodsFileId,a.isWeight, a.id from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where 1=1 and a.isReturn ='0' and a.sorteId is null and a.isPrint='0' and a.address='" + street + "' and a.createTime >= to_date('" + first + "', 'yyyy-MM-dd hh24:mi:ss') and a.createTime <=to_date('" + last + "', 'yyyy-MM-dd hh24:mi:ss')  order by a.createTime";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             OracleDataAdapter da = null;
@@ -443,7 +574,7 @@ namespace sorteSystem.com.proem.sorte.window
             }
             catch (Exception ex)
             {
-                log.Error("加载退货收银信息失败", ex);
+                log.Error("加载直接收银信息失败", ex);
             }
             finally
             {
@@ -494,7 +625,12 @@ namespace sorteSystem.com.proem.sorte.window
 
         public void printTicket()
         {
+            strs = GetPrintStr();
+
             PrintDocument pd = new PrintDocument();
+
+            PrintController printController = new StandardPrintController();
+            pd.PrintController = printController;
             //设置边距
 
             Margins margin = new Margins(20, 20, 20, 20);
@@ -557,7 +693,7 @@ namespace sorteSystem.com.proem.sorte.window
             string first = DateTime.Now.ToString("yyyy-MM-dd 00:00:01");
             string last = DateTime.Now.ToString("yyyy-MM-dd 23:59:59");
             string sql = "select a.goods_id, a.goods_name, a.SORTENUM, a.WEIGHT, b.GOODS_PRICE, b.GOODS_UNIT,a.money from ZC_ORDERS_SORTE a left join ZC_GOODS_MASTER b "
-                + " on a.GOODS_ID = b.SERIALNUMBER where a.ADDRESS = :street and a.isReturn='0' and a.sorteId is null and a.createTime>=to_date('" + first + "', 'yyyy-MM-dd HH24:mi:ss') and a.createTime<=to_date('" + last + "', 'yyyy-MM-dd HH24:mi:ss') order by b.serialnumber ";
+                + " on a.GOODS_ID = b.SERIALNUMBER where a.ADDRESS = :street and a.isReturn='0' and a.isPrint ='0' and a.sorteId is null and a.createTime>=to_date('" + first + "', 'yyyy-MM-dd HH24:mi:ss') and a.createTime<=to_date('" + last + "', 'yyyy-MM-dd HH24:mi:ss') order by b.serialnumber ";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             try
@@ -635,16 +771,18 @@ namespace sorteSystem.com.proem.sorte.window
 
         private int index;
 
+        private string[] strs;
+
         private void pd_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             Graphics g = e.Graphics;
             Font InvoiceFont = new Font("Arial", 10, FontStyle.Regular);
             SolidBrush GrayBrush = new SolidBrush(Color.Black);
-            string[] strs = GetPrintStr();
+            //string[] strs = GetPrintStr();
             int y = 0;
             while (index < strs.Length)
             {
-                g.DrawString(GetPrintStr()[index++], InvoiceFont, GrayBrush, 5, 5 + y);
+                g.DrawString(strs[index++], InvoiceFont, GrayBrush, 5, 5 + y);
                 y += 15;
                 if (y > e.PageBounds.Height)
                 {

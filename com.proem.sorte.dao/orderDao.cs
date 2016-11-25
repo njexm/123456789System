@@ -958,7 +958,7 @@ namespace sorteSystem.com.proem.sorte.dao
             public orderSorte FindOrderSorteBy(string orderSorteId)
             {
                 orderSorte obj = new orderSorte();
-                string sql = "select id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, ORDERSNUM, SORTENUM,sorteId, WEIGHT, isWeight, bar_code, isReturn, costPrice from zc_orders_sorte where id ='"+orderSorteId+"'";
+                string sql = "select id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, ORDERSNUM, SORTENUM,sorteId, WEIGHT, isWeight, bar_code, isReturn, costPrice, isPrint , money  from zc_orders_sorte where id ='"+orderSorteId+"'";
                 OracleConnection conn = null;
                 OracleCommand cmd = new OracleCommand();
                 OracleDataReader reader = null;
@@ -984,6 +984,8 @@ namespace sorteSystem.com.proem.sorte.dao
                         obj.bar_code = reader.IsDBNull(11) ? string.Empty : reader.GetString(11);
                         obj.isReturn = reader.IsDBNull(12) ? string.Empty : reader.GetString(12);
                         obj.costPrice = reader.IsDBNull(13) ? "0" : reader.GetString(13);
+                        obj.isPrint = reader.IsDBNull(14) ? string.Empty : reader.GetString(14);
+                        obj.money = reader.IsDBNull(15) ? "0" : reader.GetString(15);
                     }
                 }
                 catch (Exception ex)
@@ -1010,7 +1012,7 @@ namespace sorteSystem.com.proem.sorte.dao
                 string startTime = DateTime.Now.ToString("yyyy-MM-dd 00:00:01");
                 string endTime = DateTime.Now.ToString("yyyy-MM-dd 23:59:59");
                 List<orderSorte> list = new List<orderSorte>();
-                string sql = "select id, createTime, address, goods_id, sorteNum, weight, money from zc_orders_sorte where 1=1 and address = '"+street+"' and isReturn is null "
+                string sql = "select id, createTime, address, goods_id, sorteNum, weight, money from zc_orders_sorte where 1=1 and address = '"+street+"' and sorteId is not null and isReturn != '1' "
                     + " and createTime >=to_date('"+startTime+"', 'yyyy-MM-dd HH24:mi:ss')  and  createTime <= to_date('"+endTime+"', 'yyyy-MM-dd HH24:mi:ss')";
                 OracleConnection conn = null;
                 OracleCommand cmd = new OracleCommand();
@@ -1212,6 +1214,483 @@ namespace sorteSystem.com.proem.sorte.dao
                     }
                 }
                 return count;
+            }
+
+            public int getSorteCount()
+            {
+                int count = 0;
+                string sql = "select count(1) from zc_sorte ";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleDataReader reader = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    cmd.CommandText = sql;
+                    cmd.Connection = conn;
+                    reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        count = reader.IsDBNull(0) ? default(int) : reader.GetInt32(0);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Error("获取分拣单数量失败", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if (reader != null)
+                    {
+                        reader.Close();
+                    }
+                    if (conn != null)
+                    {
+                        conn.Close();
+                    }
+                }
+                return count;
+            }
+
+            public void addSorte(Sorte sorte)
+            {
+                string sql = "insert into zc_sorte (id, createTime, updateTime,AUDITS_TATUS, code,make_time, SORTING_METHOD, GROUPFLAG) "
+                    + " values (:id, :createTime, :updateTime, :AUDITS_TATUS, :code, :make_time, :SORTING_METHOD, :GROUPFLAG)";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleTransaction tran = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    tran = conn.BeginTransaction();
+                    cmd.CommandText = sql;
+                    cmd.Connection = conn;
+                    cmd.Parameters.Add(":id", sorte.Id);
+                    cmd.Parameters.Add(":createTime", sorte.createTime);
+                    cmd.Parameters.Add(":updateTime", sorte.updateTime);
+                    cmd.Parameters.Add(":AUDITS_TATUS", sorte.auditStatus);
+                    cmd.Parameters.Add(":code", sorte.code);
+                    cmd.Parameters.Add(":make_time", sorte.makeTime);
+                    cmd.Parameters.Add(":SORTING_METHOD", sorte.sortingMethod);
+                    cmd.Parameters.Add(":GROUPFLAG", sorte.groupFlag);
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    log.Error("插入分拣单失败", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if (conn != null)
+                    {
+                        conn.Close();
+                    }
+                }
+            }
+
+            public void addSorteItem(SorteItem sorteItem)
+            {
+                string sql = "insert into zc_sorte_item (id, createTime, updateTime,areaId, sortStatus,branch_total_id, sorte_id) "
+                    + " values (:id, :createTime, :updateTime, :areaId, :sortStatus, :branch_total_id, :sorte_id)";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleTransaction tran = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    tran = conn.BeginTransaction();
+                    cmd.CommandText = sql;
+                    cmd.Connection = conn;
+                    cmd.Parameters.Add(":id", sorteItem.id);
+                    cmd.Parameters.Add(":createTime", sorteItem.createTime);
+                    cmd.Parameters.Add(":updateTime", sorteItem.updateTime);
+                    cmd.Parameters.Add(":areaId", sorteItem.areaId);
+                    cmd.Parameters.Add(":sortStatus", sorteItem.sortStatus);
+                    cmd.Parameters.Add(":branch_total_id", sorteItem.branch_total_id);
+                    cmd.Parameters.Add(":sorte_id", sorteItem.sorte_id);
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    log.Error("插入分拣单明细失败", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if (conn != null)
+                    {
+                        conn.Close();
+                    }
+                }
+            }
+
+            public void updateIsPrint(string p)
+            {
+                string sql = "update zc_orders_sorte set isPrint = '1' where id='"+p+"'";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleTransaction tran = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    tran = conn.BeginTransaction();
+                    cmd.CommandText = sql;
+                    cmd.Connection = conn;
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    log.Error("修改分拣信息打印状态失败", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if (conn != null)
+                    {
+                        conn.Close();
+                    }
+                }
+            }
+
+            /// <summary>
+            /// 添加日志信息
+            /// </summary>
+            /// <param name="desp">日志描述</param>
+            /// <param name="moduleName">模块</param>
+            public void insertLog(string desp, string moduleName) {
+                string sql = "insert into zc_log (id,CREATETIME,UPDATETIME, DESCRIPTION, IPADDRESS, MODULENAME, USER_ID) values (:id,:CREATETIME,:UPDATETIME, :DESCRIPTION, :IPADDRESS, :MODULENAME, :USER_ID)";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleTransaction tran = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    tran = conn.BeginTransaction();
+                    cmd.CommandText = sql;
+                    cmd.Connection = conn;
+                    cmd.Parameters.Add(":id", Guid.NewGuid().ToString());
+                    cmd.Parameters.Add(":CREATETIME", DateTime.Now);
+                    cmd.Parameters.Add(":UPDATETIME", DateTime.Now);
+                    cmd.Parameters.Add(":DESCRIPTION", ConstantUtil.LoginUserName+desp);
+                    cmd.Parameters.Add(":IPADDRESS", ConstantUtil.LocalIp);
+                    cmd.Parameters.Add(":MODULENAME", moduleName);
+                    cmd.Parameters.Add(":USER_ID", ConstantUtil.LoginUserId);
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    log.Error("增加日志信息失败！", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if(tran != null){
+                        tran.Dispose();
+                    }
+                    if (conn != null)
+                    {
+                        conn.Close();
+                    }
+                }
+            }
+
+            public void addBranchSettlementItem(BranchSettlementItem obj)
+            {
+                string sql = "insert into Zc_branch_settlement_item (id, createTime, updateTime, payableMoney, actualMoney, discountMoney, favorableMoney, paidMoney, tax, codeType, billDate, agreedTime, unpaidMoney, code, money, branchCode) "
+                    + " values (:id, :createTime, :updateTime, :payableMoney, :actualMoney, :discountMoney, :favorableMoney, :paidMoney, :tax, :codeType, :billDate, :agreedTime, :unpaidMoney, :code, :money, :branchCode)";
+                OracleConnection conn = null;
+                OracleTransaction tran = null;
+                OracleCommand cmd = new OracleCommand();
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    tran = conn.BeginTransaction();
+                    cmd.Connection = conn;
+                    cmd.CommandText = sql;
+                    cmd.Parameters.Add(":id", obj.id);
+                    cmd.Parameters.Add(":createTime", obj.createTime);
+                    cmd.Parameters.Add(":updateTime", obj.updateTime);
+                    cmd.Parameters.Add(":payableMoney", obj.payableMoney);
+                    cmd.Parameters.Add(":actualMoney", obj.actualMoney);
+                    cmd.Parameters.Add(":discountMoney", obj.discountMoney);
+                    cmd.Parameters.Add(":favorableMoney", obj.favorableMoney);
+                    cmd.Parameters.Add(":paidMoney", obj.paidMoney);
+                    cmd.Parameters.Add(":tax", obj.tax);
+                    cmd.Parameters.Add(":codeType", obj.codeType);
+                    cmd.Parameters.Add(":billDate", obj.billDate);
+                    cmd.Parameters.Add(":agreedTime", obj.agreedTime);
+                    cmd.Parameters.Add(":unpaidMoney", obj.unpaidMoney);
+                    cmd.Parameters.Add(":code", obj.code);
+                    cmd.Parameters.Add(":money", obj.money);
+                    cmd.Parameters.Add(":branchCode", obj.branchCode);
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    log.Error("新增缴款单失败", ex);
+                }
+                finally
+                { 
+                    cmd.Dispose();
+                    if(tran != null){
+                        tran.Dispose();
+                    }
+                    if(conn != null){
+                        conn.Close();
+                    }
+                }
+            }
+
+            public long FindSaveInCount()
+            {
+                long count = 0;
+                string sql = "select count(1) from zc_saveIn_Warehouse ";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleDataReader reader = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    cmd.Connection = conn;
+                    cmd.CommandText = sql;
+                    reader = cmd.ExecuteReader();
+                    if(reader.Read()){
+                        count = reader.GetInt64(0);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Error("获取入库单的数量", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if(reader != null){
+                        reader.Dispose();
+                    }
+                    if(conn != null){
+                        conn.Close();
+                    }
+                }
+                return count;
+            }
+
+            public string FindIdByStreet(string returnStreet)
+            {
+                string id = "";
+                string sql = "select id from zc_branch_total where branch_code = '"+returnStreet+"'";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleDataReader reader = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    cmd.Connection = conn;
+                    cmd.CommandText = sql;
+                    reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        id = reader.GetString(0);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    log.Error("获取亭点id", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if (reader != null)
+                    {
+                        reader.Dispose();
+                    }
+                    if (conn != null)
+                    {
+                        conn.Close();
+                    }
+                }
+                return id;
+            }
+
+            public void addSaveIn(SaveIn obj)
+            {
+                string sql = "insert into zc_saveIn_Warehouse (id, CREATETIME, UPDATETIME,CHECK_DATE, CHECKMAN, MONEY, NUMS, odd, STATUE, street, weight, BRANCH_ID, createMan, storehouse_id) values "
+                    + " (:id, :CREATETIME, :UPDATETIME, :CHECK_DATE, :CHECKMAN, :MONEY, :NUMS, :odd, :STATUE, :street, :weight, :BRANCH_ID, :createMan, :storehouse_id)";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleTransaction tran = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    tran = conn.BeginTransaction();
+                    cmd.Connection = conn;
+                    cmd.CommandText = sql;
+                    cmd.Parameters.Add(":id", obj.id);
+                    cmd.Parameters.Add(":CREATETIME", obj.createTime);
+                    cmd.Parameters.Add(":UPDATETIME", obj.updateTime);
+                    cmd.Parameters.Add(":CHECK_DATE", obj.check_date);
+                    cmd.Parameters.Add(":CHECKMAN", obj.checkMan);
+                    cmd.Parameters.Add(":MONEY", obj.money);
+                    cmd.Parameters.Add(":NUMS", obj.nums);
+                    cmd.Parameters.Add("::odd", obj.odd);
+                    cmd.Parameters.Add(":STATUE", obj.statue);
+                    cmd.Parameters.Add(":street", obj.street);
+                    cmd.Parameters.Add(":WEIGHT", obj.weight);
+                    cmd.Parameters.Add(":BRANCH_ID", obj.branch_id);
+                    cmd.Parameters.Add(":createMan", obj.createMan);
+                    cmd.Parameters.Add(":storehouse_id", obj.storehouse_id);
+                    cmd.ExecuteNonQuery();
+                    cmd.Parameters.Clear();
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    log.Error("插入入库单", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if (conn != null)
+                    {
+                        conn.Close();
+                    }
+                }
+            }
+
+            public void addSaveInItem(List<SaveInItem> list)
+            {
+                string sql = "insert into zc_saveIn_Warehouse_item (id, CREATETIME, UPDATETIME, MONEY, NUMS, SAVEIN_ID, WEIGHT, GOODSFILE_ID ) values "
+                    + " (:id, :CREATETIME, :UPDATETIME, :MONEY, :NUMS, :SAVEIN_ID, :WEIGHT, :GOODSFILE_ID)";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleTransaction tran = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    tran = conn.BeginTransaction();
+                    cmd.Connection = conn;
+                    cmd.CommandText = sql;
+                    for (int i = 0; i < list.Count; i++ )
+                    {
+                        SaveInItem obj = list[i];
+                        cmd.Parameters.Add(":id", obj.id);
+                        cmd.Parameters.Add(":CREATETIME", obj.createTime);
+                        cmd.Parameters.Add(":UPDATETIME", obj.updateTime);
+                        cmd.Parameters.Add(":MONEY", obj.money);
+                        cmd.Parameters.Add(":NUMS", obj.nums);
+                        cmd.Parameters.Add(":SAVEIN_ID", obj.saveIn_id);
+                        cmd.Parameters.Add(":WEIGHT", obj.weight);
+                        cmd.Parameters.Add(":GOODSFILE_ID", obj.goodsFile_id);
+                        cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
+                    }
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    log.Error("插入入库单明细", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if (conn != null)
+                    {
+                        conn.Close();
+                    }
+                }
+            }
+
+            public void deleteSaveInItem(string returnStreet, orderSorte obj)
+            {
+                string startTime = DateTime.Now.ToString("yyyy-MM-dd 00:00:01");
+                string endTime = DateTime.Now.ToString("yyyy-MM-dd 23:59:59");
+                string sql = "select a.id as itemId, a.MONEY, a.nums, a.WEIGHT, b.id, b.money as totalMoney, b.NUMS as totalNums, b.WEIGHT as totalWeight "
+                    +" from ZC_SAVEIN_WAREHOUSE_ITEM a left join ZC_SAVEIN_WAREHOUSE b on a.SAVEIN_ID = b.id "
+                    +" where 1=1 and b.street = '"+returnStreet+"' and a.GOODSFILE_ID = '"+obj.goods_id+"' "
+                    +" and b.CREATETIME >=TO_DATE('"+startTime+"', 'yyyy-MM-dd HH24:mi:ss') "
+                    + " and b.CREATETIME <=TO_DATE('" + endTime + "', 'yyyy-MM-dd HH24:mi:ss') "
+                    + " and a.money >= '"+(-float.Parse(obj.money))+"'";
+                OracleConnection conn = null;
+                OracleTransaction tran = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleDataReader reader = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    tran = conn.BeginTransaction();
+                    cmd.Connection = conn;
+                    cmd.CommandText = sql;
+                    reader = cmd.ExecuteReader();
+                    if(reader.Read()){
+                        string itemId = reader.IsDBNull(0) ? string.Empty : reader.GetString(0);
+                        float money = float.Parse(reader.IsDBNull(1) ? "0" : reader.GetString(1));
+                        float nums = float.Parse(reader.IsDBNull(2) ? "0" : reader.GetString(2));
+                        float weight = float.Parse(reader.IsDBNull(3) ? "0" : reader.GetString(3));
+                        string id = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
+                        float totalmoney = float.Parse(reader.IsDBNull(5) ? "0" : reader.GetString(5));
+                        float totalnums = float.Parse(reader.IsDBNull(6) ? "0" : reader.GetString(6));
+                        float totalweight = float.Parse(reader.IsDBNull(7) ? "0" : reader.GetString(7));
+                        string sql1 = "";
+                        string sql2 = "";
+                        if (money + float.Parse(obj.money) > 0)
+                        {
+                            sql1 = "update ZC_SAVEIN_WAREHOUSE_ITEM set money = '"+(money+float.Parse(obj.money))+"', nums = '"+(nums + float.Parse(obj.sorteNum))+"', weight = '"+(weight - float.Parse(obj.weight))+"' where id = '"+itemId+"' ";
+                            sql2 = "update ZC_SAVEIN_WAREHOUSE set money = '" + (totalmoney + float.Parse(obj.money)) + "', nums = '" + (totalnums + float.Parse(obj.sorteNum)) + "', weight = '" + (totalweight - float.Parse(obj.weight)) + "' where id = '" + id + "' ";
+                        }
+                        else 
+                        {
+                            //数量相同
+                            if (totalmoney - money > 0)
+                            {
+                                sql1 = "delete from  ZC_SAVEIN_WAREHOUSE_ITEM  where id = '" + itemId + "' ";
+                                sql2 = "update ZC_SAVEIN_WAREHOUSE set money = '" + (totalmoney + float.Parse(obj.money)) + "', nums = '" + (totalnums + float.Parse(obj.sorteNum)) + "', weight = '" + (totalweight - float.Parse(obj.weight)) + "' where id = '" + id + "' ";
+                            }
+                            else 
+                            {
+                                //当前删除的商品时唯一的退货商品
+                                sql1 = "delete from  ZC_SAVEIN_WAREHOUSE_ITEM  where id = '" + itemId + "' ";
+                                sql2 = "delete from ZC_SAVEIN_WAREHOUSE where id = '"+id+"'";
+                            }
+                        }
+                        cmd.CommandText = sql1;
+                        cmd.ExecuteNonQuery();
+                        cmd.CommandText = sql2;
+                        cmd.ExecuteNonQuery();
+                    }
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    log.Error("删除退货商品,入库单修改", ex);
+                }
+                finally
+                { 
+                    if(tran != null){
+                        tran.Dispose();
+                    }
+                    if(reader != null){
+                        reader.Close();
+                    }
+                    cmd.Dispose();
+                    if(conn != null){
+                        conn.Close();
+                    }
+                }
             }
     }
 

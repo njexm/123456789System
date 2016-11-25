@@ -48,5 +48,20 @@ namespace sorteSystem.com.proem.sorte.util
         /// 2团购订单
         /// </summary>
         public static int groupFlag;
+
+        /// <summary>
+        /// 登陆用户id
+        /// </summary>
+        public static string LoginUserId;
+
+        /// <summary>
+        /// 本机ip
+        /// </summary>
+        public static string LocalIp;
+
+        /// <summary>
+        /// 登陆用户名
+        /// </summary>
+        public static string LoginUserName;
     }
 }

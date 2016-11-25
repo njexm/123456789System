@@ -1,0 +1,8 @@
+2016-10-31 10:47:12,431 [10] ERROR sorteSystem.com.proem.sorte.window.sorteGoodList [(null)] - 发送请求至后台发送错误!
+System.Net.WebException: 无法连接到远程服务器 ---> System.Net.Sockets.SocketException: 由于目标计算机积极拒绝，无法连接。 127.0.0.1:80
+   在 System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   在 System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket& socket, IPAddress& address, ConnectSocketState state, IAsyncResult asyncResult, Exception& exception)
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 System.Net.HttpWebRequest.GetResponse()
+   在 sorteSystem.com.proem.sorte.util.HttpUtil.CreateGetHttpResponse(String url, Nullable`1 timeout, String userAgent, CookieCollection cookies) 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.util\HttpUtil.cs:行号 44
+   在 sorteSystem.com.proem.sorte.window.sorteGoodList.<>c__DisplayClass3.<endButton_Click>b__0() 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.window\sorteGoodList.cs:行号 601

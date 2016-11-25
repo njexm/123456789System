@@ -12,6 +12,7 @@ using Branch;
 using sorteSystem.com.proem.sorte.window.util;
 using sorteSystem.com.proem.sorte.util;
 using log4net;
+using System.Net;
 
 namespace Branch
 {
@@ -43,7 +44,7 @@ namespace Branch
                 string password = MD5Util.GetMd5(pass);
                 //获取数据库连接
                 OracleConnection connection = OracleUtil.OpenConn();
-                string queryString = "select password from ctp_user where name ='" + username + "'";
+                string queryString = "select password,id from ctp_user where name ='" + username + "'";
 
                 OracleCommand command = new OracleCommand();
                 command.Connection = connection;
@@ -57,8 +58,11 @@ namespace Branch
                         if (password.Equals(confirmPassword))
                         {
                             //用户名，密码验证成功
-                            //加载权限
-                            //loadUserRole(username);
+                            //加载用户信息
+                            ConstantUtil.LoginUserId = string.Format("{0}", reader["id"]);
+                            //加载ip信息
+                            loadIp();
+                            loadUserName();
                             this.DialogResult = DialogResult.OK;
                         }
                         else
@@ -82,6 +86,51 @@ namespace Branch
                     connection.Close();
                 }
             }
+        }
+
+        private void loadUserName()
+        {
+            string sql = "select username from zc_user_info where user_id = '"+ConstantUtil.LoginUserId+"'";
+            OracleCommand command = new OracleCommand();
+            OracleConnection connection = null;
+            
+            try
+            {
+                connection = OracleUtil.OpenConn();
+                command.Connection = connection;
+                command.CommandText = sql;
+                var reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    string username = reader.IsDBNull(0) ? default(string) : reader.GetString(0);
+                    ConstantUtil.LoginUserName = username;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("获取登录用户名失败" + ex.Message, ex);
+            }
+            finally
+            {
+                command.Dispose();
+                if(connection != null){
+                    connection.Close();
+                }
+            }
+        }
+
+        private void loadIp()
+        {
+            ///获取本地的IP地址
+            string AddressIP = string.Empty;
+            foreach (IPAddress _IPAddress in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
+            {
+                if (_IPAddress.AddressFamily.ToString() == "InterNetwork")
+                {
+                    AddressIP = _IPAddress.ToString();
+                }
+            }
+            ConstantUtil.LocalIp = AddressIP;
         }
 
         /// <summary>

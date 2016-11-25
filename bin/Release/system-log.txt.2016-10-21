@@ -1,0 +1,7 @@
+2016-10-21 15:45:33,978 [10] ERROR SorteSystem.com.proem.sorte.dao.sorteDao [(null)] - 新增扫码收银信息失败
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-00904: "GOODSPRICE": 标识符无效
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteNonQuery(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, OracleException& exceptionForArrayBindDML, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteNonQuery()
+   在 SorteSystem.com.proem.sorte.dao.sorteDao.addSorteWithOutGoods(orderSorte obj) 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\sorteDao.cs:行号 466

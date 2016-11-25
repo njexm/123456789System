@@ -36,9 +36,10 @@
             this.enterButton = new System.Windows.Forms.Button();
             this.bodyPanel = new System.Windows.Forms.Panel();
             this.branchDataGridView = new System.Windows.Forms.DataGridView();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.street = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.branchName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.mainPanel.SuspendLayout();
             this.bodyPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.branchDataGridView)).BeginInit();
@@ -119,7 +120,8 @@
             this.branchDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.branchDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.street,
-            this.branchName});
+            this.branchName,
+            this.id});
             this.branchDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.branchDataGridView.Location = new System.Drawing.Point(0, 0);
             this.branchDataGridView.MultiSelect = false;
@@ -130,6 +132,16 @@
             this.branchDataGridView.Size = new System.Drawing.Size(584, 220);
             this.branchDataGridView.TabIndex = 0;
             this.branchDataGridView.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.branchDataGridView_RowPostPaint);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Font = new System.Drawing.Font("宋体", 16F);
+            this.textBox1.Location = new System.Drawing.Point(20, 15);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(200, 32);
+            this.textBox1.TabIndex = 0;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.textBox1.Leave += new System.EventHandler(this.textBox1_Leave);
             // 
             // street
             // 
@@ -153,15 +165,13 @@
             this.branchName.Name = "branchName";
             this.branchName.ReadOnly = true;
             // 
-            // textBox1
+            // id
             // 
-            this.textBox1.Font = new System.Drawing.Font("宋体", 16F);
-            this.textBox1.Location = new System.Drawing.Point(20, 15);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(200, 32);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            this.textBox1.Leave += new System.EventHandler(this.textBox1_Leave);
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "id";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Visible = false;
             // 
             // BranchChoose
             // 
@@ -190,9 +200,10 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Panel bodyPanel;
         private System.Windows.Forms.DataGridView branchDataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn street;
-        private System.Windows.Forms.DataGridViewTextBoxColumn branchName;
         private System.Windows.Forms.Button enterButton;
         private System.Windows.Forms.Button escButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn street;
+        private System.Windows.Forms.DataGridViewTextBoxColumn branchName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id;
     }
 }

@@ -51,5 +51,17 @@ namespace SorteSystem.com.proem.sorte.domain
 
         //成本价
         public string costPrice { get; set; }
+
+        /// <summary>
+        /// 是否打印
+        /// 1是
+        /// 0 否
+        /// </summary>
+        public string isPrint { get; set; }
+
+        /// <summary>
+        /// 价格
+        /// </summary>
+        public string goodsPrice { get; set; }
     }
 }

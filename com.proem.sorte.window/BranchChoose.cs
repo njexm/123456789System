@@ -114,12 +114,13 @@ namespace sorteSystem.com.proem.sorte.window
             }
             string street = branchDataGridView.CurrentRow.Cells[0].Value.ToString();
             string branchName = branchDataGridView.CurrentRow.Cells[1].Value.ToString();
+            string id = branchDataGridView.CurrentRow.Cells[2].Value.ToString();
             if (returnGoods != null)
             {
                 returnGoods.setBranch(street, branchName);
             }
             else {
-                sorteWithOutOrder.setBranch(street, branchName);
+                sorteWithOutOrder.setBranch(street, branchName, id);
             }
             this.Close();
         }
@@ -138,7 +139,7 @@ namespace sorteSystem.com.proem.sorte.window
         /// 条件查询所有亭点
         /// </summary>
         private void loadBranch() {
-            string sql = "select b.STREET, a.BRANCH_NAME as branchName from ZC_BRANCH_TOTAL a left join ZC_ZONING b on a.ZONING_ID = b.id where 1=1  ";
+            string sql = "select b.STREET, a.BRANCH_NAME as branchName, a.id  from ZC_BRANCH_TOTAL a left join ZC_ZONING b on a.ZONING_ID = b.id where 1=1  ";
             string text = textBox1.Text.Trim();
             if(!string.IsNullOrEmpty(text)){
                 sql += " and (b.street like '%" + text + "%' or a.BRANCH_NAME like '%" + text + "%') ";

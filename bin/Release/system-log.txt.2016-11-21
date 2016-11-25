@@ -1,0 +1,35 @@
+2016-11-21 04:47:18,986 [10] ERROR sorteSystem.com.proem.sorte.dao.orderDao [(null)] - 插入入库单明细
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-01400: 无法将 NULL 插入 ("EXM"."ZC_SAVEIN_WAREHOUSE_ITEM"."ID")
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteNonQuery(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, OracleException& exceptionForArrayBindDML, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteNonQuery()
+   在 sorteSystem.com.proem.sorte.dao.orderDao.addSaveInItem(List`1 list) 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\orderDao.cs:行号 1597
+2016-11-21 04:47:19,407 [10] ERROR sorteSystem.com.proem.sorte.dao.orderDao [(null)] - 插入入库单
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-02291: 违反完整约束条件 (EXM.FK60CC247C43D7E04E) - 未找到父项关键字
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteNonQuery(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, OracleException& exceptionForArrayBindDML, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteNonQuery()
+   在 sorteSystem.com.proem.sorte.dao.orderDao.addSaveIn(SaveIn obj) 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\orderDao.cs:行号 1554
+2016-11-21 04:49:56,263 [8] ERROR sorteSystem.com.proem.sorte.dao.orderDao [(null)] - 插入入库单
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-02291: 违反完整约束条件 (EXM.FK60CC247C43D7E04E) - 未找到父项关键字
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteNonQuery(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, OracleException& exceptionForArrayBindDML, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteNonQuery()
+   在 sorteSystem.com.proem.sorte.dao.orderDao.addSaveIn(SaveIn obj) 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\orderDao.cs:行号 1554
+2016-11-21 04:49:56,450 [8] ERROR sorteSystem.com.proem.sorte.dao.orderDao [(null)] - 插入入库单明细
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-01400: 无法将 NULL 插入 ("EXM"."ZC_SAVEIN_WAREHOUSE_ITEM"."ID")
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteNonQuery(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, OracleException& exceptionForArrayBindDML, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteNonQuery()
+   在 sorteSystem.com.proem.sorte.dao.orderDao.addSaveInItem(List`1 list) 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\orderDao.cs:行号 1597
+2016-11-21 04:53:14,719 [8] ERROR sorteSystem.com.proem.sorte.dao.orderDao [(null)] - 插入入库单
+Oracle.ManagedDataAccess.Client.OracleException (0x80004005): ORA-02291: 违反完整约束条件 (EXM.FK60CC247C43D7E04E) - 未找到父项关键字
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean& hasMoreRowsInDB, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.VerifyExecution(OracleConnectionImpl connectionImpl, Int32& cursorId, Boolean bThrowArrayBindRelatedErrors, OracleException& exceptionForArrayBindDML, Boolean bFirstIterationDone)
+   在 OracleInternal.ServiceObjects.OracleCommandImpl.ExecuteNonQuery(String commandText, OracleParameterCollection paramColl, CommandType commandType, OracleConnectionImpl connectionImpl, Int32 longFetchSize, Int64 clientInitialLOBFS, OracleDependencyImpl orclDependencyImpl, Int64[]& scnFromExecution, OracleParameterCollection& bindByPositionParamColl, Boolean& bBindParamPresent, OracleException& exceptionForArrayBindDML, Boolean isFromEF)
+   在 Oracle.ManagedDataAccess.Client.OracleCommand.ExecuteNonQuery()
+   在 sorteSystem.com.proem.sorte.dao.orderDao.addSaveIn(SaveIn obj) 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\orderDao.cs:行号 1554

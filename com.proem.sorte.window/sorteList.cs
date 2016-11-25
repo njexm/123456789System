@@ -61,11 +61,11 @@ namespace sorteSystem.com.proem.sorte.window
 
             //获取数据库连接
             OracleConnection connection = OracleUtil.OpenConn();
-            string queryString = "select a.*,b.username as checkName,c.username as createName from zc_sorte a left join zc_user_info b on b.user_id=a.audit_men left join zc_user_info c on c.user_id=a.make_men where a.createTime between :first and :last";
+            string queryString = "select a.*,b.username as checkName,c.username as createName from zc_sorte a left join zc_user_info b on b.user_id=a.audit_men left join zc_user_info c on c.user_id=a.make_men where a.make_men is not null and a.createTime between to_date('" + first.ToString("yyyy-MM-dd HH:mm:ss") + "' , 'yyyy-MM-dd HH24:mi:ss') and to_date('" + last.ToString("yyyy-MM-dd HH:mm:ss") + "' , 'yyyy-MM-dd HH24:mi:ss')";
 
             OracleCommand command = new OracleCommand(queryString);
-            command.Parameters.Add(":first", first);
-            command.Parameters.Add(":last", last);
+            //command.Parameters.Add(":first", first);
+            //command.Parameters.Add(":last", last);
             command.Connection = connection;
             List<Sorte> list = new List<Sorte>();
             try
@@ -243,7 +243,7 @@ namespace sorteSystem.com.proem.sorte.window
                  + "left join zc_branch_total b on b.id=a.branch_total_id "
                  + "left join zc_user_info c on c.id=a.customer "
                  + "left join zc_zoning d on d.id=b.zoning_id "
-                 + "where a.sorte_id ='" + id + "' order by b.branch_code asc ";
+                 + "where a.sorte_id ='" + id + "' order by b.singleorderby asc ";
             OracleCommand cmd = new OracleCommand(sql, connection);
             OracleDataAdapter da = new OracleDataAdapter(cmd);
             da.Fill(ds, "Zc_sorte_item");

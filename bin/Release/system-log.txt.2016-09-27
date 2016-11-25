@@ -1,0 +1,15 @@
+2016-09-27 18:07:07,594 [9] ERROR sorteSystem.com.proem.sorte.dao.orderDao [(null)] - 根据id获取成本单价失败
+System.InvalidOperationException: 对已关闭对象的操作无效
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.IsDBNull(Int32 i)
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetFloat(Int32 i)
+   在 sorteSystem.com.proem.sorte.dao.orderDao.getCostPriceByGoodsFileId(String goodsId) 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\orderDao.cs:行号 823
+2016-09-27 18:07:26,454 [9] ERROR sorteSystem.com.proem.sorte.dao.orderDao [(null)] - 根据id获取成本单价失败
+System.InvalidOperationException: 对已关闭对象的操作无效
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.IsDBNull(Int32 i)
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetFloat(Int32 i)
+   在 sorteSystem.com.proem.sorte.dao.orderDao.getCostPriceByGoodsFileId(String goodsId) 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\orderDao.cs:行号 823
+2016-09-27 18:10:03,176 [9] ERROR sorteSystem.com.proem.sorte.dao.orderDao [(null)] - 根据id获取成本单价失败
+System.InvalidOperationException: 对已关闭对象的操作无效
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.IsDBNull(Int32 i)
+   在 Oracle.ManagedDataAccess.Client.OracleDataReader.GetFloat(Int32 i)
+   在 sorteSystem.com.proem.sorte.dao.orderDao.getCostPriceByGoodsFileId(String goodsId) 位置 e:\c#\visualstudio_workspace\sortSystem\123456789System\com.proem.sorte.dao\orderDao.cs:行号 823

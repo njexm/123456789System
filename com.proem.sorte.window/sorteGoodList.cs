@@ -23,6 +23,7 @@ using log4net;
 using System.Globalization;
 using System.Net;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace sorteSystem.com.proem.sorte.window
 {
@@ -54,9 +55,13 @@ namespace sorteSystem.com.proem.sorte.window
         private string updateGV()
         {
             //if(!isResale){
-            
-            
+
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
                 DataSet ds = getGridData();
+                watch.Stop();
+                Console.WriteLine("------------->数据加载用时:" + watch.ElapsedMilliseconds);
+                log.Error("-------------->数据加载用时:" + watch.ElapsedMilliseconds, new Exception());
                 goodDataGridView.DataSource = ds;
                 goodDataGridView.CurrentCell = null;
 
@@ -387,6 +392,7 @@ namespace sorteSystem.com.proem.sorte.window
                         {
                             object id = dt.Rows[i][0];
                             object streetId = dt.Rows[i][14];
+
                             List<ZcProcessOrder> ZcProcessOrderList = orderdao.FindAll(streetId.ToString());
                             if (ZcProcessOrderList != null && ZcProcessOrderList.Count() > 0)
                             {
@@ -408,7 +414,8 @@ namespace sorteSystem.com.proem.sorte.window
                                                 orderdao.AddtransitItem(zcProcessOrderItem);
                                                 orderdao.deletePorcessItem(itemId);
                                             }
-                                            else {
+                                            else
+                                            {
                                                 isGroup = true;
                                                 continue;
                                             }
@@ -435,7 +442,7 @@ namespace sorteSystem.com.proem.sorte.window
 
                                     }
                                 }
-                                
+
                             }
                             orderdao.deleteAllSorteStatus();
                             int dispatchingCount = sortedao.getDispatchingCount();
@@ -452,14 +459,15 @@ namespace sorteSystem.com.proem.sorte.window
                             dispatchingWarehouse.branch_total_id = dt.Rows[i][6].ToString();
 
                             string cashier = sortedao.getCashierByBranchId(dispatchingWarehouse.branch_total_id);
-                            if(!"1".Equals(cashier)){
+                            if (!"1".Equals(cashier))
+                            {
                                 ///无收银机
                                 BranchIn branchIn = new BranchIn();
                                 branchIn.id = Guid.NewGuid().ToString().Replace("-", "");
                                 branchIn.createTime = DateTime.Now;
                                 branchIn.updateTime = DateTime.Now;
                                 int branchInCount = sortedao.getBranchInCount(streetId.ToString());
-                                branchIn.InOdd = "BI" + streetId.ToString() + DateTime.Now.ToString("yyyyMMdd") + (branchInCount+1).ToString().PadLeft(4, '0');
+                                branchIn.InOdd = "BI" + streetId.ToString() + DateTime.Now.ToString("yyyyMMdd") + (branchInCount + 1).ToString().PadLeft(4, '0');
                                 branchIn.dispatching_id = dispatchingWarehouse.id;
                                 branchIn.branch_id = dispatchingWarehouse.branch_total_id;
 
@@ -510,12 +518,36 @@ namespace sorteSystem.com.proem.sorte.window
                                 dispatchingWarehouse.nums = nums.ToString();
                                 dispatchingWarehouse.money = money.ToString();
                                 dispatchingWarehouse.weight = weight.ToString();
-                                
+
                                 dispatchDao.addList(itemList);
-                                if(itemList.Count != 0){
+                                if (itemList.Count != 0)
+                                {
                                     dispatchDao.addObj(dispatchingWarehouse);
                                 }
-                                
+                                orderdao.insertLog("生成了配送出库单", "配送出库单");
+
+                                BranchSettlementItem branchSettlementItem = new BranchSettlementItem();
+                                branchSettlementItem.id = Guid.NewGuid().ToString();
+                                branchSettlementItem.createTime = DateTime.Now;
+                                branchSettlementItem.updateTime = DateTime.Now;
+                                branchSettlementItem.payableMoney = dispatchingWarehouse.money;
+                                branchSettlementItem.actualMoney = "0.00";
+                                branchSettlementItem.discountMoney = "0.00";
+                                branchSettlementItem.favorableMoney = "0.00";
+                                branchSettlementItem.paidMoney = "0.00";
+                                branchSettlementItem.tax = "0.00";
+                                branchSettlementItem.codeType = "配送出库单";
+                                branchSettlementItem.billDate = dispatchingWarehouse.createTime;
+
+                                branchSettlementItem.agreedTime = DateTime.Now.AddMonths(1);
+                                branchSettlementItem.unpaidMoney = branchSettlementItem.payableMoney;
+                                branchSettlementItem.code = dispatchingWarehouse.dispatcherOdd;
+                                branchSettlementItem.money = "0";
+                                branchSettlementItem.branchCode = dispatchingWarehouse.street;
+
+                                orderdao.addBranchSettlementItem(branchSettlementItem);
+
+                                orderdao.insertLog("生成缴款单", "缴款单");
 
 
                                 branchIn.nums = nums.ToString();
@@ -524,10 +556,79 @@ namespace sorteSystem.com.proem.sorte.window
 
                                 branchInDao.addList(inItemList);
 
-                                if(inItemList.Count != 0){
+                                if (inItemList.Count != 0)
+                                {
                                     branchInDao.addObj(branchIn);
                                 }
-                               
+                                orderdao.insertLog("生成了亭点入库单", "亭点入库单");
+                            }
+                            else 
+                            {
+                                //有收银机
+                                float nums = 0;
+                                float money = 0;
+                                float weight = 0;
+                                List<orderSorte> sorteList = sortedao.getByStreet(streetId.ToString());
+                                List<DispatchingWarehouseItem> itemList = new List<DispatchingWarehouseItem>();
+                                for (int j = 0; j < sorteList.Count; j++)
+                                {
+                                    orderSorte obj = sorteList[j];
+                                    DispatchingWarehouseItem item = new DispatchingWarehouseItem();
+                                    item.id = Guid.NewGuid().ToString();
+                                    item.createTime = DateTime.Now;
+                                    item.updateTime = DateTime.Now;
+                                    item.cash_date = DateTime.Now;
+                                    item.dispatchingWarehouseId = dispatchingWarehouse.id;
+                                    ZcGoodsMaster goodsFile = zcGoodsMasterDao.FindById(obj.goods_id);
+                                    item.goods_name = goodsFile.GoodsName;
+                                    item.goodsPrice = goodsFile.GoodsPrice.ToString();
+                                    item.goods_specifications = goodsFile.GoodsSpecifications;
+                                    item.nums = obj.sorteNum;
+                                    item.serialNumber = goodsFile.SerialNumber;
+                                    item.money = obj.money;
+                                    item.weight = obj.weight;
+                                    item.branch_total_id = dt.Rows[i][6].ToString();
+                                    item.goodsFile_id = obj.goods_id;
+                                    itemList.Add(item);
+
+                                    nums += string.IsNullOrEmpty(item.nums) ? 0 : float.Parse(item.nums);
+                                    money += string.IsNullOrEmpty(item.money) ? 0 : float.Parse(item.money);
+                                    weight += string.IsNullOrEmpty(item.weight) ? 0 : float.Parse(item.weight);
+                                }
+
+                                dispatchingWarehouse.nums = nums.ToString();
+                                dispatchingWarehouse.money = money.ToString();
+                                dispatchingWarehouse.weight = weight.ToString();
+
+                                dispatchDao.addList(itemList);
+                                if (itemList.Count != 0)
+                                {
+                                    dispatchDao.addObj(dispatchingWarehouse);
+                                }
+                                orderdao.insertLog("生成了配送出库单", "配送出库单");
+
+                                BranchSettlementItem branchSettlementItem = new BranchSettlementItem();
+                                branchSettlementItem.id = Guid.NewGuid().ToString();
+                                branchSettlementItem.createTime = DateTime.Now;
+                                branchSettlementItem.updateTime = DateTime.Now;
+                                branchSettlementItem.payableMoney = dispatchingWarehouse.money;
+                                branchSettlementItem.actualMoney = "0.00";
+                                branchSettlementItem.discountMoney = "0.00";
+                                branchSettlementItem.favorableMoney = "0.00";
+                                branchSettlementItem.paidMoney = "0.00";
+                                branchSettlementItem.tax = "0.00";
+                                branchSettlementItem.codeType = "配送出库单";
+                                branchSettlementItem.billDate = dispatchingWarehouse.createTime;
+
+                                branchSettlementItem.agreedTime = DateTime.Now.AddMonths(1);
+                                branchSettlementItem.unpaidMoney = branchSettlementItem.payableMoney;
+                                branchSettlementItem.code = dispatchingWarehouse.dispatcherOdd;
+                                branchSettlementItem.money = "0";
+                                branchSettlementItem.branchCode = dispatchingWarehouse.street;
+
+                                orderdao.addBranchSettlementItem(branchSettlementItem);
+
+                                orderdao.insertLog("生成缴款单", "缴款单");
                             }
                            
                         }
@@ -558,6 +659,7 @@ namespace sorteSystem.com.proem.sorte.window
 
                         //改变订单状态
                         orderdao.UpdateStatus(sorteId);
+                        orderdao.insertLog("完成了一条分拣单,库存减少", "分拣单");
                         loading.Close();
                         MessageBox.Show("分拣完毕!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         sortFlag = true;
@@ -744,10 +846,15 @@ namespace sorteSystem.com.proem.sorte.window
 
         public void printTicket()
         {
-            
+
+            printStr = GetPrintStr();
 
            // PrintPreviewDialog ppd = new PrintPreviewDialog();
             PrintDocument pd = new PrintDocument();
+
+            PrintController printController = new StandardPrintController();
+            pd.PrintController = printController;
+
             //设置边距
 
             Margins margin = new Margins(20, 20, 20, 20);
@@ -776,6 +883,7 @@ namespace sorteSystem.com.proem.sorte.window
             //}
             //printString = sb.ToString();
             pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
+            pd.OriginAtMargins = true;
             try
             {
                 // ppd.Document = pd;
@@ -949,6 +1057,8 @@ namespace sorteSystem.com.proem.sorte.window
 
         private int index;
 
+        private string[] printStr;
+
         private void pd_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             //SetInvoiceData(e.Graphics);
@@ -958,15 +1068,15 @@ namespace sorteSystem.com.proem.sorte.window
             //RectangleF f = new RectangleF(5, 5, getYc(60), 10000000);
             //StringFormat ff = new StringFormat();
             //g.DrawString(GetPrintStr(), InvoiceFont, GrayBrush, f, null);
-            string[] strs = GetPrintStr();
+            //string[] strs = GetPrintStr();
             //g.DrawString(GetPrintStr()[0], InvoiceFont, GrayBrush, 5, 5);
             //g.DrawString(GetPrintStr()[1], InvoiceFont, GrayBrush, 5, 20);
             //g.DrawString(GetPrintStr()[2], InvoiceFont, GrayBrush, 5, 35);
             //int y = 20;
             int y = 0;
-            while (index < strs.Length)
+            while (index < printStr.Length)
             {
-                g.DrawString(GetPrintStr()[index++], InvoiceFont, GrayBrush, 5, 5+y);
+                g.DrawString(printStr[index++], InvoiceFont, GrayBrush, 5, 5 + y);
                 y += 15;
                 if (y > e.PageBounds.Height)
                 {
@@ -978,6 +1088,7 @@ namespace sorteSystem.com.proem.sorte.window
             index = 0;
             e.HasMorePages = false;
             //g.Dispose();
+
         }
 
         //private void SetInvoiceData(Graphics g)
@@ -1220,6 +1331,8 @@ namespace sorteSystem.com.proem.sorte.window
         //扫码
         private void AddGoods()
         {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
             SpeechVoiceSpeakFlags speakflag = SpeechVoiceSpeakFlags.SVSFlagsAsync;
             SpVoice voice = new SpVoice();
             string num = numberTextBox.Text;
@@ -1334,6 +1447,7 @@ namespace sorteSystem.com.proem.sorte.window
                         orderSorte.isWeight = isWeight ? "1" : "0";
                         orderSorte.bar_code = num;
                         orderSorte.isReturn = "0";
+                        orderSorte.goodsPrice = zcGoodsMaster.GoodsPrice.ToString();
                         sorteDao sortedao = new sorteDao();
                         if (calFlag)
                         {
@@ -1379,6 +1493,8 @@ namespace sorteSystem.com.proem.sorte.window
                     orderSorte.money = money;
                     orderSorte.isWeight = isWeight ? "1" : "0";
                     orderSorte.bar_code = num;
+                    orderSorte.isReturn = "0";
+                    orderSorte.goodsPrice = zcGoodsMaster.GoodsPrice.ToString();
                     sorteDao sortedao = new sorteDao();
                     orderSorte.sorteNum = "1";
                     sortedao.AddtransitItem(orderSorte);
@@ -1390,6 +1506,9 @@ namespace sorteSystem.com.proem.sorte.window
                     return;
                 }
             }
+            watch.Stop();
+            Console.WriteLine("-------------->扫码添加用时:"+watch.ElapsedMilliseconds);
+            log.Error("-------------->扫码添加用时:" + watch.ElapsedMilliseconds, new Exception());
         }
 
         //private int _ScrollValue = 0;

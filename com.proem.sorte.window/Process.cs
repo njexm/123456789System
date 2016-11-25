@@ -140,6 +140,10 @@ namespace sorteSystem.com.proem.sorte.window
                 processForm.StartPosition = FormStartPosition.CenterScreen;
                 processForm.Show();
             }
+            if(e.KeyCode == Keys.A)
+            {
+                button2_Click(this, EventArgs.Empty);
+            }
         }
 
         /// <summary>

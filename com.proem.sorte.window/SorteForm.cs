@@ -39,7 +39,7 @@ namespace sorteSystem.com.proem.sorte.window
         {
             DateTime first = DateTime.Today;
             DateTime last = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd 23:59:59"));
-            string sql = "select a.id, a.code, a.createTime,b.username, a.make_time, a.groupFlag  from zc_sorte a left join zc_user_info b on b.user_id = a.make_men  where a.createTime between :first and :last order by a.createTime ";
+            string sql = "select a.id, a.code, a.createTime,b.username, a.make_time, a.groupFlag  from zc_sorte a left join zc_user_info b on b.user_id = a.make_men  where a.make_men is not null and a.createTime between :first and :last order by a.createTime ";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             DataSet ds = new DataSet();

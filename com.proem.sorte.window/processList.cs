@@ -87,6 +87,9 @@ namespace sorteSystem.com.proem.sorte.window
         /// <param name="e"></param>
         private void enterButton_Click(object sender, EventArgs e)
         {
+            if(dataGridView1 == null || dataGridView1.RowCount == 0){
+                return;
+            }
             string odd = dataGridView1.CurrentRow.Cells[1].Value.ToString();
             string id = dataGridView1.CurrentRow.Cells[0].Value.ToString();
             process.setOddAndProcessId(odd, id);

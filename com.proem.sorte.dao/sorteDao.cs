@@ -138,8 +138,8 @@ namespace SorteSystem.com.proem.sorte.dao
         public void AddtransitItem(orderSorte obj)
         {
             List<string> idStr = new List<string>();
-            string sql1 = "insert into ZC_ORDERS_SORTE (id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, ORDERSNUM, SORTENUM, WEIGHT, sorteId, money,isWeight, bar_code, isReturn) values "
-                + " (:id ,:createTime, :updateTime, :ADDRESS , :GOODS_ID, :GOODS_NAME, :ORDERSNUM, :SORTENUM , :weight, :sorteId, :money, :isWeight, :bar_code, :isReturn)";
+            string sql1 = "insert into ZC_ORDERS_SORTE (id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, ORDERSNUM, SORTENUM, WEIGHT, sorteId, money,isWeight, bar_code, isReturn, goodsPrice) values "
+                + " (:id ,:createTime, :updateTime, :ADDRESS , :GOODS_ID, :GOODS_NAME, :ORDERSNUM, :SORTENUM , :weight, :sorteId, :money, :isWeight, :bar_code, :isReturn, :goodsPrice)";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             OracleTransaction tran = null;
@@ -164,6 +164,7 @@ namespace SorteSystem.com.proem.sorte.dao
                 cmd.Parameters.Add(":isWeight", obj.isWeight);
                 cmd.Parameters.Add(":bar_code", obj.bar_code);
                 cmd.Parameters.Add(":isReturn", obj.isReturn);
+                cmd.Parameters.Add(":goodsPrice", obj.goodsPrice);
                 cmd.ExecuteNonQuery();
                 tran.Commit();
             }
@@ -389,8 +390,8 @@ namespace SorteSystem.com.proem.sorte.dao
         /// <param name="obj"></param>
         public void addReturnGoods(orderSorte obj)
         {
-            string sql = "insert into ZC_ORDERS_SORTE (id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, SORTENUM, WEIGHT, money,isWeight, bar_code, isReturn) values "
-               + " (:id ,:createTime, :updateTime, :ADDRESS , :GOODS_ID, :GOODS_NAME, :SORTENUM , :weight, :money, :isWeight, :bar_code, :isReturn)";
+            string sql = "insert into ZC_ORDERS_SORTE (id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, SORTENUM, WEIGHT, money,isWeight, bar_code, isReturn, goodsPrice) values "
+               + " (:id ,:createTime, :updateTime, :ADDRESS , :GOODS_ID, :GOODS_NAME, :SORTENUM , :weight, :money, :isWeight, :bar_code, :isReturn, :goodsPrice)";
             OracleConnection conn = null;
             OracleTransaction tran = null;
             OracleCommand cmd = new OracleCommand();
@@ -412,6 +413,7 @@ namespace SorteSystem.com.proem.sorte.dao
                 cmd.Parameters.Add(":isWeight", obj.isWeight);
                 cmd.Parameters.Add(":bar_code", obj.bar_code);
                 cmd.Parameters.Add(":isReturn", obj.isReturn);
+                cmd.Parameters.Add(":goodsPrice", obj.goodsPrice);
                 cmd.ExecuteNonQuery();
                 tran.Commit();
             }
@@ -435,8 +437,8 @@ namespace SorteSystem.com.proem.sorte.dao
         /// <param name="obj"></param>
         public void addSorteWithOutGoods(orderSorte obj)
         {
-            string sql = "insert into ZC_ORDERS_SORTE (id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, SORTENUM, WEIGHT, money,isWeight, bar_code, isReturn, costPrice) values "
-               + " (:id ,:createTime, :updateTime, :ADDRESS , :GOODS_ID, :GOODS_NAME, :SORTENUM , :weight, :money, :isWeight, :bar_code, :isReturn, :costPrice)";
+            string sql = "insert into ZC_ORDERS_SORTE (id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, SORTENUM, WEIGHT, money,isWeight, bar_code, isReturn, costPrice, isPrint, goodsPrice) values "
+               + " (:id ,:createTime, :updateTime, :ADDRESS , :GOODS_ID, :GOODS_NAME, :SORTENUM , :weight, :money, :isWeight, :bar_code, :isReturn, :costPrice, :isPrint, :goodsPrice)";
             OracleConnection conn = null;
             OracleTransaction tran = null;
             OracleCommand cmd = new OracleCommand();
@@ -459,6 +461,8 @@ namespace SorteSystem.com.proem.sorte.dao
                 cmd.Parameters.Add(":bar_code", obj.bar_code);
                 cmd.Parameters.Add(":isReturn", obj.isReturn);
                 cmd.Parameters.Add(":costPrice", obj.costPrice);
+                cmd.Parameters.Add(":isPrint", obj.isPrint);
+                cmd.Parameters.Add(":goodsPrice", obj.goodsPrice);
                 cmd.ExecuteNonQuery();
                 tran.Commit();
             }

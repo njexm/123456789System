@@ -84,11 +84,15 @@
     <Compile Include="com.proem.sorte.dao\ZcGoodsMasterDao.cs" />
     <Compile Include="com.proem.sorte.domain\BranchIn.cs" />
     <Compile Include="com.proem.sorte.domain\BranchInItem.cs" />
+    <Compile Include="com.proem.sorte.domain\BranchSettlementItem.cs" />
     <Compile Include="com.proem.sorte.domain\DispatchingWarehouse.cs" />
     <Compile Include="com.proem.sorte.domain\DispatchingWarehouseItem.cs" />
     <Compile Include="com.proem.sorte.domain\orderSorte.cs" />
     <Compile Include="com.proem.sorte.domain\Process.cs" />
     <Compile Include="com.proem.sorte.domain\ProcessItem.cs" />
+    <Compile Include="com.proem.sorte.domain\SaveIn.cs" />
+    <Compile Include="com.proem.sorte.domain\SaveInItem.cs" />
+    <Compile Include="com.proem.sorte.domain\SorteItem.cs" />
     <Compile Include="com.proem.sorte.domain\StoreHouse.cs" />
     <Compile Include="com.proem.sorte.domain\ZcGoodsMaster.cs" />
     <Compile Include="com.proem.sorte.domain\ZcProcessOrder.cs" />

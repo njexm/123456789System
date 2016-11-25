@@ -171,9 +171,14 @@ namespace sorteSystem.com.proem.sorte.window
                 String orderSorteId = itemDataGird.CurrentRow.Cells[6].Value.ToString();
                 orderSorte obj = orderDao.FindOrderSorteBy(orderSorteId);
                 sorteDao sortedao = new sorteDao();
+
+                obj.weight = (-float.Parse(obj.weight)).ToString();
                 
                 orderDao.updateStoreHouse(obj);
                 sortedao.DeleteBy(orderSorteId);
+
+                orderDao.deleteSaveInItem(returnStreet, obj);
+
                 loadTableAfterDelete(index);
             }
         }
@@ -313,10 +318,15 @@ namespace sorteSystem.com.proem.sorte.window
             orderSorte.isWeight = isWeight ? "1" : "0";
             orderSorte.bar_code = num;
             orderSorte.isReturn = "1";
+            orderSorte.goodsPrice = zcGoodsMaster.GoodsPrice.ToString();
             sorteDao sortedao = new sorteDao();
             sortedao.addReturnGoods(orderSorte);
             //库存增加
             orderDao orderDao = new orderDao();
+
+            orderSorte.weight = weight;
+            orderSorte.sorteNum = "1";
+            orderSorte.money = money;
             orderDao.updateStoreHouseAdd(orderSorte);
         }
 
@@ -460,11 +470,58 @@ namespace sorteSystem.com.proem.sorte.window
             if(itemDataGird.DataSource == null || itemDataGird.RowCount == 0){
                 return;
             }
+             orderDao orderdao = new orderDao();
+            SaveIn saveIn = new SaveIn();
+            saveIn.id = Guid.NewGuid().ToString();
+            saveIn.createTime = DateTime.Now;
+            saveIn.updateTime = DateTime.Now;
+            saveIn.check_date = DateTime.Now;
+            saveIn.checkMan = ConstantUtil.LoginUserId;
+            long count = orderdao.FindSaveInCount();
+            saveIn.odd = "SI0001" + DateTime.Now.ToString("yyyyMMdd") + (count + 1).ToString().PadLeft(4, '0');
+            saveIn.statue = 2;
+            saveIn.street = returnStreet;
+            saveIn.branch_id = orderdao.FindIdByStreet(returnStreet);
+            saveIn.createMan = ConstantUtil.LoginUserId;
+            saveIn.storehouse_id = ConstantUtil.BranchId;
+            List<SaveInItem> list = new List<SaveInItem>();
+            float nums = 0;
+            float money = 0;
+            float weight = 0;
+            for (int i = 0; i < itemDataGird.RowCount; i++ )
+            {
+                string id = itemDataGird[6, i].Value.ToString();
+                orderSorte ordersorte = orderdao.FindOrderSorteBy(id);
+                SaveInItem item = new SaveInItem();
+                item.id = Guid.NewGuid().ToString();
+                item.createTime = DateTime.Now;
+                item.updateTime = DateTime.Now;
+                float a = -float.Parse(ordersorte.money);
+                money += a;
+                item.money = a.ToString();
+                float b = -float.Parse(ordersorte.sorteNum);
+                nums += b;
+                item.nums = b.ToString();
+                item.saveIn_id = saveIn.id;
+                float c = -float.Parse(ordersorte.weight);
+                weight += c;
+                item.weight = c.ToString();
+                item.goodsFile_id = ordersorte.goods_id;
+                list.Add(item);
+            }
+            saveIn.nums = nums.ToString();
+            saveIn.money = money.ToString();
+            saveIn.weight = weight.ToString();
+            orderdao.addSaveIn(saveIn);
+            orderdao.addSaveInItem(list);
+            orderdao.insertLog(ConstantUtil.LoginUserName + "生成了配送入库单", "配送入库单");
             printTicket();
         }
 
         public void printTicket()
         {
+            strs = GetPrintStr();
+
             PrintDocument pd = new PrintDocument();
             //设置边距
 
@@ -633,16 +690,17 @@ namespace sorteSystem.com.proem.sorte.window
 
         private int index;
 
+        private string[] strs;
+
         private void pd_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             Graphics g = e.Graphics;
             Font InvoiceFont = new Font("Arial", 10, FontStyle.Regular);
             SolidBrush GrayBrush = new SolidBrush(Color.Black);
-            string[] strs = GetPrintStr();
             int y = 0;
             while (index < strs.Length)
             {
-                g.DrawString(GetPrintStr()[index++], InvoiceFont, GrayBrush, 5, 5 + y);
+                g.DrawString(strs[index++], InvoiceFont, GrayBrush, 5, 5 + y);
                 y += 15;
                 if (y > e.PageBounds.Height)
                 {
