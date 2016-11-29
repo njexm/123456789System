@@ -497,6 +497,9 @@ namespace sorteSystem.com.proem.sorte.window
                                     item.weight = obj.weight;
                                     item.branch_total_id = dt.Rows[i][6].ToString();
                                     item.goodsFile_id = obj.goods_id;
+                                    item.costPrice = obj.costPrice;
+                                    item.rate = obj.rate;
+                                    item.rateMoney = (float.Parse(obj.money) * float.Parse(obj.rate) / (1 + float.Parse(obj.rate))).ToString();
                                     itemList.Add(item);
                                     ///亭点入库单明细
                                     inItem.id = Guid.NewGuid().ToString().Replace("-", "");
@@ -589,6 +592,9 @@ namespace sorteSystem.com.proem.sorte.window
                                     item.weight = obj.weight;
                                     item.branch_total_id = dt.Rows[i][6].ToString();
                                     item.goodsFile_id = obj.goods_id;
+                                    item.costPrice = obj.costPrice;
+                                    item.rate = obj.rate;
+                                    item.rateMoney = (float.Parse(obj.money) * float.Parse(obj.rate) / (1 + float.Parse(obj.rate))).ToString();
                                     itemList.Add(item);
 
                                     nums += string.IsNullOrEmpty(item.nums) ? 0 : float.Parse(item.nums);
@@ -849,7 +855,7 @@ namespace sorteSystem.com.proem.sorte.window
 
             printStr = GetPrintStr();
 
-           // PrintPreviewDialog ppd = new PrintPreviewDialog();
+          // PrintPreviewDialog ppd = new PrintPreviewDialog();
             PrintDocument pd = new PrintDocument();
 
             PrintController printController = new StandardPrintController();
@@ -886,7 +892,7 @@ namespace sorteSystem.com.proem.sorte.window
             pd.OriginAtMargins = true;
             try
             {
-                // ppd.Document = pd;
+                 //ppd.Document = pd;
 
                 //ppd.ShowDialog();
                 pd.Print();
@@ -1072,13 +1078,13 @@ namespace sorteSystem.com.proem.sorte.window
             //g.DrawString(GetPrintStr()[0], InvoiceFont, GrayBrush, 5, 5);
             //g.DrawString(GetPrintStr()[1], InvoiceFont, GrayBrush, 5, 20);
             //g.DrawString(GetPrintStr()[2], InvoiceFont, GrayBrush, 5, 35);
-            //int y = 20;
+            //int y = 25;
             int y = 0;
             while (index < printStr.Length)
             {
-                g.DrawString(printStr[index++], InvoiceFont, GrayBrush, 5, 5 + y);
+                g.DrawString(printStr[index++], InvoiceFont, GrayBrush, 0, y);
                 y += 15;
-                if (y > e.PageBounds.Height)
+                if (y > e.PageBounds.Height-30)
                 {
                     e.HasMorePages = true;
                     return;
@@ -1370,8 +1376,9 @@ namespace sorteSystem.com.proem.sorte.window
             {
                 serialNumber = num;
             }
-            ZcGoodsMasterDao goodsMasterDao = new ZcGoodsMasterDao();
-            ZcGoodsMaster zcGoodsMaster = goodsMasterDao.FindBySerialNumber(serialNumber);
+            //ZcGoodsMasterDao goodsMasterDao = new ZcGoodsMasterDao();
+            ZcGoodsMaster zcGoodsMaster = ConstantUtil.getGoodsBySerialNumber(serialNumber);
+            //ZcGoodsMaster zcGoodsMaster = goodsMasterDao.FindBySerialNumber(serialNumber);
             if (zcGoodsMaster == null)
             {
                 //MessageBox.Show("没有此货号对应的商品信息，请检查后重新操作!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -1448,6 +1455,8 @@ namespace sorteSystem.com.proem.sorte.window
                         orderSorte.bar_code = num;
                         orderSorte.isReturn = "0";
                         orderSorte.goodsPrice = zcGoodsMaster.GoodsPrice.ToString();
+                        orderSorte.costPrice = zcGoodsMaster.costPrice;
+                        orderSorte.rate = zcGoodsMaster.OutTax.ToString();
                         sorteDao sortedao = new sorteDao();
                         if (calFlag)
                         {
@@ -1495,6 +1504,8 @@ namespace sorteSystem.com.proem.sorte.window
                     orderSorte.bar_code = num;
                     orderSorte.isReturn = "0";
                     orderSorte.goodsPrice = zcGoodsMaster.GoodsPrice.ToString();
+                    orderSorte.costPrice = zcGoodsMaster.costPrice;
+                    orderSorte.rate = zcGoodsMaster.OutTax.ToString();
                     sorteDao sortedao = new sorteDao();
                     orderSorte.sorteNum = "1";
                     sortedao.AddtransitItem(orderSorte);

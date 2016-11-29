@@ -1,4 +1,5 @@
 ﻿using Branch;
+using sorteSystem.com.proem.sorte.dao;
 using sorteSystem.com.proem.sorte.util;
 using sorteSystem.com.proem.sorte.window;
 using System;
@@ -24,6 +25,9 @@ namespace sorteSystem
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            ZcGoodsMasterDao dao = new ZcGoodsMasterDao();
+            dao.loadAllGoods();
             BranchLogin login = new BranchLogin();
             //窗口居中
             login.StartPosition = FormStartPosition.CenterScreen;

@@ -360,5 +360,14 @@ namespace sorteSystem.com.proem.sorte.domain
             get;
             set;
         }
+
+        /// <summary>
+        /// 成本单价
+        /// </summary>
+        public string costPrice
+        {
+            get;
+            set;
+        }
     }
 }

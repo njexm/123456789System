@@ -34,5 +34,20 @@ namespace sorteSystem.com.proem.sorte.domain
         public string goodsFile_id { get; set; }
 
         public string nums { get; set; }
+
+        /// <summary>
+        /// 成本单价
+        /// </summary>
+        public string costPrice { get; set; }
+
+        /// <summary>
+        /// 税率
+        /// </summary>
+        public string rate { get; set; }
+
+        /// <summary>
+        ///税额
+        /// </summary>
+        public string rateMoney { get; set; }
     }
 }

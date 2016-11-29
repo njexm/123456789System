@@ -267,8 +267,9 @@ namespace sorteSystem.com.proem.sorte.window
             {
                 serialNumber = num;
             }
-            ZcGoodsMasterDao goodsMasterDao = new ZcGoodsMasterDao();
-            ZcGoodsMaster zcGoodsMaster = goodsMasterDao.FindBySerialNumber(serialNumber);
+            //ZcGoodsMasterDao goodsMasterDao = new ZcGoodsMasterDao();
+            //ZcGoodsMaster zcGoodsMaster = goodsMasterDao.FindBySerialNumber(serialNumber);
+            ZcGoodsMaster zcGoodsMaster = ConstantUtil.getGoodsBySerialNumber(serialNumber);
             if (zcGoodsMaster == null)
             {
                 voice.Speak("无商品", speakflag);
@@ -318,6 +319,8 @@ namespace sorteSystem.com.proem.sorte.window
             orderSorte.isWeight = isWeight ? "1" : "0";
             orderSorte.bar_code = num;
             orderSorte.isReturn = "1";
+            orderSorte.costPrice = zcGoodsMaster.costPrice;
+            orderSorte.rate = zcGoodsMaster.InputTax.ToString();
             orderSorte.goodsPrice = zcGoodsMaster.GoodsPrice.ToString();
             sorteDao sortedao = new sorteDao();
             sortedao.addReturnGoods(orderSorte);
@@ -507,6 +510,9 @@ namespace sorteSystem.com.proem.sorte.window
                 weight += c;
                 item.weight = c.ToString();
                 item.goodsFile_id = ordersorte.goods_id;
+                item.costPrice = ordersorte.costPrice;
+                item.rate = ordersorte.rate;
+                item.rateMoney = (-float.Parse(ordersorte.money) * float.Parse(ordersorte.rate) / (1 + float.Parse(ordersorte.rate))).ToString();
                 list.Add(item);
             }
             saveIn.nums = nums.ToString();
@@ -700,9 +706,9 @@ namespace sorteSystem.com.proem.sorte.window
             int y = 0;
             while (index < strs.Length)
             {
-                g.DrawString(strs[index++], InvoiceFont, GrayBrush, 5, 5 + y);
+                g.DrawString(strs[index++], InvoiceFont, GrayBrush, 0,y);
                 y += 15;
-                if (y > e.PageBounds.Height)
+                if (y > e.PageBounds.Height-30)
                 {
                     e.HasMorePages = true;
                     return;

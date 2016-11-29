@@ -1,4 +1,5 @@
-﻿using sorteSystem.com.proem.sorte.window;
+﻿using sorteSystem.com.proem.sorte.domain;
+using sorteSystem.com.proem.sorte.window;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -63,5 +64,23 @@ namespace sorteSystem.com.proem.sorte.util
         /// 登陆用户名
         /// </summary>
         public static string LoginUserName;
+
+        /// <summary>
+        /// 商品列表
+        /// </summary>
+        public static List<ZcGoodsMaster> goodsList = new List<ZcGoodsMaster>();
+
+        public static ZcGoodsMaster getGoodsBySerialNumber(string serialNumber){
+            ZcGoodsMaster obj = null;
+            for (int i = 0; i < goodsList.Count; i++ )
+            {
+                ZcGoodsMaster zg = goodsList[i];
+                if(serialNumber.Equals(zg.SerialNumber)){
+                    obj = zg;
+                    break;
+                }
+            }
+            return obj;
+        }
     }
 }

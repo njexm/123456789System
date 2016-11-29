@@ -66,8 +66,8 @@ namespace sorteSystem.com.proem.sorte.dao
         public void addList(List<DispatchingWarehouseItem> list)
         {
             string sql = "insert into zc_dispatching_Warehouse_items (id, createTime, updateTime, CASH_DATE, DISPATCHINGWAREHOUSE_ID, GOODS_NAME, GOODS_PRICE, GOODS_SPECIFICATIONS, SERIALNUMBER, "
-                + " TOTAL_MONEY, WEIGHT, BRANCH_TOTAL_ID, GOODSFILE_ID, NUMS) values (:id, :createTime, :updateTime, :CASH_DATE, :DISPATCHINGWAREHOUSE_ID, :GOODS_NAME, :GOODS_PRICE, :GOODS_SPECIFICATIONS, :SERIALNUMBER, "
-                + ":TOTAL_MONEY, :WEIGHT, :BRANCH_TOTAL_ID, :GOODSFILE_ID, :NUMS)";
+                + " TOTAL_MONEY, WEIGHT, BRANCH_TOTAL_ID, GOODSFILE_ID, NUMS, costPrice, rate, rateMoney) values (:id, :createTime, :updateTime, :CASH_DATE, :DISPATCHINGWAREHOUSE_ID, :GOODS_NAME, :GOODS_PRICE, :GOODS_SPECIFICATIONS, :SERIALNUMBER, "
+                + ":TOTAL_MONEY, :WEIGHT, :BRANCH_TOTAL_ID, :GOODSFILE_ID, :NUMS, :costPrice, :rate, :rateMoney)";
             OracleConnection conn = null;
             OracleTransaction tran = null;
             OracleCommand cmd = new OracleCommand();
@@ -94,6 +94,9 @@ namespace sorteSystem.com.proem.sorte.dao
                     cmd.Parameters.Add(":BRANCH_TOTAL_ID", obj.branch_total_id);
                     cmd.Parameters.Add(":GOODSFILE_ID", obj.goodsFile_id);
                     cmd.Parameters.Add(":NUMS", obj.nums);
+                    cmd.Parameters.Add(":costPrice", obj.costPrice);
+                    cmd.Parameters.Add(":rate", obj.rate);
+                    cmd.Parameters.Add(":rateMoney", obj.rateMoney);
                     cmd.ExecuteNonQuery();
                     cmd.Parameters.Clear();
                 }

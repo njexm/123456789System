@@ -22,5 +22,11 @@ namespace sorteSystem.com.proem.sorte.domain
         public string money { get; set; }
 
         public string goodsFile_id { get; set; }
+
+        public string costPrice { get; set; }
+
+        public string rate { get; set; }
+
+        public string rateMoney { get; set; }
     }
 }

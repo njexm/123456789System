@@ -284,8 +284,9 @@ namespace sorteSystem.com.proem.sorte.window
             {
                 serialNumber = num;
             }
-            ZcGoodsMasterDao goodsMasterDao = new ZcGoodsMasterDao();
-            ZcGoodsMaster zcGoodsMaster = goodsMasterDao.FindBySerialNumber(serialNumber);
+            //ZcGoodsMasterDao goodsMasterDao = new ZcGoodsMasterDao();
+            //ZcGoodsMaster zcGoodsMaster = goodsMasterDao.FindBySerialNumber(serialNumber);
+            ZcGoodsMaster zcGoodsMaster = ConstantUtil.getGoodsBySerialNumber(serialNumber);
             if (zcGoodsMaster == null)
             {
                 voice.Speak("无商品", speakflag);
@@ -337,8 +338,10 @@ namespace sorteSystem.com.proem.sorte.window
             orderSorte.isReturn = "0";
             orderSorte.isPrint = "0";
             orderSorte.goodsPrice = zcGoodsMaster.GoodsPrice.ToString();
+            orderSorte.costPrice = zcGoodsMaster.costPrice;
+            orderSorte.rate = zcGoodsMaster.OutTax.ToString();
             orderDao orderDao = new orderDao();
-            orderSorte.costPrice = orderDao.getCostPrice(zcGoodsMaster.Id, false, float.Parse(weight)).ToString();
+            //orderSorte.costPrice = orderDao.getCostPrice(zcGoodsMaster.Id, false, float.Parse(weight)).ToString();
             sorteDao sortedao = new sorteDao();
             sortedao.addSorteWithOutGoods(orderSorte);
             //库存减少
@@ -456,6 +459,9 @@ namespace sorteSystem.com.proem.sorte.window
                 item.weight = orderSorte.weight;
                 item.branch_total_id = branchTotalId;
                 item.goodsFile_id = orderSorte.goods_id;
+                item.costPrice = orderSorte.costPrice;
+                item.rate = orderSorte.rate;
+                item.rateMoney = (float.Parse(orderSorte.money) * float.Parse(orderSorte.rate) / (1 + float.Parse(orderSorte.rate))).ToString();
                 itemList.Add(item);
                 nums += string.IsNullOrEmpty(item.nums) ? 0 : float.Parse(item.nums);
                 money += string.IsNullOrEmpty(item.money) ? 0 : float.Parse(item.money);
@@ -782,9 +788,9 @@ namespace sorteSystem.com.proem.sorte.window
             int y = 0;
             while (index < strs.Length)
             {
-                g.DrawString(strs[index++], InvoiceFont, GrayBrush, 5, 5 + y);
+                g.DrawString(strs[index++], InvoiceFont, GrayBrush, 0, y);
                 y += 15;
-                if (y > e.PageBounds.Height)
+                if (y > e.PageBounds.Height-30)
                 {
                     e.HasMorePages = true;
                     return;

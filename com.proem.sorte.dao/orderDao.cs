@@ -784,6 +784,84 @@ namespace sorteSystem.com.proem.sorte.dao
                 }
                 return costPrice;
             }
+
+            /// <summary>
+            /// 获取成本金额
+            /// </summary>
+            /// <param name="goodsFileId"></param>
+            /// <param name="flag">出入库标识   true入库  flase出库</param>
+            /// <param name="changeNum"></param>
+            /// <returns></returns>
+            public float getCostPrice(ZcGoodsMaster zcGoodsMaster, bool flag, float changeNum)
+            {
+                float costPrice = 0;
+                StoreHouse storeHouse = FindByGoodsFileId(zcGoodsMaster.Id);
+                if (storeHouse == null)
+                {
+                    orderSorte obj = new orderSorte();
+                    obj.goods_id = zcGoodsMaster.Id;
+                    AddStoreHouse(obj);
+                    storeHouse = FindByGoodsFileId(zcGoodsMaster.Id);
+                }
+                float storeMoney = float.Parse(storeHouse.StoreMoney);
+                float store = float.Parse(storeHouse.Store);
+                if (flag)
+                {
+                    //入库
+                    if (store <= 0)
+                    {
+                        costPrice = float.Parse(zcGoodsMaster.GoodsPurchasePrice)/(1+zcGoodsMaster.InputTax);
+                    }
+                    else
+                    {
+                        costPrice = storeMoney / store;
+                    }
+                }
+                else    //出库
+                {
+                    if (store - changeNum > 0)
+                    {
+                        if (storeMoney > 0)
+                        {
+                            costPrice = storeMoney / store;
+                        }
+                        else
+                        {
+                            costPrice = float.Parse(zcGoodsMaster.GoodsPurchasePrice)/(1+zcGoodsMaster.OutTax);
+                        }
+                    }
+                    else
+                    {
+                        if (storeMoney > 0)
+                        {
+                            if (store == 0)
+                            {
+                                costPrice = float.Parse(zcGoodsMaster.GoodsPurchasePrice) / (1 + zcGoodsMaster.OutTax);
+                            }
+                            else if (changeNum == 0)
+                            {
+                                if (store > 0)
+                                {
+                                    costPrice = storeMoney / store;
+                                }
+                                else
+                                {
+                                    costPrice = float.Parse(zcGoodsMaster.GoodsPurchasePrice) / (1 + zcGoodsMaster.OutTax);
+                                }
+                            }
+                            else
+                            {
+                                costPrice = (storeMoney + (changeNum - store) * float.Parse(zcGoodsMaster.GoodsPurchasePrice) / (1 + zcGoodsMaster.OutTax)) / changeNum;
+                            }
+                        }
+                        else
+                        {
+                            costPrice = float.Parse(zcGoodsMaster.GoodsPurchasePrice) / (1 + zcGoodsMaster.OutTax);
+                        }
+                    }
+                }
+                return costPrice;
+            }
             
             public float getCostPriceByGoodsFileId(string goodsId) 
             {
@@ -958,7 +1036,7 @@ namespace sorteSystem.com.proem.sorte.dao
             public orderSorte FindOrderSorteBy(string orderSorteId)
             {
                 orderSorte obj = new orderSorte();
-                string sql = "select id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, ORDERSNUM, SORTENUM,sorteId, WEIGHT, isWeight, bar_code, isReturn, costPrice, isPrint , money  from zc_orders_sorte where id ='"+orderSorteId+"'";
+                string sql = "select id, CREATETIME, UPDATETIME, ADDRESS, GOODS_ID, GOODS_NAME, ORDERSNUM, SORTENUM,sorteId, WEIGHT, isWeight, bar_code, isReturn, costPrice, isPrint , money,costPrice, rate  from zc_orders_sorte where id ='"+orderSorteId+"'";
                 OracleConnection conn = null;
                 OracleCommand cmd = new OracleCommand();
                 OracleDataReader reader = null;
@@ -986,6 +1064,8 @@ namespace sorteSystem.com.proem.sorte.dao
                         obj.costPrice = reader.IsDBNull(13) ? "0" : reader.GetString(13);
                         obj.isPrint = reader.IsDBNull(14) ? string.Empty : reader.GetString(14);
                         obj.money = reader.IsDBNull(15) ? "0" : reader.GetString(15);
+                        obj.costPrice = reader.IsDBNull(16) ? "0" : reader.GetString(16);
+                        obj.rate = reader.IsDBNull(17) ? "0" : reader.GetString(17);
                     }
                 }
                 catch (Exception ex)
@@ -1012,7 +1092,7 @@ namespace sorteSystem.com.proem.sorte.dao
                 string startTime = DateTime.Now.ToString("yyyy-MM-dd 00:00:01");
                 string endTime = DateTime.Now.ToString("yyyy-MM-dd 23:59:59");
                 List<orderSorte> list = new List<orderSorte>();
-                string sql = "select id, createTime, address, goods_id, sorteNum, weight, money from zc_orders_sorte where 1=1 and address = '"+street+"' and sorteId is not null and isReturn != '1' "
+                string sql = "select id, createTime, address, goods_id, sorteNum, weight, money,costPrice, rate from zc_orders_sorte where 1=1 and address = '"+street+"' and sorteId is not null and isReturn != '1' "
                     + " and createTime >=to_date('"+startTime+"', 'yyyy-MM-dd HH24:mi:ss')  and  createTime <= to_date('"+endTime+"', 'yyyy-MM-dd HH24:mi:ss')";
                 OracleConnection conn = null;
                 OracleCommand cmd = new OracleCommand();
@@ -1029,9 +1109,11 @@ namespace sorteSystem.com.proem.sorte.dao
                         obj.createTime = reader.IsDBNull(1) ? default(DateTime) : reader.GetDateTime(1);
                         obj.address = reader.IsDBNull(2) ? string.Empty : reader.GetString(2);
                         obj.goods_id = reader.IsDBNull(3) ? string.Empty : reader.GetString(3);
-                        obj.sorteNum = reader.IsDBNull(4) ? string.Empty : reader.GetString(4);
-                        obj.weight = reader.IsDBNull(5) ? string.Empty : reader.GetString(5);
-                        obj.money = reader.IsDBNull(6) ? string.Empty : reader.GetString(6);
+                        obj.sorteNum = reader.IsDBNull(4) ? "0" : reader.GetString(4);
+                        obj.weight = reader.IsDBNull(5) ? "0" : reader.GetString(5);
+                        obj.money = reader.IsDBNull(6) ? "0" : reader.GetString(6);
+                        obj.costPrice = reader.IsDBNull(7) ? "0" : reader.GetString(7);
+                        obj.rate = reader.IsDBNull(8) ? "0" : reader.GetString(8);
                         list.Add(obj);
                     }
                 }
@@ -1572,8 +1654,8 @@ namespace sorteSystem.com.proem.sorte.dao
 
             public void addSaveInItem(List<SaveInItem> list)
             {
-                string sql = "insert into zc_saveIn_Warehouse_item (id, CREATETIME, UPDATETIME, MONEY, NUMS, SAVEIN_ID, WEIGHT, GOODSFILE_ID ) values "
-                    + " (:id, :CREATETIME, :UPDATETIME, :MONEY, :NUMS, :SAVEIN_ID, :WEIGHT, :GOODSFILE_ID)";
+                string sql = "insert into zc_saveIn_Warehouse_item (id, CREATETIME, UPDATETIME, MONEY, NUMS, SAVEIN_ID, WEIGHT, GOODSFILE_ID, rate, rateMoney, costPrice ) values "
+                    + " (:id, :CREATETIME, :UPDATETIME, :MONEY, :NUMS, :SAVEIN_ID, :WEIGHT, :GOODSFILE_ID, :rate, :rateMoney, :costPrice )";
                 OracleConnection conn = null;
                 OracleCommand cmd = new OracleCommand();
                 OracleTransaction tran = null;
@@ -1594,6 +1676,9 @@ namespace sorteSystem.com.proem.sorte.dao
                         cmd.Parameters.Add(":SAVEIN_ID", obj.saveIn_id);
                         cmd.Parameters.Add(":WEIGHT", obj.weight);
                         cmd.Parameters.Add(":GOODSFILE_ID", obj.goodsFile_id);
+                        cmd.Parameters.Add(":rate", obj.rate);
+                        cmd.Parameters.Add(":rateMoney", obj.rateMoney);
+                        cmd.Parameters.Add(":costPrice", obj.costPrice);
                         cmd.ExecuteNonQuery();
                         cmd.Parameters.Clear();
                     }
@@ -1692,6 +1777,7 @@ namespace sorteSystem.com.proem.sorte.dao
                     }
                 }
             }
+
     }
 
     

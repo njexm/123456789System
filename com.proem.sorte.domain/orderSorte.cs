@@ -63,5 +63,10 @@ namespace SorteSystem.com.proem.sorte.domain
         /// 价格
         /// </summary>
         public string goodsPrice { get; set; }
+
+        /// <summary>
+        /// 税率
+        /// </summary>
+        public string rate { get; set; }
     }
 }
