@@ -33,7 +33,6 @@ E:\c#\visualstudio_workspace\sortSystem\123456789System\bin\Release\log4net.dll
 E:\c#\visualstudio_workspace\sortSystem\123456789System\bin\Release\Oracle.ManagedDataAccess.dll
 E:\c#\visualstudio_workspace\sortSystem\123456789System\bin\Release\log4net.pdb
 E:\c#\visualstudio_workspace\sortSystem\123456789System\bin\Release\log4net.xml
-E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.csprojResolveAssemblyReference.cache
 E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\Branch.BranchLogin.resources
 E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.com.proem.sorte.window.IPSet.resources
 E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.com.proem.sorte.window.Main.resources
@@ -54,3 +53,4 @@ E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.
 E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.com.proem.sorte.window.ReturnByOrder.resources
 E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.com.proem.sorte.window.SorteWithoutOrder.resources
 E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.com.proem.sorte.window.util.MessageFail.resources
+E:\c#\visualstudio_workspace\sortSystem\123456789System\obj\Release\sorteSystem.csprojResolveAssemblyReference.cache

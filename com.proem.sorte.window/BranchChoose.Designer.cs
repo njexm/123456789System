@@ -146,7 +146,7 @@
             // street
             // 
             this.street.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.street.DataPropertyName = "street";
+            this.street.DataPropertyName = "branch_code";
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.street.DefaultCellStyle = dataGridViewCellStyle2;
             this.street.FillWeight = 0.5F;

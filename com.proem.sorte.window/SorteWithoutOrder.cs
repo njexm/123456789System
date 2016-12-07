@@ -344,8 +344,28 @@ namespace sorteSystem.com.proem.sorte.window
             //orderSorte.costPrice = orderDao.getCostPrice(zcGoodsMaster.Id, false, float.Parse(weight)).ToString();
             sorteDao sortedao = new sorteDao();
             sortedao.addSorteWithOutGoods(orderSorte);
-            //库存减少
-            //orderDao.updateStoreHouse(orderSorte);
+            if ("10010".Equals(serialNumber))
+            {
+                ZcGoodsMaster zcGoodsMaster1 = ConstantUtil.getGoodsBySerialNumber("10000");
+                orderSorte orderSorte1 = new orderSorte();
+                orderSorte1.createTime = DateTime.Now;
+                orderSorte1.updateTime = DateTime.Now;
+                orderSorte1.address = street;
+                orderSorte1.goods_id = zcGoodsMaster1.Id;
+                orderSorte1.id = Guid.NewGuid().ToString();
+                orderSorte1.goods_name = zcGoodsMaster1.GoodsName;
+                orderSorte1.sorteNum = "1";
+                orderSorte1.weight = "1";
+                orderSorte1.money = zcGoodsMaster1.GoodsPrice.ToString();
+                orderSorte1.isWeight = "0";
+                orderSorte1.bar_code = "10000";
+                orderSorte1.isReturn = "0";
+                orderSorte1.isPrint = "0";
+                orderSorte1.goodsPrice = zcGoodsMaster1.GoodsPrice.ToString();
+                orderSorte1.costPrice = zcGoodsMaster1.costPrice;
+                orderSorte1.rate = zcGoodsMaster.OutTax.ToString();
+                sortedao.addSorteWithOutGoods(orderSorte1);
+            }
         }
 
         /// <summary>

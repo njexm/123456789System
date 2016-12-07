@@ -1778,6 +1778,41 @@ namespace sorteSystem.com.proem.sorte.dao
                 }
             }
 
+
+            public void updateIsPrint(List<string> idList)
+            {
+                string sql = "update zc_orders_sorte set isPrint = '1' where id=:id";
+                OracleConnection conn = null;
+                OracleCommand cmd = new OracleCommand();
+                OracleTransaction tran = null;
+                try
+                {
+                    conn = OracleUtil.OpenConn();
+                    tran = conn.BeginTransaction();
+                    cmd.CommandText = sql;
+                    cmd.Connection = conn;
+                    for (int i = 0; i < idList.Count; i++ )
+                    {
+                        cmd.Parameters.Add(":id", idList[i]);
+                        cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
+                    }
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    log.Error("修改分拣信息打印状态失败", ex);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    if (conn != null)
+                    {
+                        conn.Close();
+                    }
+                }
+            }
     }
 
     

@@ -139,12 +139,12 @@ namespace sorteSystem.com.proem.sorte.window
         /// 条件查询所有亭点
         /// </summary>
         private void loadBranch() {
-            string sql = "select b.STREET, a.BRANCH_NAME as branchName, a.id  from ZC_BRANCH_TOTAL a left join ZC_ZONING b on a.ZONING_ID = b.id where 1=1  ";
+            string sql = "select a.branch_code, a.BRANCH_NAME as branchName, a.id  from ZC_BRANCH_TOTAL a left join ZC_ZONING b on a.ZONING_ID = b.id where 1=1  ";
             string text = textBox1.Text.Trim();
             if(!string.IsNullOrEmpty(text)){
-                sql += " and (b.street like '%" + text + "%' or a.BRANCH_NAME like '%" + text + "%') ";
+                sql += " and (a.branch_code like '%" + text + "%' or a.BRANCH_NAME like '%" + text + "%') ";
             }
-            sql += " order by STREET asc";
+            sql += " order by branch_code asc";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             try

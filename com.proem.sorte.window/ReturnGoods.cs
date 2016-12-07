@@ -322,6 +322,7 @@ namespace sorteSystem.com.proem.sorte.window
             orderSorte.costPrice = zcGoodsMaster.costPrice;
             orderSorte.rate = zcGoodsMaster.InputTax.ToString();
             orderSorte.goodsPrice = zcGoodsMaster.GoodsPrice.ToString();
+            orderSorte.isPrint = "0";
             sorteDao sortedao = new sorteDao();
             sortedao.addReturnGoods(orderSorte);
             //库存增加
@@ -331,6 +332,31 @@ namespace sorteSystem.com.proem.sorte.window
             orderSorte.sorteNum = "1";
             orderSorte.money = money;
             orderDao.updateStoreHouseAdd(orderSorte);
+            if("10010".Equals(serialNumber)){
+                ZcGoodsMaster zcGoodsMaster1 = ConstantUtil.getGoodsBySerialNumber("10000");
+                orderSorte orderSorte1 = new orderSorte();
+                orderSorte1.createTime = DateTime.Now;
+                orderSorte1.updateTime = DateTime.Now;
+                orderSorte1.address = returnStreet;
+                orderSorte1.goods_id = zcGoodsMaster1.Id;
+                orderSorte1.id = Guid.NewGuid().ToString();
+                orderSorte1.goods_name = zcGoodsMaster1.GoodsName;
+                orderSorte1.sorteNum = "-1";
+                orderSorte1.weight = "-1";
+                orderSorte1.money = "-" + zcGoodsMaster1.GoodsPrice.ToString();
+                orderSorte1.isWeight = "0";
+                orderSorte1.bar_code = "10000";
+                orderSorte1.isReturn = "1";
+                orderSorte1.costPrice = zcGoodsMaster1.costPrice;
+                orderSorte1.rate = zcGoodsMaster1.InputTax.ToString();
+                orderSorte1.goodsPrice = zcGoodsMaster1.GoodsPrice.ToString();
+                sortedao.addReturnGoods(orderSorte1);
+                orderSorte1.weight = "1";
+                orderSorte1.sorteNum = "1";
+                orderSorte1.isPrint = "0";
+                orderSorte1.money = zcGoodsMaster1.InputTax.ToString();
+                orderDao.updateStoreHouseAdd(orderSorte1);
+            }
         }
 
         /// <summary>
@@ -394,7 +420,7 @@ namespace sorteSystem.com.proem.sorte.window
         private void loadReturnGoods() {
             String first = DateTime.Now.ToString("yyyy-MM-dd 00:00:01");
             String last = DateTime.Now.ToString("yyyy-MM-dd 23:59:59");
-            string sql = "select b.serialNumber, a.goods_name as goodsName, a.weight, a.money, b.id as goodsFileId,a.isWeight, a.id from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where 1=1 and a.isReturn ='1' and a.address='" + returnStreet + "' and a.createTime >= to_date('" + first + "', 'yyyy-MM-dd hh24:mi:ss') and a.createTime <=to_date('" + last + "', 'yyyy-MM-dd hh24:mi:ss')  order by a.createTime";
+            string sql = "select b.serialNumber, a.goods_name as goodsName, a.weight, a.money, b.id as goodsFileId,a.isWeight, a.id, a.isPrint from zc_orders_sorte a left join zc_goods_master b on a.goods_id = b.id where 1=1 and a.isReturn ='1' and a.address='" + returnStreet + "' and a.createTime >= to_date('" + first + "', 'yyyy-MM-dd hh24:mi:ss') and a.createTime <=to_date('" + last + "', 'yyyy-MM-dd hh24:mi:ss')  order by a.createTime";
             OracleConnection conn = null;
             OracleCommand cmd = new OracleCommand();
             OracleDataAdapter da = null ;
@@ -491,35 +517,43 @@ namespace sorteSystem.com.proem.sorte.window
             float nums = 0;
             float money = 0;
             float weight = 0;
+            List<string> idList = new List<string>();
             for (int i = 0; i < itemDataGird.RowCount; i++ )
             {
-                string id = itemDataGird[6, i].Value.ToString();
-                orderSorte ordersorte = orderdao.FindOrderSorteBy(id);
-                SaveInItem item = new SaveInItem();
-                item.id = Guid.NewGuid().ToString();
-                item.createTime = DateTime.Now;
-                item.updateTime = DateTime.Now;
-                float a = -float.Parse(ordersorte.money);
-                money += a;
-                item.money = a.ToString();
-                float b = -float.Parse(ordersorte.sorteNum);
-                nums += b;
-                item.nums = b.ToString();
-                item.saveIn_id = saveIn.id;
-                float c = -float.Parse(ordersorte.weight);
-                weight += c;
-                item.weight = c.ToString();
-                item.goodsFile_id = ordersorte.goods_id;
-                item.costPrice = ordersorte.costPrice;
-                item.rate = ordersorte.rate;
-                item.rateMoney = (-float.Parse(ordersorte.money) * float.Parse(ordersorte.rate) / (1 + float.Parse(ordersorte.rate))).ToString();
-                list.Add(item);
+                string isPrint = itemDataGird[7, i].Value != null ? itemDataGird[7, i].Value.ToString() : "0";
+                if("0".Equals(isPrint)){
+                    string id = itemDataGird[6, i].Value.ToString();
+                    idList.Add(id);
+                    orderSorte ordersorte = orderdao.FindOrderSorteBy(id);
+                    SaveInItem item = new SaveInItem();
+                    item.id = Guid.NewGuid().ToString();
+                    item.createTime = DateTime.Now;
+                    item.updateTime = DateTime.Now;
+                    float a = -float.Parse(ordersorte.money);
+                    money += a;
+                    item.money = a.ToString();
+                    float b = -float.Parse(ordersorte.sorteNum);
+                    nums += b;
+                    item.nums = b.ToString();
+                    item.saveIn_id = saveIn.id;
+                    float c = -float.Parse(ordersorte.weight);
+                    weight += c;
+                    item.weight = c.ToString();
+                    item.goodsFile_id = ordersorte.goods_id;
+                    item.costPrice = ordersorte.costPrice;
+                    item.rate = ordersorte.rate;
+                    item.rateMoney = (-float.Parse(ordersorte.money) * float.Parse(ordersorte.rate) / (1 + float.Parse(ordersorte.rate))).ToString();
+                    list.Add(item);
+                }
             }
             saveIn.nums = nums.ToString();
             saveIn.money = money.ToString();
             saveIn.weight = weight.ToString();
-            orderdao.addSaveIn(saveIn);
-            orderdao.addSaveInItem(list);
+            if (list.Count >0){
+                orderdao.addSaveIn(saveIn);
+                orderdao.addSaveInItem(list);
+                orderdao.updateIsPrint(idList);
+            }
             orderdao.insertLog(ConstantUtil.LoginUserName + "生成了配送入库单", "配送入库单");
             printTicket();
         }

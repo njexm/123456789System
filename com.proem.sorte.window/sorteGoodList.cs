@@ -1462,6 +1462,28 @@ namespace sorteSystem.com.proem.sorte.window
                         {
                             orderSorte.sorteNum = "1";
                             sortedao.AddtransitItem(orderSorte);
+                            if("10010".Equals(serialNumber)){
+                                //扫的是洋鸡蛋
+                                ZcGoodsMaster zcGoodsMaster1 = ConstantUtil.getGoodsBySerialNumber("10000");
+                                orderSorte orderSorte1 = new orderSorte();
+                                orderSorte1.createTime = DateTime.Now;
+                                orderSorte1.updateTime = DateTime.Now;
+                                orderSorte1.address = ConstantUtil.street;
+                                orderSorte1.goods_id = zcGoodsMaster1.Id;
+                                orderSorte1.id = Guid.NewGuid().ToString();
+                                orderSorte1.goods_name = zcGoodsMaster1.GoodsName.Trim();
+                              
+                                orderSorte1.weight = "1";
+                                orderSorte1.money = zcGoodsMaster1.GoodsPrice.ToString();
+                                orderSorte1.isWeight = "0";
+                                orderSorte1.bar_code = "10000";
+                                orderSorte1.isReturn = "0";
+                                orderSorte1.goodsPrice = zcGoodsMaster1.GoodsPrice.ToString();
+                                orderSorte1.costPrice = zcGoodsMaster1.costPrice;
+                                orderSorte1.rate = zcGoodsMaster1.OutTax.ToString();
+                                orderSorte1.sorteNum = "1";
+                                sortedao.AddtransitItem(orderSorte1);
+                            }
                         }
                         else
                         {
@@ -1486,36 +1508,36 @@ namespace sorteSystem.com.proem.sorte.window
             }
             if (!flag)
             {
-                if ("10000".Equals(serialNumber))
-                {
-                    orderSorte orderSorte = new orderSorte();
-                    orderSorte.createTime = DateTime.Now;
-                    orderSorte.updateTime = DateTime.Now;
-                    orderSorte.address = ConstantUtil.street;
-                    orderSorte.goods_id = zcGoodsMaster.Id;
-                    orderSorte.id = Guid.NewGuid().ToString();
-                    orderSorte.goods_name = zcGoodsMaster.GoodsName.Trim();
-                    //订单份数
-                    //orderSorte.orderNum = this.goodDataGridView.Rows[i].Cells[3].Value == null ? "" : this.goodDataGridView.Rows[i].Cells[3].Value.ToString();
+                //if ("10000".Equals(serialNumber))
+                //{
+                //    orderSorte orderSorte = new orderSorte();
+                //    orderSorte.createTime = DateTime.Now;
+                //    orderSorte.updateTime = DateTime.Now;
+                //    orderSorte.address = ConstantUtil.street;
+                //    orderSorte.goods_id = zcGoodsMaster.Id;
+                //    orderSorte.id = Guid.NewGuid().ToString();
+                //    orderSorte.goods_name = zcGoodsMaster.GoodsName.Trim();
+                //    //订单份数
+                //    //orderSorte.orderNum = this.goodDataGridView.Rows[i].Cells[3].Value == null ? "" : this.goodDataGridView.Rows[i].Cells[3].Value.ToString();
 
-                    orderSorte.weight = weight;
-                    orderSorte.money = money;
-                    orderSorte.isWeight = isWeight ? "1" : "0";
-                    orderSorte.bar_code = num;
-                    orderSorte.isReturn = "0";
-                    orderSorte.goodsPrice = zcGoodsMaster.GoodsPrice.ToString();
-                    orderSorte.costPrice = zcGoodsMaster.costPrice;
-                    orderSorte.rate = zcGoodsMaster.OutTax.ToString();
-                    sorteDao sortedao = new sorteDao();
-                    orderSorte.sorteNum = "1";
-                    sortedao.AddtransitItem(orderSorte);
-                }
-                else {
+                //    orderSorte.weight = weight;
+                //    orderSorte.money = money;
+                //    orderSorte.isWeight = isWeight ? "1" : "0";
+                //    orderSorte.bar_code = num;
+                //    orderSorte.isReturn = "0";
+                //    orderSorte.goodsPrice = zcGoodsMaster.GoodsPrice.ToString();
+                //    orderSorte.costPrice = zcGoodsMaster.costPrice;
+                //    orderSorte.rate = zcGoodsMaster.OutTax.ToString();
+                //    sorteDao sortedao = new sorteDao();
+                //    orderSorte.sorteNum = "1";
+                //    sortedao.AddtransitItem(orderSorte);
+                //}
+                //else {
                     voice.Speak("错误", speakflag);
                     MessageFail fail = new MessageFail();
                     fail.Show();
                     return;
-                }
+            //    }
             }
             watch.Stop();
             Console.WriteLine("-------------->扫码添加用时:"+watch.ElapsedMilliseconds);
